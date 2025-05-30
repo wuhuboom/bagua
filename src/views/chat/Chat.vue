@@ -1052,7 +1052,7 @@ export default {
     }
 
     .input-box {
-      margin: 0 20px;
+      margin: 0 20px 0 0px;
       flex: 1;
       // width: 100%;
       width: 50%;
@@ -1060,7 +1060,7 @@ export default {
       .input {
         width: 100%;
         border: none;
-        border-radius: 40px;
+        border-radius: 10px;
         padding: 20px;
         padding-left: 30px;
         background: #eaeaea;
@@ -1079,8 +1079,10 @@ export default {
       width: 80px;
       height: 80px;
       // padding: 30px;
-      background: linear-gradient(180deg, #ff6267 0%, #e7474c 100%);
-      border-radius: 50%;
+      // background: linear-gradient(180deg, #ff6267 0%, #e7474c 100%);
+	  background-color: #1989fa;
+	  // border: .02667rem solid #1989fa;
+      border-radius: 10px;
       color: #fff;
       font-size: 26px;
     }
