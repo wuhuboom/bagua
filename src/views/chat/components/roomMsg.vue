@@ -345,7 +345,6 @@ export default {
       }
     },
     currentComponent(type) {
-		console.log(type)
       switch (type) {
         case 2:
 		  //订单列表

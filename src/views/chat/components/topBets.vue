@@ -251,6 +251,7 @@ export default {
       if (!res.data.nextExpect) {
         res.data.nextExpect = {};
       }
+	  this.$emit("expect", res.data.nextExpect);
       if (
         this.detail.id !== res.data.id ||
         this.detail.nextExpect.nextExpect !== res.data.nextExpect.nextExpect

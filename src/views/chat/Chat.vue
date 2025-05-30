@@ -25,7 +25,7 @@
         </p>
       </template> -->
     </AppTopBar>
-    <topBets @update-head="updateMinlossBox" />
+    <topBets @update-head="updateMinlossBox" @expect="expect" />
     <div
       ref="chatBox"
       class="flex-1 chat-box js-cont-room"
@@ -128,11 +128,11 @@
             :placeholder="placeholder"
             v-model="text"
             @input="onInput"
-            :disabled="!ableChat"
+            :disabled="!ableChat || unGame"
           />
         </div>
 
-        <div class="btn center-center" @click="send">发送</div>
+        <div class="btn center-center" @click="send" >发送</div>
       </div>
     </div>
     <popupMoney ref="$popupMoney" />
@@ -247,6 +247,8 @@ export default {
       activeBiaoqing: 0,
       bigLARR: [],
       timerMap: {},
+	  nextExpect:{},
+	  unGame: false
     };
   },
   directives: {
@@ -298,20 +300,9 @@ export default {
     //   return bigListArr.bigListArr
     // },
     placeholder() {
-      if (+this.shareData.chatStatusSys === 0) {
-        return "全体禁言中.";
-      }
-      console.log("this.disabled", this.disabled);
-      return this.disabled
-        ? `充值${this.shareData.recharge}才能解锁聊天`
-        : !this.ableChat
-        ? "你已被禁言！"
-        : "请输入聊天内容";
-      // return this.disabled
-      //   ? (!this.ableChat
-      //     ? "你已被禁言！"
-      //     : `充值${this.shareData.recharge}才能解锁聊天`)
-      //   : "请输入聊天内容";
+      return this.unGame
+        ? "封盘状态下禁止下注！"
+        : "请输入内容";
     },
     disabled() {
       return (
@@ -353,6 +344,15 @@ export default {
     updateMinlossBox(head) {
       this.isHeadClosed = !head; // 当 head 为 false 时，隐藏 minlossBox
     },
+	expect(item){
+	  this.unGame = false;
+	  if(item.countdown==-1&&item.stopTime==-1){
+		  this.unGame = true
+	  }
+	  if(item.countdown<0&&item.stopTime>0){
+		  this.unGame = true
+	  }
+	},
     getImageUrl(imageName) {
       const images = require.context(
         "@/assets/img",
