@@ -1,0 +1,153 @@
+<template>
+  <div id="app" :style="topBar">
+    <router-view name="AppTopBar"></router-view>
+    <!-- <keep-alive>
+      <router-view v-if="isCashier" :key="$route.fullPath" />
+    </keep-alive>
+
+    <router-view v-if="!isCashier" :key="$route.fullPath" /> -->
+
+    <keep-alive :include="keepAliveRouteName">
+      <router-view :key="$route.fullPath" />
+    </keep-alive>
+
+    <router-view name="AppBtmBar"></router-view>
+    <RepairDilog />
+  </div>
+</template>
+<script>
+import userApi from "@/api/user";
+import RepairDilog from "@/components/RepairDilog";
+import i18n from "@/locale";
+import auth from "@/plugins/auth";
+export default {
+  name: "App",
+  data() {
+    return {
+      keepAliveRoutePath: ["/documentation", "/myBallRecord"],
+      keepAliveRouteName: ["AppDocumentation", "MyBallRecord","AppChat"],
+    };
+  },
+  watch: {
+    "$route.name"(v) {
+      console.log(
+        "缓存路由名称是否包含",
+        this.keepAliveRouteName.includes(v),
+        v
+      );
+    },
+    "$route.fullPath"(v) {
+      console.log(this.keepAliveRoutePath.includes(v), v);
+    },
+  },
+  components: {
+    RepairDilog,
+  },
+  computed: {
+    isCashier() {
+      return this.keepAliveRoutePath.includes(this.$route.fullPath);
+    },
+    user() {
+      return this.$store.state.user;
+    },
+    topBar() {
+      if (!this.$store.state.setPdTop) {
+        return {
+          paddingTop: 0,
+        };
+      }
+      return {};
+    },
+  },
+  created() {
+    window.$router = this.$router;
+    this.$store.commit("setBalanceRecord", [
+      { value: 0, label: i18n.t("dropdown.billing.all.title.text") },
+      {
+        label: i18n.t("dropdown.billing.rebate"),
+        value: [5, 21, 24, 25, 26, 27, 28],
+        text: "返利",
+      },
+      { label: i18n.t("investment"), value: [3, 4, 9], text: "投资" },
+      {
+        label: i18n.t("home.index.recharge.text"),
+        value: [1, 11],
+        text: "充值",
+      },
+      {
+        label: i18n.t("home.index.withdraw.text"),
+        value: [2, 12, 33],
+        text: "提现",
+      },
+      {
+        label: i18n.t("backapi.self.home.tool.wheel.text"),
+        value: [29, 30],
+        text: "抽奖",
+      },
+      {
+        label: i18n.t("dropdown.billing.other"),
+        value: [6, 8, 34, 36],
+        key: "other",
+        text: "其他",
+      },
+    ]);
+    setInterval(() => {
+      //获取环境变量
+      if (process.env.NODE_ENV === "development") {
+        return;
+      }
+      if (auth.getToken()) {
+        this.$store.dispatch("getInfo");
+      } else {
+        userApi.versionReq();
+      }
+    }, 3000);
+  },
+};
+</script>
+<style lang="less">
+#app {
+  // padding-top: @navHeight;
+  font-size: 28px;
+  min-width: 100%;
+  min-height: 100%;
+
+  .appp-top-bar {
+    position: fixed;
+    height: 90px;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    .appp-top-cont {
+      height: 90px;
+      width: 100%;
+    }
+
+    .appp-top-bar-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      font-size: 34px;
+      height: 90px;
+      color: #000;
+      flex: 1;
+      text-align: center;
+    }
+
+    .icon-button {
+      background-color: transparent;
+      border-color: transparent;
+      color: var(--color-text);
+      position: relative;
+      z-index: 1;
+
+      .van-icon {
+        font-size: 40px;
+      }
+    }
+  }
+}
+</style>

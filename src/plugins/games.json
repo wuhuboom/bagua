@@ -1,0 +1,14 @@
+{
+	"zhishu":[
+		{"name":"Counter","num":"166820652","rate":"178548579","path":"../../static/images/home/10032.png"},
+		{"name":"Dota2","num":"212060652","rate":"162530179","path":"../../static/images/home/10031.png"},
+		{"name":"Fortnite","num":"126360652","rate":"126952379","path":"../../static/images/home/10033.png"},
+		{"name":"Counter","num":"163620552","rate":"135212269","path":"../../static/images/home/10041.png"}
+	],
+	"down":[
+		{"name":"CS2","path":"../../static/images/home/10028.png","url":"https://genshin.hoyoverse.com/en"},
+		{"name":"World of Warcraft","path":"../../static/images/home/10029.png","url":"https://worldofwarcraft.blizzard.com/en-us/"},
+		{"name":"Grand Theft Auto V","path":"../../static/images/home/10030.png","url":"https://store.steampowered.com/agecheck/app/271590/"},
+		{"name":"LEAGUE OF LEGENDS","path":"../../static/images/home/10031.png","url":"https://www.dota2.com/home?l=english"}
+	]
+}

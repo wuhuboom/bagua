@@ -1,0 +1,212 @@
+.field-inlude-code{
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+  padding-right: 6px !important;
+}
+
+$max: 100;
+$offset: 4;
+$unit: 'px'; // Feel free to change the unit.
+@mixin list-loop($className, $styleName) {
+  $i: 0;
+  @while $i <= $max {
+    #{$className + $i} { 
+      #{$styleName}: #{$i * 1 + $unit} !important; // Added !important
+    }
+    $i: $i + $offset;
+  }
+}
+// Margins
+@include list-loop('.m-t-', 'margin-top');
+@include list-loop('.m-r-', 'margin-right');
+@include list-loop('.m-b-', 'margin-bottom');
+@include list-loop('.m-l-', 'margin-left');
+@include list-loop('.m-x-', 'margin');
+// Paddings
+@include list-loop('.p-t-', 'padding-top');
+@include list-loop('.p-r-', 'padding-right');
+@include list-loop('.p-b-', 'padding-bottom');
+@include list-loop('.p-l-', 'padding-left');
+@include list-loop('.p-x-', 'padding');
+input::placeholder {
+  color: #808080 !important
+
+}
+.limt-form-with {
+    width: 264px;
+  }
+  .ntf-form {
+    .lable-text {
+      font-size: 28px;
+      color: #cacbce;
+      margin-bottom: 32px;
+    }
+    .van-cell {
+      background-color: transparent;
+      padding: 0;
+  
+      .van-field__body {
+        border-radius: 58px;
+        background-color: #f6f8f8;
+        height: 108px;
+        padding: 16px 16px 16px 32px;
+      }
+      &.icon-input {
+        .van-field__body {
+         // padding-left: 80px;
+         color: #2C2C2C;
+        }
+        .icon-img {
+          width: 40px;
+          height: 40px;
+        }
+        .van-field__left-icon {
+          position: absolute;
+          height: 96px;
+          width: 80px;
+          left: 0;
+          top: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+      &.phone-input {
+        .van-field__body {
+          padding-left: 172px;
+        }
+        .icon-img {
+          width: 40px;
+          height: 40px;
+        }
+        .van-field__left-icon {
+          z-index: 16;
+          position: absolute;
+          height: 96px;
+          width: 152px;
+          left: 0;
+          top: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &::before {
+            content: "";
+            display: block;
+            width: 2px;
+            height: 50px;
+            background-color: #fff;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 0;
+          }
+        }
+      }
+      &::after {
+        display: none;
+      }
+    }
+    .van-field__control {
+      color: #2C2C2C;
+    }
+    .van-field--error .van-field__control,
+    .van-field--error .van-field__control::placeholder {
+      color: #2C2C2C;
+    }
+  }
+  
+.ntf-vant-btn{
+  border: none;
+  height: 108px;
+  line-height: 108px;
+  background: linear-gradient(130deg, #ca404b 0%, #bf2935 100%);
+  border-radius: 56px 56px 56px 56px;
+  color: #fff;
+  font-size: 36px;
+  text-align: center;
+}
+.ntf-btn-cancel{
+    background-color: #344756;
+    border-color: #344756;
+}
+.linear-global-pop{
+  border-radius: 14px;
+  border: solid 1px rgba(0, 0, 0, 0);
+  background-image: linear-gradient(to bottom, #1f2430, #151515);
+  padding: 12px 24px;
+}
+.send-code-btn{
+    height: 30px;
+    border-radius: 15px;
+    min-width: 84px;
+    padding: 0 8px;
+    background-color: var(--main);
+    border-color: var(--main);
+    color: #fff;
+}
+
+.el-ntf-select{
+  height: 44px;
+  border-radius: 15px;
+  background-color: rgba(255,255,255,0.1);
+//   padding-left: 16px;
+//   padding-right: 16px;
+  .el-input__inner{
+    padding-left: 16px;
+  }
+  .el-input__inner, .el-select__caret{
+    color: #fff !important;
+  }
+   
+}
+
+
+.forms-input-wrap {
+  background: #fff;
+  .lable{
+    padding: 32px 32px 0;
+  }
+  &.label-input-wrap{
+    .van-field__value{
+      position: static;
+    }
+    .van-field--error{
+      padding-bottom:48px;
+    }
+    .van-field__error-message{
+      position: absolute;
+      left: 32px;
+      bottom: 0;
+    }
+  }
+  .input-box {
+    border-bottom: 1px solid #e5e5e5;
+    align-items: center;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .input {
+    flex: 1;
+    border: none;
+    position: relative;
+  }
+
+  .code-btn {
+    color: #bf2834;
+    margin-right: 28px;
+  }
+}
+
+.forms-submit-btn {
+  width: 694px;
+  height: 88px;
+  background: #bf2935;
+  border-radius: 126px 126px 126px 126px;
+  color: #fff;
+  font-size: 32px;
+  margin: 0 auto;
+  margin-top: 132px;
+}

@@ -1,0 +1,54 @@
+[
+    {
+      "id": 3,
+      "createdAt": 0,
+      "updatedAt": 0,
+      "name": "fanyong",
+      "policyType": 0,
+      "depositPolicyId": 0,
+      "commissionStrategyId": 0,
+      "language": "en",
+      "imageUrl": "https://img2.bhbd.cc/L/L3_1.jpg",
+      "status": 1,
+      "localPath": "https://img2.bhbd.cc/L/L3_1.jpg"
+    },
+    {
+      "id": 4,
+      "createdAt": 0,
+      "updatedAt": 0,
+      "name": "VIP",
+      "policyType": 0,
+      "depositPolicyId": 0,
+      "commissionStrategyId": 0,
+      "language": "en",
+      "imageUrl": "https://img2.bhbd.cc/L/L2.jpg",
+      "status": 1,
+      "localPath": "https://img2.bhbd.cc/L/L2.jpg"
+    },
+    {
+      "id": 5,
+      "createdAt": 0,
+      "updatedAt": 0,
+      "name": "recharge",
+      "policyType": 0,
+      "depositPolicyId": 0,
+      "commissionStrategyId": 0,
+      "language": "en",
+      "imageUrl": "https://img2.bhbd.cc/L/L4.jpg",
+      "status": 1,
+      "localPath": "https://img2.bhbd.cc/L/L4.jpg"
+    },
+    {
+      "id": 7,
+      "createdAt": 0,
+      "updatedAt": 0,
+      "name": "sdj",
+      "policyType": 0,
+      "depositPolicyId": 0,
+      "commissionStrategyId": 0,
+      "language": "en",
+      "imageUrl": "https://imagedelivery.net/KgYOAin8hEu7IggscaJ-4A/ef87307b-0f67-4747-ebe6-049108e04d00/public",
+      "status": 1,
+      "localPath": "https://imagedelivery.net/KgYOAin8hEu7IggscaJ-4A/ef87307b-0f67-4747-ebe6-049108e04d00/public"
+    }
+  ]
