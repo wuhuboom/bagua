@@ -925,7 +925,6 @@ export default {
     this.clearAllTimers();
     const scrollContainer = this.$refs.chatBox;
     if (scrollContainer) {
-      console.log(scrollContainer.scrollTop)
       sessionStorage.setItem('listScrollTop', scrollContainer.scrollTop);
     }
     next();

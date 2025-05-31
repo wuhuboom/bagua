@@ -24,13 +24,13 @@ const routes = [
     },
   },
   
-  {
-    path: "/login/SignIn",
-    name: "Login",
-    components: {
-      default: () => import("@/views/Login.vue"),
-    },
-  },
+  // {
+  //   path: "/login/SignIn",
+  //   name: "Login",
+  //   components: {
+  //     default: () => import("@/views/Login.vue"),
+  //   },
+  // },
 ];
 
 const router = new VueRouter({
@@ -41,8 +41,7 @@ const router = new VueRouter({
 });
 router.beforeEach(async (to, from, next) => {
   Nprogress.start();
-  
-  let token = window.location.search.split('token=')[1]
+  let token = window.location.pathname.split('/')[1]
   
   store.commit("setToken", token);  
   
@@ -60,10 +59,10 @@ router.beforeEach(async (to, from, next) => {
   //   ajaxs.push(store.dispatch("playerLotteryList"));
   // }
   // await Promise.all(ajaxs);
-  if (to.path == "/downloadApp") {
-    next();
-    return;
-  }
+  // if (to.path == "/downloadApp") {
+  //   next();
+  //   return;
+  // }
   
   if (auth.getToken()) {
     if (!store.getters.catList.length) {
@@ -76,12 +75,13 @@ router.beforeEach(async (to, from, next) => {
       next();
     }
   } else {
-    if (to.path.includes("/login")) {
-      next();
-    } else {
-      Nprogress.done();
-      // next("/login/SignIn");
-    }
+    // if (to.path.includes("/login")) {
+    //   next();
+    // } else {
+    //   Nprogress.done();
+    //   // next("/login/SignIn");
+    // }
+	// next("/login/SignIn");
   }
   next();
 });
