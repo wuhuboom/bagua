@@ -246,7 +246,7 @@ export default {
     // 处理接收到的消息
     handleMessage({ commit }, message) {
       //0 文本消息 2 分享合买 4 红包消息 8图片 10 @消息 13 回复消息
-      if ([0, 2, 4, 8, 10, 13].includes(+message.type)) {
+      if ([0, 2,  8, 10, 13, 6,  3, 7].includes(+message.type)) {
         // 文本消息
         commit("ADD_MESSAGE", { message });
         if (+message.type === 4) {
@@ -295,30 +295,12 @@ export default {
         } else if (resResults == 1 || resResults == 2) {
           commit("setUnAllowChat", false);
         }
-      }else if ([3].includes(+message.type)) {
+      }else if ([4].includes(+message.type)) {
         let data = JSON.parse(message.data);
-        // 3 发红包响应的code消息 (1余额不足 2数量不正确)
-        let msg = data.code == 1 ? "余额不足":data.code == 3?"当前禁止发送红包":"数量不正确"
-        app.$toast(msg);
-      } else if ([5].includes(+message.type)) {
-        //查询红包 状态
-        commit("addMsgPacket", message);
-      } else if ([6].includes(+message.type)) {
-        //抢红包响应数据
-        // 接收消息:{"type":6,"data":"{\"code\":1}"}(0.抢到红包 1.已被抢空 2.已抢过红包)
-        // 抢到红包返回{money:抢到金额,nickname:发送人,describes:红包标题}
-
-        //抢红包后更新红包状态
-        EventBus.$emit("redGetStatus", {
-          ...message,
-          data: JSON.parse(message.data),
-        });
-      } else if ([7].includes(+message.type)) {
-        EventBus.$emit("getMoneyRecord", {
-          ...message,
-          data: JSON.parse(message.data),
-        });
-      } else if ([9].includes(+message.type)) {
+        // 4 发红包响应的code消息 (1余额不足 2数量不正确)
+        // let msg = data.code == 1 ? "余额不足":data.code == 3?"当前禁止发送红包":"数量不正确"
+        app.$toast("消息发送频繁");
+      }  else if ([9].includes(+message.type)) {
         //撤回消息修改status
         console.log('撤回消息')
         commit("setToBack", message);
