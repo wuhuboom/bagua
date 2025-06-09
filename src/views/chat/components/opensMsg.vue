@@ -2,7 +2,8 @@
   <div class="opens-list">
 	<div class="num">
 		<p class="tops font10 color-fff">
-		  第{{ data.expect }}期开奖结果
+		  <!-- 第{{ data.expect }}期开奖结果 -->
+		  本轮是
 		</p>
 	</div>
 	<div class="hisBets hisBets_p font13">
