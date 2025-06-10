@@ -128,7 +128,7 @@
             :placeholder="placeholder"
             v-model="text"
             @input="onInput"
-            :disabled="!ableChat || unGame"
+            :disabled="!ableChat "
           />
         </div>
 
@@ -300,9 +300,10 @@ export default {
     //   return bigListArr.bigListArr
     // },
     placeholder() {
-      return this.unGame
-        ? "封盘状态下禁止下注！"
-        : "请输入内容";
+      // return this.unGame
+      //   ? "封盘状态下禁止下注！"
+      //   : "请输入内容";
+	  return "请输入内容";
     },
     disabled() {
       return (

@@ -140,6 +140,7 @@
             <div
               class="msg-txt p-x-16 align-center msgBoxTxt"
               :class="{ 'msg-txt-isme': isMe }"
+			  style="white-space: pre-wrap"
               data-tip="txt"
               v-else-if="
                 +doc.type == 0 && doc?.data.toString().indexOf('[') === -1

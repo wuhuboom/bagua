@@ -58,7 +58,7 @@ export default {
 	  flex-wrap: wrap;
 	  .item{
 		  margin: 0 4px;
-		  width: calc(33.33% - 8px);
+		  width: calc(50% - 8px);
 		  // flex: 1 1 33.333%;
 		  // box-sizing: border-box;
 	  }
