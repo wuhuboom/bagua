@@ -41,7 +41,8 @@ const router = new VueRouter({
 });
 router.beforeEach(async (to, from, next) => {
   Nprogress.start();
-  let token = window.location.pathname.split('/')[1]
+  // let token = window.location.pathname.split('/')[1]
+  let token = window.location.search.split('token=')[1]
   
   store.commit("setToken", token);  
   
