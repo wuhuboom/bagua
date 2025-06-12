@@ -15,7 +15,7 @@
 		  
 		  <li class="align-center">
 		    <div class="flex-column align-center">
-			  <p class="rightExpect colorfff">{{ detail.nextExpect.nextExpect }}期</p>
+			  <!-- <p class="rightExpect colorfff">{{ detail.nextExpect.nextExpect }}期</p> -->
 		      <div class="timeData" v-if="detail.nextExpect.countdown==-1&&detail.nextExpect.stopTime==-1">
 				  未开盘
 			  </div>
@@ -77,9 +77,8 @@
       <!-- <p class="slides" :class="{ slidesclose: !head }" @click="toggleHead"></p> -->
     </div>
 	
-	<div class="hisBets hisBets_p font13">
+	<!-- <div class="hisBets hisBets_p font13">
 		<div  @click="openHis()">
-			<!-- <span> {{ detail.lotteryNameH5 }}</span> -->
 			<div class="name"> 第{{ prize.cycleNum }}期开奖</div>
 			<div class="betVal betVal_width center-center">
 			  <p
@@ -98,7 +97,7 @@
 			</div>
 		</div>
 		
-	</div>
+	</div> -->
 	<div ref="popup" >
 	  <div v-if="showother" class="other-prize-box">
 		  <table border="1" class="tb_nav">
@@ -296,7 +295,7 @@ export default {
 }
 .top-bets-bot{
 	padding: .32rem 0;
-	margin: 0 .4rem;
+	margin: 0 .4rem .2rem .4rem;
 	width: 9.06667rem;
 	border-radius: .13333rem;
 	display: -webkit-box;

@@ -28,7 +28,7 @@
 
         <ul
           class="flex-column"
-          v-if="[2, 4, 8, 13, 14, 6, 3, 7].includes(+doc.type)"
+          v-if="[2, 4, 8, 13, 14, 6, 3].includes(+doc.type)"
           :class="{ mainContent: !isMe, 'txtPad mainIsTrueMeContent': isMe }"
         >
           <li class="name align-center nameAndTime">
@@ -42,7 +42,7 @@
             v-long-press="() => recallMessage(doc)"
           >
             <component
-              v-if="[2, 4, 8, 13, 14, 6, 3, 7].includes(+doc.type)"
+              v-if="[2, 4, 8, 13, 14, 6, 3].includes(+doc.type)"
               :is="currentComponent(+doc.type)"
               :userPic="userPic"
               :doc="doc"
@@ -78,7 +78,7 @@
 
         <ul
           class="flex-column"
-          v-if="![2, 4, 8, 13, 14,6, 3, 7].includes(+doc.type)"
+          v-if="![2, 4, 8, 13, 14,6, 3].includes(+doc.type)"
           :class="{ txtPad: isMe, mainIsNotMeContent: !isMe }"
         >
           <li class="name align-center nameAndTime" v-if="!isMe">
@@ -217,7 +217,7 @@ export default {
   },
   computed: {
     popoverDisabled() {
-      if (![0, 8, 10, 13, 6, 2, 3, 7].includes(+this.doc.type)) {
+      if (![0, 8, 10, 13, 6, 2, 3].includes(+this.doc.type)) {
         return true;
       }
       return this.disabled;
@@ -362,9 +362,9 @@ export default {
         case 6:
           //用户余额列表
           return "balanceMsg";
-        case 7:
-          //结算列表
-          return "winMsg";
+        // case 7:
+        //   //结算列表
+        //   return "winMsg";
         case 8:
           //开奖信息
           return "opensMsg";
