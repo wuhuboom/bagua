@@ -452,6 +452,14 @@ export default {
     height: 60px;
     // border-radius: 50%;
   }
+  @media (min-width: 750px) {
+    .user-pic {
+		width: 180px;
+		height: 180px;
+		margin-left: 24px !important;
+		margin-right: 24px !important;
+    }
+  }
 
   .name {
     color: #000;
@@ -577,6 +585,11 @@ export default {
   // }
 }
 
+@media (min-width: 750px) {
+  .mainIsNotMeContent {
+	padding: 24px 0 30px 0;
+  }
+}
 .mainIsTrueMeContent {
   // background: #FFFFFF;
   position: relative;

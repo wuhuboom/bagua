@@ -1,7 +1,7 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div>
-    <div class="height"></div>
+    <!-- <div class="height"></div> -->
     <div class="appp-top-bar align-center justify-between max-width750" :class="{ 'bg-black': fiexd }" :style="styleObj">
       <div class="appp-top-cont align-center justify-between">
       <!--  <div class="left leftBox" v-if="showLeft">

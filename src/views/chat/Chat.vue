@@ -1,5 +1,6 @@
 <template>
-  <div class="chat-con flex-column" :style="{ height: `${chatHeight}px` }">
+  <!-- <div class="chat-con flex-column" :style="{ height: `${chatHeight}px` }"> -->
+  <div class="chat-con flex-column chatHeight">
     <AppTopBar ref="topBar" topBarTitle="聊天室">
      <!-- <template #left>
         <p class="center-center colorfff moneyLeft" @click="checkMoney">
@@ -96,7 +97,7 @@
       </ul>
     </van-action-sheet>
     <div ref="bottomBox" class="bottom-box">
-      <div class="height"></div>
+      <!-- <div class="height"></div> -->
       <div class="wrap-box" :class="{ 'btm-disabled': disabled }">
     
         <div class="input-box" @keydown.enter.prevent="send">
@@ -1019,6 +1020,7 @@ export default {
   }
 }
 
+
 .bottom-box {
   z-index: 13;
   position: relative;
@@ -1088,7 +1090,33 @@ export default {
     }
   }
 }
-
+.chatHeight{
+	height: calc(100vh - @height);
+}
+@media (min-width: 750px) {
+  .chatHeight{
+	height: 90vh;
+  }
+  .chat-box {
+	margin-top: 40px;
+  }
+  .wrap-box{
+	  height: 300px !important;
+	  position: inherit !important;
+      padding: 0 48px !important;
+	  .input-box {
+		  height: 240px;
+		  .input {
+			  height: 240px;
+			  line-height: 240px;
+		  }
+	  }
+	  .btn{
+		width: 340px !important;
+		height: 240px !important;
+	  }
+  }
+}
 .face-box {
   display: flex;
   flex-wrap: wrap;

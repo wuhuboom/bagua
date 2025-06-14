@@ -293,6 +293,14 @@ export default {
   padding-top: 90px;
   overflow: visible;
 }
+
+@media (min-width: 750px) {
+  .chat-top-bets {
+	margin: auto auto;
+	padding-top: 0px;
+	position: initial;
+  }
+}
 .top-bets-bot{
 	padding: .32rem 0;
 	margin: 0 .4rem .2rem .4rem;
@@ -351,6 +359,14 @@ export default {
 		height: 28px;
 		margin-left: 6px;
 	  }
+	  
+		@media (min-width: 750px) {
+		  img {
+		  		width: 112px;
+		  		height: 112px;
+		  		margin-left: 24px;
+		  }
+		}
 	}
 }
 .hisBets_p{

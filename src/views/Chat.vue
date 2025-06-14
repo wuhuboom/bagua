@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="bottom-box">
-      <div class="height"></div>
+      <!-- <div class="height"></div> -->
       <div class="wrap-box">
         <div class="icon-box">
           <van-icon name="smile-o" class="icon" />
