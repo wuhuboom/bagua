@@ -22,7 +22,7 @@
               ? doc.img.includes('http')
                 ? doc.img
                 : `${$baseURL}/${doc.img}`
-              : userPic
+              : (doc.user=='系统'?sysPic:userPic)
           "
         />
 
@@ -44,7 +44,7 @@
             <component
               v-if="[2, 4, 8, 13, 14, 6, 3].includes(+doc.type)"
               :is="currentComponent(+doc.type)"
-              :userPic="userPic"
+              :userPic="doc.user=='系统'?sysPic:userPic"
               :doc="doc"
               @openBetPop="openBetPop"
               ref="$component"
@@ -139,7 +139,7 @@
 
             <div
               class="msg-txt p-x-16 align-center msgBoxTxt"
-              :class="{ 'msg-txt-isme': isMe }"
+			  :class="{'msg-txt-blue': doc.user=='系统', 'msg-txt-isme': isMe}"
 			  style="white-space: pre-wrap"
               data-tip="txt"
               v-else-if="
@@ -168,6 +168,7 @@
 <script>
 import { ImagePreview, Toast } from "vant";
 import userPic from "@/assets/img/user-room.png";
+import sysPic from "@/assets/img/systemUser.png";
 import bindBuy from "@/views/chat/components/bindBuy.vue";
 import imgMsg from "@/views/chat/components/imgMsg.vue";
 import opensMsg from "@/views/chat/components/opensMsg.vue";
@@ -198,6 +199,7 @@ export default {
   data() {
     return {
       userPic,
+	  sysPic,
       actions: [
         { text: "撤回", value: 1, disabled: false },
         { text: "回复", value: 2, disabled: false },
@@ -346,6 +348,7 @@ export default {
       }
     },
     currentComponent(type) {
+		console.log(type)
       switch (type) {
         case 2:
 		  //订单列表
@@ -482,6 +485,9 @@ export default {
     padding: 16px;
     border-radius: 0px 16px 16px 16px;
     display: inline-flex;
+  }
+  .msg-txt-blue{
+    color: #1989fa;
   }
   .msg-txt-isme {
     color: #fff;
