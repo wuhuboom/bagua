@@ -455,14 +455,6 @@ export default {
     height: 60px;
     // border-radius: 50%;
   }
-  @media (min-width: 750px) {
-    .user-pic {
-		width: 180px;
-		height: 180px;
-		margin-left: 24px !important;
-		margin-right: 24px !important;
-    }
-  }
 
   .name {
     color: #000;
@@ -486,6 +478,21 @@ export default {
     border-radius: 0px 16px 16px 16px;
     display: inline-flex;
   }
+  
+  @media (min-width: 750px) {
+    .user-pic {
+  		width: 180px;
+  		height: 180px;
+  		margin-left: 24px !important;
+  		margin-right: 24px !important;
+    }
+	.name{
+		font-size: 76px;
+	}
+	.msg-txt{
+		font-size: 76px;
+	}
+  }
   .msg-txt-blue{
     color: #1989fa;
   }
@@ -506,6 +513,12 @@ export default {
     text-align: left;
     font-style: normal;
     text-transform: none;
+  }
+  
+  @media (min-width: 750px) {
+  	.time{
+  		font-size: 64px;
+  	}
   }
 }
 

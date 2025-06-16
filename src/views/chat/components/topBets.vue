@@ -65,7 +65,7 @@
                     v-if="!showBlance"
                   />
                 </p>
-				<p class="font14 colorfff">
+				<p class="font13 colorfff">
 					<span>{{ showBlance ? divide(user.balance) : " *****" }}</span>
 				</p>
               </div>

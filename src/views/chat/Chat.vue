@@ -124,7 +124,7 @@
           <!-- :class="{ 'inputClearBg': !ableChat }" -->
           <input
             type="text"
-            class="input"
+            class="input font13"
             ref="inputRef"
             :placeholder="placeholder"
             v-model="text"
@@ -133,7 +133,7 @@
           />
         </div>
 
-        <div class="btn center-center" @click="send" >发送</div>
+        <div class="btn center-center font13" @click="send" >发送</div>
       </div>
     </div>
     <popupMoney ref="$popupMoney" />
@@ -1086,7 +1086,7 @@ export default {
 	  // border: .02667rem solid #1989fa;
       border-radius: 10px;
       color: #fff;
-      font-size: 26px;
+      // font-size: 26px;
     }
   }
 }

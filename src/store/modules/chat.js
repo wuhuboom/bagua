@@ -297,9 +297,22 @@ export default {
         }
       }else if ([4].includes(+message.type)) {
         let data = JSON.parse(message.data);
-        // 4 发红包响应的code消息 (1余额不足 2数量不正确)
-        // let msg = data.code == 1 ? "余额不足":data.code == 3?"当前禁止发送红包":"数量不正确"
         app.$toast("消息发送频繁");
+      }else if ([5].includes(+message.type)) {
+        let data = message.data[0];
+		if(data.msgKey == 'currUnopen'){
+			app.$toast("未开盘");
+		}else if(data.msgKey == 'currClosed'){
+			app.$toast("已封盘");
+		}else if(data.msgKey == 'buyCodeError'){
+			app.$toast("下注指令错误");
+		}else if(data.msgKey == 'balanceNotEnough'){
+			app.$toast("余额不足");
+		}else if(data.msgKey == 'hasBan'){
+			app.$toast("余额不为0,不能回水");
+		}else if(data.msgKey == 'noWater'){
+			app.$toast("当前无回水");
+		}
       }  else if ([9].includes(+message.type)) {
         //撤回消息修改status
         console.log('撤回消息')
