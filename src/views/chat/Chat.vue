@@ -98,6 +98,23 @@
     </van-action-sheet>
     <div ref="bottomBox" class="bottom-box">
       <!-- <div class="height"></div> -->
+	  <div class="quick">
+		  <div class="item-box">
+			  <div class="btn center-center font13" style="background-color: #5dcf05;" @click="sendQuick('上分')" >上分</div>
+		  </div>
+		  <div class="item-box">
+			  <div class="btn center-center font13" style="background-color: #d50019;" @click="sendQuick('下分')" >下分</div>
+		  </div>
+		  <div class="item-box">
+			  <div class="btn center-center font13" style="background-color: #0d79ff;" @click="sendQuick('走势')" >走势</div>
+		  </div>
+		  <div class="item-box">
+			  <div class="btn center-center font13" style="background-color: #4e09ff;" @click="openPopup" >复投</div>
+		  </div>
+		  <div class="item-box">
+			  <div class="btn center-center font13" style="background-color: #5a5f64;" @click="sendQuick('取消')" >取消</div>
+		  </div>
+	  </div>
       <div class="wrap-box" :class="{ 'btm-disabled': disabled }">
     
         <div class="input-box" @keydown.enter.prevent="send">
@@ -136,7 +153,14 @@
         <div class="btn center-center font13" @click="send" >发送</div>
       </div>
     </div>
-    <popupMoney ref="$popupMoney" />
+    <van-popup class="popupMoney" v-model="repurchaseShow">
+		<div class="repurchase-panel">
+			<div class="item" v-for="(item, index) in orderList" :key="index">
+				<span class="val">{{item.betCode2}}</span>
+				<div class="btn center-center font13" @click="sendQuick(item.betCode2)" >复购</div>
+			</div>
+		</div>
+    </van-popup>
     <bindBetPop ref="$bindBetPop" />
     <RedPacketTips/>
   </div>
@@ -147,7 +171,6 @@ import userApi from "@/api/user";
 import userPic from "@/assets/img/user-room.png";
 import dataFace from "@/plugins/dataFace.json";
 import bindBetPop from "@/views/chat/components/bindBetPop.vue";
-import popupMoney from "@/views/chat/components/popupMoney.vue";
 import roomMsg from "@/views/chat/components/roomMsg.vue";
 import topBets from "@/views/chat/components/topBets.vue";
 import RedPacketTips from "@/views/chat/components/RedPacketTips.vue";
@@ -207,6 +230,8 @@ export default {
       // baifoImage,
       // sx1Image,
       // sx2Image,
+	  repurchaseShow: false,
+	  orderList: [],
       showButton: false,
       filteredUsers: [],
       showUserList: false,
@@ -282,7 +307,6 @@ export default {
   components: {
     roomMsg,
     InfiniteLoading,
-    popupMoney,
     topBets,
     RedPacketTips,
     bindBetPop,
@@ -547,8 +571,29 @@ export default {
       console.log(action);
     },
     openPopup() {
-      this.$refs.$popupMoney.show = true;
+	  this.getOrder()
+	  // this.orderList = [{str:"100"},{str:"100"},{str:"100"},{str:"100"}]
     },
+	async getOrder() {
+		let params = {
+			status: 3,
+			pageNo: 1,
+			pageSize: 5
+		}
+	    const [err, res] = await userApi.lotteryMyOrder(params);
+	    if (err) {
+		  this.orderList = []
+		  
+	      return;
+	    }
+		console.log(res)
+		this.orderList = res.data.results
+		if(this.orderList.length > 0){
+			this.repurchaseShow = true;
+		}else{
+			this.$toast("暂未投注，请先投注！");
+		}
+	},
     //微信默认表情包回显
     wxEmojis(html) {
       return wxEmojis(html);
@@ -717,72 +762,35 @@ export default {
         ...this.bigLARR.filter((i) => i.urlStr !== selectedItem.urlStr),
       ];
     },
+    async sendQuick(str) {
+      if (str) {
+        const matches = [...str.matchAll(/@(\S*)/g)]
+          .map((m) => m[1])
+          .filter((name) => name.length > 0);
+        if (matches.length > 0) {
+          const users = this.onlineUser.filter((user) =>
+            matches.includes(user.username)
+          );
+          let playerId = users.map((v) => v.playerId);
+          //去重复 playerId
+          playerId = [...new Set(playerId)];
+          this.sendMessage({
+            type: 10,
+            data: JSON.stringify({
+              playerId: playerId,
+              msg: str,
+            }),
+          });
+        } else {
+          this.sendMessage({
+            data: str.trim(),
+          });
+        }
+        await this.sleep(800);
+      }
+    },
     async send() {
-      // this.chatTextarea = this.$refs.inputRef.innerHTML;
-
-      // if (this.chatTextarea) {
-      //   let wxEmojisNode = document.querySelectorAll(".chatTextarea i"); //获取所有的表情包节点
-      //   // console.log("wxEmojisNode", wxEmojisNode);
-      //   //遍历表情包，将表情包节点替换成转义表情包字符：[微笑]
-      //   for (let i = 0; i < wxEmojisNode.length; i++) {
-      //     for (let j = 0; j < this.wxEmojisDataGet.length; j++) {
-      //       if (
-      //         wxEmojisNode[i].getAttribute("data-value") ==
-      //         this.wxEmojisDataGet[j]
-      //       ) {
-      //         //将表情包节点替换成转义表情包字符：[微笑]
-      //         this.chatTextarea = this.chatTextarea.replace(
-      //           wxEmojisNode[i].outerHTML.toString(),
-      //           this.wxEmojisDataGet[j]
-      //         );
-      //       }
-      //     }
-      //   }
-      //   console.log(
-      //     // "发送消息this.chatTextarea", this.chatTextarea,
-      //     this.trimHtml(this.chatTextarea)
-      //   );
-
-      //   document.getElementById("chatTextarea").innerHTML = "";
-
-      //   let textTemp = this.trimHtml(this.chatTextarea)
-
-      //   const matches = [...textTemp.matchAll(/@(\S*)/g)]
-      //     .map((m) => m[1])
-      //     .filter((name) => name.length > 0);
-      //   if (matches.length > 0) {
-      //     const users = this.onlineUser.filter((user) =>
-      //       matches.includes(user.username)
-      //     );
-      //     let playerId = users.map((v) => v.playerId);
-      //     //去重复 playerId
-      //     playerId = [...new Set(playerId)];
-      //     this.sendMessage({
-      //       type: 10,
-      //       data: JSON.stringify({
-      //         playerId: playerId,
-      //         msg: textTemp,
-      //       }),
-      //     });
-      //   } else {
-      //     this.sendMessage({
-      //       data: textTemp.trim(),
-      //     });
-      //   }
-
-      //   this.chatTextarea = "";
-      //   await this.sleep(800);
-
-      // }
-
-      // const quill = this.$refs.quillEditor.quill; // 获取 Quill 实例
-      // this.plainText = quill.getText().trim(); // 获取去掉 HTML 的文本
       if (this.text) {
-        // if (!this.ableChat) {
-
-        //   return false
-        // }
-
         const matches = [...this.text.matchAll(/@(\S*)/g)]
           .map((m) => m[1])
           .filter((name) => name.length > 0);
@@ -1089,6 +1097,22 @@ export default {
       // font-size: 26px;
     }
   }
+  .quick{
+	  width: 100%;
+	  background-color: transparent;
+	  display: flex;
+	  flex-wrap: wrap;
+	  .item-box{
+		flex: 1 0 20%; 
+		box-sizing: border-box; 
+		padding: 0 16px;
+		.btn{
+			color: #fff;
+			padding: 2px 0;
+			border-radius: 8px;
+		}
+	  }
+  }
 }
 .chatHeight{
 	height: calc(100vh - @height);
@@ -1115,6 +1139,16 @@ export default {
 		width: 340px !important;
 		height: 240px !important;
 	  }
+  }
+  .quick{
+  	  .item-box{
+  		padding: 0 40px !important;
+  		.btn{
+  			color: #fff;
+  			padding: 6px 0 !important;
+  			border-radius: 20px !important;
+  		}
+  	  }
   }
 }
 .face-box {
@@ -1561,5 +1595,66 @@ export default {
 .slide-fade-leave-to {
   transform: translateY(100%);
   opacity: 0;
+}
+
+.popupMoney {
+  width: 480px;
+  border-radius: 16px;
+  .repurchase-panel{
+	  padding: 20px;
+	  .item{
+		  display: flow-root;
+		  border-bottom: 2px solid #e0e0e0;
+		  margin: 10px 0;
+		  padding: 10px 0;
+	  }
+	  .val{
+		  float: left;
+		  width: calc(100% - 100px);
+		  white-space: nowrap;      /* 确保文本不换行 */
+		  overflow: hidden;         /* 隐藏溢出的内容 */
+		  text-overflow: ellipsis;
+	  }
+	  .btn{
+		  float: right;
+		  background-image: linear-gradient(to bottom, #e74855, #d72034);
+		  color: #fff;
+		  padding: 4px 16px;
+		  border-radius: 8px;
+	  }
+  }
+}
+@media (min-width: 750px) {
+	.popupMoney {
+	  width: 1260px;
+	  border-radius: 32px;
+	  .repurchase-panel{
+		  padding: 40px 80px;
+		  .item{
+			  display: flow-root;
+			  border-bottom: 4px solid #e0e0e0;
+			  margin: 20px 0;
+			  padding: 20px 0;
+		  }
+		  .val{
+			width: calc(100% - 240px);
+			  float: left;
+		  }
+		  .btn{
+			  padding: 8px 32px;
+			  border-radius: 16px;
+		  }
+	  }
+	}
+	::v-deep .van-overlay{
+		
+		width: 1920px !important;
+		min-width: 1920px  !important;
+		max-width: 1920px  !important;
+		margin-top: 5vh !important;
+		height: 80vh !important;
+		min-height: inherit !important;
+		margin: auto auto;
+	}
 }
 </style>
