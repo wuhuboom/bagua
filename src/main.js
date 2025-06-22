@@ -43,7 +43,12 @@ Vue.prototype.$dayjsTime = (time = new Date(), f = "YYYY-MM-DD HH:mm:ss") => {
   return dayjs(time).format(f);
 };
 Vue.prototype.$dayjsSingleTime = (time = new Date()) => {
-  return dayjs(time).format("HH:mm");
+  return dayjs(time).format("MM-DD HH:mm");
+};
+
+Vue.prototype.$betName = (v) => {
+  let names = ['乾','巽','坎','艮','坤','震','离','兑']
+  return names[parseInt(v)-1];
 };
 Vue.prototype.$util = util;
 Vue.prototype.$notify = Notify;

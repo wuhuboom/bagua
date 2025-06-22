@@ -182,17 +182,11 @@
         </div>
       </div>
     </div>
-  <!--  <img
-      class="d-img serve"
-      src="@/assets/img/serve.png"
-      alt=""
-      @click="$store.dispatch('getServeData', 1)"
-    /> -->
     <img
       class="d-img serve"
       src="@/assets/img/serve.png"
       alt=""
-      @click="openCustomerDialog"
+      @click="$store.dispatch('getServeData', 1)"
     />
 	
 	<!-- 设置支付密码 -->
@@ -239,7 +233,6 @@
 	
     <AppBtmBar></AppBtmBar>
     <Notice></Notice>
-	<Customer ref="$customerDialog" />
   </div>
 </template>
 
@@ -251,7 +244,6 @@ import auth from "@/plugins/auth";
 import { NoticeBar } from "vant";
 import { mapGetters } from "vuex";
 import Notice from "@/views/components/Notice";
-import Customer from "@/components/customer";
 export default {
   name: "AppHome",
   data() {
@@ -279,7 +271,6 @@ export default {
   components: {
     NoticeBar,
     Notice,
-	Customer
   },
   computed: {
     ...mapGetters(["catList"]),
@@ -316,9 +307,6 @@ export default {
     },
   },
   methods: {
-	openCustomerDialog() {
-	  this.$refs.$customerDialog.open();
-	},
     async recharge() {
       const [err, res] = await userApi.recharge();
       if (err) return;
@@ -329,8 +317,7 @@ export default {
       }
       const status = await this.comfire("请联系在线客服", "在线客服");
       if (!status) return;
-	  this.openCustomerDialog()
-      // this.$store.dispatch("getServeData", 1);
+      this.$store.dispatch("getServeData", 1);
     },
     random() {
       //catList 随机一位
@@ -502,7 +489,6 @@ export default {
     this.homeDialog();
     this.showDliog();
     this.$store.dispatch("playerLotteryList");
-    this.$store.dispatch("getCustomer");
     this.homeWinning();
     this.sliderSlide();
     this.getVersion();

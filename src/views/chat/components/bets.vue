@@ -2,38 +2,33 @@
   <div class="opens-list">
 	<div class="num">
 		<p class="tops font12 ">
-		  第{{ data.expect }}期玩家竞猜账单
+		  近期开奖记录
 		</p>
 	</div>
 	<div class="content font9">
-		<div class="item" v-for="(item, index) in data" @click="open(item)">
+		<div class="item" v-for="(item, index) in data.opens" >
 		  <div class="betName">
-			  <span>{{item.name}}</span>
+			  <span>{{item.cycleNum}}</span>
 		  </div>
 		  <div style="float: right;">
-			  <i class="iconfont iconName icon-jiantou34"></i>
+			  <!-- <span>{{$betName(item.openNum) }}</span> -->
+			  <div class="hisBets hisBets_p font13" v-if="item.openNum">
+			  	<div class="betVal center-center">
+			  	  <p
+			  	    class="openbets center-center"
+			  	    :class="[
+			  	      'openbets' + '0',
+			  	      
+			  	    ]"
+			  	  >
+			  	    <span class="ball-inner">{{ $betName(item.openNum) }}</span>
+			  	  </p>
+			  	</div>
+			  </div>
 		  </div>
 		  
 		</div>
 	</div>
-	
-	<van-popup
-	  class="modal"
-	  v-model="showOpen"
-	>
-	  <div class="modal-header">
-	    <div class="modal-title">
-			<div style="float: left;">{{cur.name}}下注详情</div>
-			<div style="float: right;">{{cur.money}}</div>
-		</div>
-	    <div class="modal-subtitle">
-			<div v-for="(item,index) in cur.data" :key="index" class="item">
-				<div class="code">{{item.code}}</div>
-				<div style="float: right;">{{item.money}}</div>
-			</div>
-		</div>
-	  </div>
-	</van-popup>
   </div>
 </template>
 
@@ -93,12 +88,6 @@ export default {
 		  padding: 0 4px;
 		  
 		  
-		  // display: flex;
-		  // align-items: center;
-		  // justify-content: center;
-		  background-color: #eceaed;
-		  // flex: 1 1 33.333%;
-		  // box-sizing: border-box;
 		  .betName{
 			float: left;
 			line-height: 46px;
@@ -149,10 +138,6 @@ export default {
 	  .item{
 		  height: 50px;
 		  line-height: 50px;
-		  .code{
-			  color:#3291FF;
-			  float: left;
-		  }
 	  }
 	}
 	
@@ -175,6 +160,54 @@ export default {
 	  vertical-align: text-bottom;
 	}
 	
+}
+.hisBets{
+	// width: 100%;
+	
+	border-radius: 10px;
+	display: flow-root;
+	margin: 0px 0.4rem;
+	// padding: 20px 0;
+	.name{
+		width: 50%;
+		float: left;
+		text-align: center;
+	}
+	.betVal{
+		float: left;
+		text-align: left;
+		color:#fff;
+		justify-content: left !important;
+		// margin-top: 10px;
+	}
+	.openbets {
+	  width: 36px;
+	  height: 36px;
+	  border-radius: 50%;
+	  padding: 4px; /* 彩色边框厚度 */
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	}
+
+	.openbets0 {
+	  background: linear-gradient(180deg, #ff6267 0%, #e7474c 100%);
+	}
+	.openbets1 {
+	  background: linear-gradient(180deg, #32c5ff 0%, #6236ff 100%);
+	}
+
+	.openbets2 {
+	  background: linear-gradient(180deg, #de9fe7 0%, #c145d3 100%);
+	}
+
+	.openbets3 {
+	  background: linear-gradient(180deg, #62edff 0%, #00ad8c 100%);
+	}
+
+	.openbets4 {
+	  background: linear-gradient(180deg, #f7b500 0%, #fa6400 100%);
+	}
 }
 ::v-deep .van-overlay{
 	background-color: rgba(161, 159, 163, 0.3);

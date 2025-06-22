@@ -1,13 +1,13 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div>
-    <div class="height"></div>
+    <!-- <div class="height"></div> -->
     <div class="appp-top-bar align-center justify-between max-width750" :class="{ 'bg-black': fiexd }" :style="styleObj">
       <div class="appp-top-cont align-center justify-between">
-        <div class="left leftBox" v-if="showLeft">
+      <!--  <div class="left leftBox" v-if="showLeft">
           <van-button @click="goback" class="icon-button" :icon="leftIcon" type="primary" />
           <slot name="left"></slot>
-        </div>
+        </div> -->
 
         <div class="appp-top-bar-title js-appp-top-bar-title center-center" :class="titleClass" @click.stop.prevent>
           {{ titleSolt ? "" : topBarTitle }}
@@ -51,7 +51,7 @@ export default {
     styleObj: {
       type: Object,
       default: () => ({
-        backgroundColor: "#BF2935",
+        backgroundColor: "#fff",
       }),
     },
     showMsg: {

@@ -111,7 +111,7 @@ export default {
   font-size: 28px;
   min-width: 100%;
   min-height: 100%;
-
+	
   .appp-top-bar {
     position: fixed;
     height: 90px;
@@ -124,6 +124,7 @@ export default {
       height: 90px;
       width: 100%;
     }
+	
 
     .appp-top-bar-title {
       position: absolute;
@@ -132,7 +133,7 @@ export default {
       width: 100%;
       font-size: 34px;
       height: 90px;
-      color: #fff;
+      color: #000;
       flex: 1;
       text-align: center;
     }
@@ -147,6 +148,28 @@ export default {
       .van-icon {
         font-size: 40px;
       }
+    }
+  }
+  
+  @media (min-width: 750px) {
+    .appp-top-bar {
+        position: inherit;
+        width: 100%;
+		max-width: inherit;
+        height: 2.8rem;
+		line-height: 2.8rem;
+		
+		.appp-top-cont {
+			height: 2.8rem;
+			line-height: 2.8rem;
+		  width: 100%;
+		}
+		.appp-top-bar-title{
+			position: inherit;
+			height: 2.8rem;
+			line-height: 2.8rem;
+			font-size: 96px !important;
+		}
     }
   }
 }

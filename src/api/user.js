@@ -483,11 +483,6 @@ export default {
       url: "/home/serv",
     });
   },
-  servReqV2() {
-    return request({
-      url: "/home/serv/v2",
-    });
-  },
   playerLotteryList() {
     return request({
       url: "/lottery/list",

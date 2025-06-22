@@ -190,7 +190,6 @@ export default new Vuex.Store({
     bankCard: [],
     notice: [],
     hallId: null,
-	customer: [],
     shareData: {
       // chatAble
       // recharge 3000
@@ -223,9 +222,6 @@ export default new Vuex.Store({
     },
     setShareData(state, data) {
       state.shareData = data;
-    },
-	setCustomer(state, data) {
-      state.customer = data;
     },
     setHallId(state, data) {
       if (!data) return;
@@ -317,11 +313,6 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async getCustomer({ commit }) {
-      const [err, res] = await userApi.servReqV2();
-      if (err) return;
-      commit("setCustomer", res.data);
-    },
     async getSharaData({ commit }) {
       const [err, res] = await userApi.chat();
       if (err) return;
@@ -422,9 +413,9 @@ export default new Vuex.Store({
       commit("changeSafe", res.data);
     },
     async playerLotteryList({ commit }) {
-      const [err, res] = await userApi.playerLotteryList();
-      if (err) return;
-      commit("setCatList", res.data);
+      // const [err, res] = await userApi.playerLotteryList();
+      // if (err) return;
+      // commit("setCatList", res.data);
     },
   },
   modules: {

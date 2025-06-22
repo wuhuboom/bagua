@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     httpSrc() {
-      // console.log("this.doc123", this.doc);
+      console.log("this.doc123", this.doc);
       if (typeof this.doc === "string") {
         return this.doc.includes("http")
           ? this.doc
