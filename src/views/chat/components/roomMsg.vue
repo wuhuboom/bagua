@@ -441,6 +441,11 @@ export default {
       margin-right: 0;
     }
   }
+  @media (min-width: 750px) {
+  	.contentTxt{
+  		font-size: 76px !important;
+  	}
+  }
 }
 
 .padText {
