@@ -300,11 +300,11 @@ export default {
 	  }
     },
     async goRed() {
-   //    const [err, res] = await userApi.redGain();
-	  // if (err) {
-	  //   return;
-	  // }
-	  // this.unAcceptList = res.data
+      const [err, res] = await userApi.redGain();
+	  if (err) {
+	    return;
+	  }
+	  this.unAcceptList = res.data
     },
   },
   created() {

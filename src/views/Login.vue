@@ -1,7 +1,73 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div class="page">
-    
+    <AppTopBar :showLeft="false" topBarTitle="登录">
+      <template #right>
+        <img class="d-img down-app m-r-24"  @click="$tool.goPage('/downloadApp')" src="@/assets/img/lgo.png" alt="">
+      </template>
+    </AppTopBar>
+    <!-- 登录 -->
+    <div class="main-box">
+      <div class="logo-box center-center">
+        <img class="d-img" :src="production ? `/static/icon.png?t=${Date.now()}` : require('@/assets/img/logo.png')" alt="">
+      </div>
+        <van-form class="full100 ntf-form" @submit="login">
+            <van-field
+              v-model.trim="form.username"
+              autocomplete="new-password"
+              :placeholder="$t('form.account.text')"
+              class="username m-b-32 icon-input"
+              :rules="[{ required: true, message: $t('ruls.accout.empty') }]"
+            >
+            </van-field>
+            <van-field
+            class="password m-b-32 icon-input"
+            v-model.trim="form.password"
+            autocomplete="new-password"
+            :placeholder=" $t('form.password.text')"
+            type="password"
+            :rules="[
+              { required: true, message: $t('backapi.passwordIsEmpty') },
+            ]"
+          >
+          </van-field>
+          <van-field
+              v-model.trim="form.code"
+              autocomplete="new-password"
+              placeholder=" 验证码"
+              class="username m-b-32 icon-input img-code-input"
+             :rules="[{ required: true, message: '请输入验证码' }]"
+            >
+            <template #button>
+              <img
+                  class="d-img"
+                  @click="verifyCodeReq"
+                  :src="codeData.img"
+                  alt=""
+                />
+            </template>
+            </van-field>
+            <ul class="justify-between align-center m-b-32">
+              <li @click="$router.push('/login/register')">注册新账号</li>
+              <li class="active" @click="$router.push('/login/forgot-password')">忘记密码?</li>
+            </ul>
+            <van-button
+              class="ntf-vant-btn"
+              block
+              type="info"
+              native-type="submit"
+              >{{ $t("login.btn.text") }}</van-button
+            >
+      </van-form> 
+      <div class="radio-box align-center">
+        <van-checkbox class="m-r-16" icon-size="20px" v-model="isRadio" checked-color="#ee0a24"></van-checkbox>
+            我已同意 <a class="active" href="javascript:;" @click="show=true">《用户协议》</a> 和
+            <a class="active"  href="javascript:;" @click="show=true">《隐私政策》</a>
+      </div>
+    </div>
+    <van-popup v-model="show" position="bottom" >
+     <Notice @back="show=false" />
+    </van-popup>
   </div>
 </template>
 

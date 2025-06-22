@@ -1,93 +1,51 @@
 {
-  "id": "",
-  "name": "",
+  "id": "4427278",
+  "name": "blue",
   "font_family": "iconfont",
   "css_prefix_text": "icon-",
   "description": "",
   "glyphs": [
     {
-      "icon_id": "844631",
-      "name": "箭头3-1",
-      "font_class": "jiantou31",
-      "unicode": "e72d",
-      "unicode_decimal": 59181
+      "icon_id": "39097190",
+      "name": "copy",
+      "font_class": "copy",
+      "unicode": "e77c",
+      "unicode_decimal": 59260
     },
     {
-      "icon_id": "844632",
-      "name": "箭头3-2",
-      "font_class": "jiantou32",
-      "unicode": "e72e",
-      "unicode_decimal": 59182
+      "icon_id": "1257704",
+      "name": "刷新",
+      "font_class": "shuaxin",
+      "unicode": "e619",
+      "unicode_decimal": 58905
     },
     {
-      "icon_id": "844633",
-      "name": "箭头3-3",
-      "font_class": "jiantou33",
-      "unicode": "e72f",
-      "unicode_decimal": 59183
+      "icon_id": "4933216",
+      "name": "铃铛",
+      "font_class": "lingdang",
+      "unicode": "e6f1",
+      "unicode_decimal": 59121
     },
     {
-      "icon_id": "844634",
-      "name": "箭头3-4",
-      "font_class": "jiantou34",
-      "unicode": "e730",
-      "unicode_decimal": 59184
+      "icon_id": "5387521",
+      "name": "菜单",
+      "font_class": "caidan",
+      "unicode": "eaf1",
+      "unicode_decimal": 60145
     },
     {
-      "icon_id": "1129591",
-      "name": "密码",
-      "font_class": "mima",
-      "unicode": "e621",
-      "unicode_decimal": 58913
+      "icon_id": "5388069",
+      "name": "眼睛_显示_o",
+      "font_class": "yanjing_xianshi_o",
+      "unicode": "ebcc",
+      "unicode_decimal": 60364
     },
     {
-      "icon_id": "2158137",
-      "name": "购物",
-      "font_class": "gouwu",
-      "unicode": "e658",
-      "unicode_decimal": 58968
-    },
-    {
-      "icon_id": "4118038",
-      "name": "关闭",
-      "font_class": "guanbi",
-      "unicode": "eb6a",
-      "unicode_decimal": 60266
-    },
-    {
-      "icon_id": "4266192",
-      "name": "用户",
-      "font_class": "yonghu",
-      "unicode": "e720",
-      "unicode_decimal": 59168
-    },
-    {
-      "icon_id": "6265221",
-      "name": "文件",
-      "font_class": "doc-line",
-      "unicode": "e64f",
-      "unicode_decimal": 58959
-    },
-    {
-      "icon_id": "9509939",
-      "name": "搜索2",
-      "font_class": "sousuo",
-      "unicode": "e60b",
-      "unicode_decimal": 58891
-    },
-    {
-      "icon_id": "10951009",
-      "name": "关闭",
-      "font_class": "guanbi1",
-      "unicode": "e62b",
-      "unicode_decimal": 58923
-    },
-    {
-      "icon_id": "25148507",
-      "name": "左边",
-      "font_class": "zuobian",
-      "unicode": "e624",
-      "unicode_decimal": 58916
+      "icon_id": "5388071",
+      "name": "眼睛_隐藏_o",
+      "font_class": "yanjing_yincang_o",
+      "unicode": "ebcd",
+      "unicode_decimal": 60365
     }
   ]
 }

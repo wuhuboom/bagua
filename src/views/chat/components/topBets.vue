@@ -8,160 +8,137 @@
   >
     <div class="top-bets-bot">
       <div
-		v-if="head"
-        class="top-bets-cont flex-column justify-around font13"
+        v-if="head"
+        class="top-bets-cont colorfff flex-column justify-around font13"
       >
         <ul class="justify-between p-l-8 p-r-8">
-		  
-		  <li class="align-center">
-		    <div class="flex-column align-center">
-			  <!-- <p class="rightExpect colorfff">{{ detail.nextExpect.nextExpect }}期</p> -->
-		      <div class="timeData" v-if="detail.nextExpect.countdown==-1&&detail.nextExpect.stopTime==-1">
-				  未开盘
-			  </div>
-			  <div class="timeData" v-else-if="detail.nextExpect.countdown<0&&detail.nextExpect.stopTime>0">
-			  	  封盘中
-			  </div>
-			  <van-count-down v-else :time="detail.nextExpect?.countdown * 1000">
-		        <template #default="timeData">
-		          <div class="colorfff timeData align-center">
-		            <span class="block center-center">{{
-		              timeData.hours >= 10
-		                ? timeData.hours
-		                : `0${timeData.hours}`
-		            }}</span>:
-		            <span class="block center-center">{{
-		              timeData.minutes >= 10
-		                ? timeData.minutes
-		                : `0${timeData.minutes}`
-		            }}</span>:
-		            <span class="block center-center">{{
-		              timeData.seconds >= 10
-		                ? timeData.seconds
-		                : `0${timeData.seconds}`
-		            }}</span>
-		          </div>
-		        </template>
-		      </van-count-down>
-		      
-		    </div>
-		  </li>
           <li class="d-flex ">
-            <div class=" align-center">
-          
+            <div class="d-flex align-center">
+              <img
+                @click="(showother = false), (showmenu = !showmenu)"
+                class="m-t-4 chengmenu d-img"
+                src="@/assets/img/chengmenu.png"
+                alt=""
+              />
               <div class="sendBox">
-                <p class="center-center colorfff moneyLeft" @click="checkMoney">
-                  余额
-                  <img
-                    class="d-img"
-                    src="@/assets/img/uneye.png"
-                    alt=""
-                    v-if="showBlance"
-                  />
-                  <img
-                    class="d-img"
-                    src="@/assets/img/ableeye.png"
-                    alt=""
-                    v-if="!showBlance"
-                  />
+                <p class="font14">
+                  <span> {{ detail.lotteryNameH5 }}</span>
                 </p>
-				<p class="font13 colorfff">
-					<span>{{ showBlance ? divide(user.balance) : " *****" }}</span>
-				</p>
+                <div class="cycleBox">
+                  <span> {{ prize.cycleNum }}期</span>
+                </div>
               </div>
+            </div>
+          </li>
+          <li class="cycleNumBox">
+              <div class="center-center">
+                <p
+                  v-for="(v, i) in prize.openArr"
+                  class="openbets center-center"
+                  :class="[
+                    'openbets' + i,
+                    { 'm-r-4': i != prize.openArr.length - 1 },
+                  ]"
+                  :key="i"
+                >
+                  <span class="ball-inner">{{ v }}</span>
+                </p>
+              </div>
+          </li>
+          <li class="align-center">
+            <div class="flex-column align-center">
+              <van-count-down :time="detail.nextExpect?.countdown * 1000">
+                <template #default="timeData">
+                  <div class="colorfff timeData align-center">
+                    <span class="block center-center m-r-16">{{
+                      timeData.hours >= 10
+                        ? timeData.hours
+                        : `0${timeData.hours}`
+                    }}</span>
+
+                    <span class="block center-center m-r-16">{{
+                      timeData.minutes >= 10
+                        ? timeData.minutes
+                        : `0${timeData.minutes}`
+                    }}</span>
+
+                    <span class="block center-center">{{
+                      timeData.seconds >= 10
+                        ? timeData.seconds
+                        : `0${timeData.seconds}`
+                    }}</span>
+                  </div>
+                </template>
+              </van-count-down>
+              <p class="rightExpect">{{ detail.nextExpect.nextExpect }}期</p>
+            </div>
+            <div>
+              <p
+                class="align-center color-yellow m-l-16"
+                @click="showother = !showother"
+              >
+                <span class="goBetTxt">往期</span>
+                <!-- <van-icon class="rightArrow" name="arrow" /> -->
+              </p>
+              <p
+                class="align-center color-yellow m-l-16 m-t-8"
+                @click="
+                  $router.push({
+                    path: `/game/hall`,
+                    query: {
+                      id: curCat.id,
+                      type: curCat.lotteryType,
+                    },
+                  })
+                "
+              >
+                <span class="goBetTxt past">下注</span>
+                <!-- <van-icon class="rightArrow" name="arrow" /> -->
+              </p>
             </div>
           </li>
         </ul>
       </div>
+      <div ref="popup" @click="showother = true">
+        <div v-if="showother" class="other-prize-box">
+          <ul
+            class="align-center other-prize"
+            v-for="(v, i) in otherPrize"
+            :key="i"
+          >
+            <li class="center-center cycleNum">{{ v.cycleNum }}期</li>
+            <li class="center-center colorfff">
+              <p
+                v-for="(v2, i2) in v.openArr"
+                :key="i2"
+                class="openbets center-center"
+                :class="[
+                  'openbets' + i2,
+                  { 'm-r-4': i2 != prize.openArr.length - 1 },
+                ]"
+              >
+                <span class="ball-inner">{{ v2 }}</span>
+              </p>
+            </li>
+            <li style="opacity: 0"><van-icon name="arrow-down" /></li>
+          </ul>
+        </div>
+      </div>
+      <div class="select-box" v-if="showmenu">
+        <div
+          class="select"
+          v-for="(item, index) in catList"
+          :key="index"
+          @click="changeId(item.id)"
+          :class="{ on: id === item.id }"
+        >
+          {{ item.lotteryNameH5 }}
+        </div>
+      </div>
       <!-- 上拉 -->
       <!-- <p class="slides" :class="{ slidesclose: !head }" @click="toggleHead"></p> -->
     </div>
-	
-	<!-- <div class="hisBets hisBets_p font13">
-		<div  @click="openHis()">
-			<div class="name"> 第{{ prize.cycleNum }}期开奖</div>
-			<div class="betVal betVal_width center-center">
-			  <p
-			    v-for="(v, i) in prize.openArr"
-			    class="openbets center-center"
-			    :class="[
-			      'openbets' + i,
-			      { 'm-r-4': i != prize.openArr.length - 1 },
-			    ]"
-			    :key="i"
-			  >
-			    <span class="ball-inner">{{ $betName(v) }}</span>
-			  </p>
-			  <i v-if="!showother" class="iconfont iconName icon-jiantou34 color-000"></i>
-			  <i v-else class="iconfont iconName icon-jiantou32 color-000"></i>
-			</div>
-		</div>
-		
-	</div> -->
-	<div ref="popup" >
-	  <div v-if="showother" class="other-prize-box">
-		  <table border="1" class="tb_nav">
-		    <tr>
-		      <th class="tb_th">期号</th>
-		      <th class="tb_th">开奖时间</th>
-		      <th class="tb_th">开奖结果</th>
-		    </tr>
-		    <tr
-		  	v-for="(item, i) in otherPrize"
-		  	:key="i"
-		    >
-		      <td class="tb_td tb_td_1">
-		  		{{ item.cycleNum }}
-		  	</td>
-		      <td class="tb_td tb_td_2">
-		  	{{ $dayjsSingleTime(item.openTime) }}
-		  	</td>
-		    <td class="tb_td hisBets">
-		  		<!-- {{ item.openNum }} -->
-				<div class="betVal center-center">
-				  <p
-				    v-for="(v, i) in item.openNum.split(',')"
-				    class="openbets center-center"
-				    :class="[
-				      'openbets' + i,
-				      { 'm-r-4': i != prize.openArr.length - 1 },
-				    ]"
-				    :key="i"
-				  >
-				    <span class="ball-inner">{{ $betName(v) }}</span>
-				  </p>
-				</div>
-		  	</td>
-		    </tr>
-		  </table>
-		  <div class="showMore"  @click="closeHis()">
-			  收起
-		  </div>
-	   <!-- <ul
-	      class="align-center other-prize"
-	      v-for="(v, i) in otherPrize"
-	      :key="i"
-	    >
-	      <li class="center-center cycleNum">{{ v.cycleNum }}期</li>
-	      <li class="center-center colorfff">
-	        <p
-	          v-for="(v2, i2) in v.openArr"
-	          :key="i2"
-	          class="openbets center-center"
-	          :class="[
-	            'openbets' + i2,
-	            { 'm-r-4': i2 != prize.openArr.length - 1 },
-	          ]"
-	        >
-	          <span class="ball-inner">{{ v2 }}</span>
-	        </p>
-	      </li>
-	      <li style="opacity: 0"><van-icon name="arrow-down" /></li>
-	    </ul> -->
-	  </div>
-	</div>
   </van-popup>
-  
 </template>
 
 <script>
@@ -176,7 +153,6 @@ export default {
       head: true,
       showother: false,
       showmenu: false,
-      showBlance: false,
       detail: {
         mulConfig: [],
         nextExpect: {},
@@ -195,10 +171,6 @@ export default {
     curCat() {
       return this.catList.find((v) => v.id === this.id);
     },
-    user() {
-      // console.log('news', this.news);
-      return this.$store.state.user;
-    },
   },
   watch: {
     head(val) {
@@ -209,17 +181,6 @@ export default {
     },
   },
   methods: {
-    checkMoney() {
-      this.showBlance = !this.showBlance;
-    },
-	openHis(){
-		this.showother = !this.showother
-		console.log(this.showother)
-	},
-	closeHis(){
-		console.log(8888)
-		this.showother = false
-	},
     toggleHead() {
       this.head = !this.head;
       this.$emit("update-head", this.head); // 向父组件传递head的状态
@@ -244,13 +205,13 @@ export default {
       this.results = res.data.results;
     },
     async getDetail() {
-      const [err, res] = await userApi.betsDetail();
+      const [err, res] = await userApi.betsDetail({ id: this.id });
       if (err) return;
+      res.data.mulConfig = JSON.parse(res.data.mulConfig);
       //value
       if (!res.data.nextExpect) {
         res.data.nextExpect = {};
       }
-	  this.$emit("expect", res.data.nextExpect);
       if (
         this.detail.id !== res.data.id ||
         this.detail.nextExpect.nextExpect !== res.data.nextExpect.nextExpect
@@ -258,6 +219,12 @@ export default {
         this.detail = res.data;
         this.lotteryBetsOrder();
       }
+    },
+    changeId(id) {
+      this.id = id;
+      sessionStorage.setItem("lotteryId", id);
+      this.getDetail();
+      this.showmenu = false;
     },
 
     handleClickOutside(event) {
@@ -267,16 +234,16 @@ export default {
         this.$refs.popup &&
         !this.$refs.popup.contains(event.target)
       ) {
-        // if (event.target.innerHTML != "往期") {
-        //   this.showother = false;
-        // }
+        if (event.target.innerHTML != "往期") {
+          this.showother = false;
+        }
       }
     },
   },
   created() {
-    // this.id = +sessionStorage.getItem("lotteryId") || +this.catList[0].id;
-	this.getDetail();
-    // getDetail d定时检查
+    this.id = +sessionStorage.getItem("lotteryId") || +this.catList[0].id;
+    this.getDetail();
+    //getDetail d定时检查
     this.timer = setInterval(() => {
       this.getDetail();
     }, 6000);
@@ -294,174 +261,240 @@ export default {
   overflow: visible;
 }
 
-@media (min-width: 750px) {
-  .chat-top-bets {
-	margin: auto auto;
-	padding-top: 0px;
-	position: initial;
+.top-bets-bot {
+  position: relative;
+}
+
+$height: 246px;
+$tabwidth: 686px;
+
+.box-p-t {
+  padding-top: $height;
+}
+
+.top-bets-cont {
+  // background: linear-gradient(180deg, #6795f7 0%, #2d62f6 100%);
+  background: #3E4F9D;
+  border-radius: 0px 0px 0px 0px;
+  border: 1px solid #707070;
+  padding: 8px 0;
+  .table-lists {
+    width: $tabwidth;
+    height: 66px;
+    background: #7284d8;
+    border-radius: 12px 12px 12px 12px;
+    margin: 0 auto;
+  }
+
+  .color-yellow {
+    color: #f6c343;
+
+    .goBetTxt {
+      font-weight: normal;
+      font-size: 20px;
+      color: #fff;
+      text-align: center;
+      font-style: normal;
+      text-transform: none;
+      line-height: 40px;
+      width: 96px;
+      height: 40px;
+      border-radius: 8px;
+      border: 2px solid #ffffff;
+    }
+    .past {
+      background: linear-gradient(180deg, #ff6267 0%, #e7474c 100%);
+      border: none;
+    }
+
+    .rightArrow {
+      margin-left: 1px;
+      margin-top: 1px;
+    }
   }
 }
-.top-bets-bot{
-	padding: .32rem 0;
-	margin: 0 .4rem .2rem .4rem;
-	// width: 9.06667rem;
-	border-radius: .13333rem;
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-pack: justify;
-	-webkit-justify-content: space-between;
-	-ms-flex-pack: justify;
-	justify-content: space-between;    
-	background-image: linear-gradient(0deg,#4f8dfe,#4f9dfe),linear-gradient(#4f8dfe,#4f8dfe);
-}
-.top-bets-cont{
-	width:100%;
-	.d-flex{
-		border-left: 2px solid #fff;
-	}
-	li{
-		width: 50%;
-		text-align: center;
-		.justify-between{
-			width: 100%;
-		}
-		
-		.align-center{
-			width: 100%;
-			text-align: center;
-		}
-		.sendBox{
-			width: 100%;
-			
-		}
-		.timeData{
-			background-color: #fff;
-			color: #000;
-			padding: 2px 10px;
-			border-radius: 6px;
-		}
-	}
-	
-	.moneyLeft {
-	  margin-left: -20px;
-	  font-family: PingFang SC, PingFang SC;
-	  font-weight: 400;
-	  // font-size: 24px;
-	  color: #ffffff;
-	  text-align: center;
-	  font-style: normal;
-	  text-transform: none;
 
-	  img {
-		width: 28px;
-		height: 28px;
-		margin-left: 6px;
-	  }
-	  
-		@media (min-width: 750px) {
-		  img {
-		  		width: 112px;
-		  		height: 112px;
-		  		margin-left: 24px;
-		  }
-		}
-	}
+.slides {
+  width: 134px;
+  height: 23px;
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: url("@/assets/img/close-bet.png") no-repeat center;
+  background-size: 100% 100%;
 }
-.hisBets_p{
-	padding: 20px 0;
-}
-.hisBets{
-	// width: 100%;
-	display: flow-root;
-	margin: 0px 0.4rem;
-	padding: 10px 0;
-	.name{
-		width: 50%;
-		float: left;
-		text-align: center;
-	}
-	.betVal{
-		// float: left;
-		// text-align: left;
-		color: #fff;
-		// justify-content: left !important;
-		// margin-top: 10px;
-	}
-	.betVal_width{
-		width: calc(50% - 0.8rem);
-	}
-	
-	.openbets {
-	  width: 36px;
-	  height: 36px;
-	  border-radius: 50%;
-	  padding: 4px; /* 彩色边框厚度 */
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	}
 
-	.openbets0 {
-	  background: linear-gradient(180deg, #ff6267 0%, #e7474c 100%);
-	}
-	.openbets1 {
-	  background: linear-gradient(180deg, #32c5ff 0%, #6236ff 100%);
-	}
-
-	.openbets2 {
-	  background: linear-gradient(180deg, #de9fe7 0%, #c145d3 100%);
-	}
-
-	.openbets3 {
-	  background: linear-gradient(180deg, #62edff 0%, #00ad8c 100%);
-	}
-
-	.openbets4 {
-	  background: linear-gradient(180deg, #f7b500 0%, #fa6400 100%);
-	}
+.slidesclose {
+  background: url("@/assets/img/open-bet.png") no-repeat center;
+  background-size: 100% 100%;
 }
-.color-000{
-	color: #000;
+
+.openbets {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  padding: 4px; /* 彩色边框厚度 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.showMore{
-	width: 100%;
-	height: 60px;
-	line-height: 60px;
-	text-align: center;
-	font-size: 24px;
-	border-top: 2px solid #e0e0e0;
+.ball-inner {
+  width: 100%;
+  height: 100%;
+  line-height: 16px;
+  border-radius: 50%;
+  background-color: white;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
 }
-.tb_nav{
-	width:100%;
-	border-width: 0;
-	.tb_th{
-		margin: 0 0;
-		width: 25%;
-		border-width: 0;
-		padding:5px 10px;
-		text-align: center;
-		font-size: 20px;
-		background-color: #f3f3f6;
-	}
-	.tb_td{
-		font-size: 24px;
-		border-width: 0;
-		text-align: center;
-		.btn{
-			border-radius: 10px;
-			padding: 8px 20px;
-			color: #fff;
-			border: 2px solid rgb(2, 127, 0);
-			background-color: rgb(2, 127, 0);	
-		}
-	}
-	.tb_td_1 {
-		// color:rgb(3, 101, 100);
-	}
-	.tb_td_2 {
-		// color:rgb(215, 118, 0)
-	}
+.openbets0 {
+  background: linear-gradient(180deg, #ff6267 0%, #e7474c 100%);
+}
+.openbets1 {
+  background: linear-gradient(180deg, #32c5ff 0%, #6236ff 100%);
+}
+
+.openbets2 {
+  background: linear-gradient(180deg, #de9fe7 0%, #c145d3 100%);
+}
+
+.openbets3 {
+  background: linear-gradient(180deg, #62edff 0%, #00ad8c 100%);
+}
+
+.openbets4 {
+  background: linear-gradient(180deg, #f7b500 0%, #fa6400 100%);
+}
+
+.other-prize-box {
+  margin-top: 14px;
+  height: 298px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  .other-prize {
+    width: $tabwidth;
+    margin: 0 auto;
+    box-sizing: border-box;
+    // height: 88px;
+    padding-bottom: 16px;
+    // border-bottom: 1px solid #f5f6f7;
+    font-size: 20px;
+    color: #242424;
+    margin-left: 66px;
+    .cycleNum {
+      padding-right: 10px;
+    }
+  }
+}
+
+.select-box {
+  position: relative;
+  background: #eaeaea;
+  padding: 40px 34px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 16px;
+  width: 100%;
+
+  .select {
+    width: 158px;
+    height: 56px;
+    text-align: center;
+    line-height: 52px;
+    // border: 1px solid #999999;
+    background: #fff;
+    border-radius: 14px;
+    color: #666666;
+    font-size: 22px;
+    overflow: hidden;
+
+    &.on {
+      color: #bf2935;
+      border: 1px solid #bf2935;
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        background: url("@/assets/img/Welfare3D/dui1.png") no-repeat;
+        background-size: 100% auto;
+        width: 36px;
+        height: 36px;
+        right: -1px;
+        bottom: -1px;
+      }
+    }
+  }
+}
+
+.timeData {
+  //221px x 76px
+  // width: 221px;
+  // height: 76px;
+
+  .block {
+    background: url("@/assets/img/bets-num.png") no-repeat;
+    background-size: 100% 100%;
+    width: 39.5px;
+    height: 39.5px;
+    font-family: Bebas Neue, Bebas Neue;
+    font-weight: 400;
+    font-size: 32px;
+    color: #000000;
+    line-height: 22px;
+    text-align: center;
+    font-style: normal;
+    text-transform: none;
+  }
+}
+
+.chengmenu {
+  width: 50px;
+  height: 50px;
+}
+
+.sendBox {
+  .cycleBox {
+    span {
+      font-family: PingFang SC, PingFang SC;
+      font-weight: 400;
+      font-size: 20px;
+      color: #ffffff;
+      line-height: 22px;
+      text-align: center;
+      font-style: normal;
+      text-transform: none;
+    }
+  }
+}
+.cycleNumBox {
+  display: flex;
+  justify-content: center;
+  // align-items: end;
+  align-items: flex-end;
+  padding-bottom: 4px;
+}
+
+.thirdBox {
+  margin-left: 16px;
+}
+
+.rightExpect {
+  font-family: PingFang SC, PingFang SC;
+  font-weight: 400;
+  font-size: 20px;
+  color: #ffffff;
+  line-height: 22px;
+  // letter-spacing: 2px;
+  text-align: center;
+  font-style: normal;
+  text-transform: none;
+
+  margin-top: 8px;
 }
 </style>

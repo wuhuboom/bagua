@@ -22,13 +22,13 @@
               ? doc.img.includes('http')
                 ? doc.img
                 : `${$baseURL}/${doc.img}`
-              : (doc.user=='系统'?sysPic:userPic)
+              : userPic
           "
         />
 
         <ul
           class="flex-column"
-          v-if="[2, 4, 8, 13, 14, 6, 3].includes(+doc.type)"
+          v-if="[2, 4, 8, 13, 14].includes(+doc.type)"
           :class="{ mainContent: !isMe, 'txtPad mainIsTrueMeContent': isMe }"
         >
           <li class="name align-center nameAndTime">
@@ -42,9 +42,9 @@
             v-long-press="() => recallMessage(doc)"
           >
             <component
-              v-if="[2, 4, 8, 13, 14, 6, 3].includes(+doc.type)"
+              v-if="[2, 4, 8, 13, 14].includes(+doc.type)"
               :is="currentComponent(+doc.type)"
-              :userPic="doc.user=='系统'?sysPic:userPic"
+              :userPic="userPic"
               :doc="doc"
               @openBetPop="openBetPop"
               ref="$component"
@@ -78,7 +78,7 @@
 
         <ul
           class="flex-column"
-          v-if="![2, 4, 8, 13, 14,6, 3].includes(+doc.type)"
+          v-if="![2, 4, 8, 13, 14].includes(+doc.type)"
           :class="{ txtPad: isMe, mainIsNotMeContent: !isMe }"
         >
           <li class="name align-center nameAndTime" v-if="!isMe">
@@ -139,8 +139,7 @@
 
             <div
               class="msg-txt p-x-16 align-center msgBoxTxt"
-			  :class="{'msg-txt-blue': doc.user=='系统', 'msg-txt-isme': isMe}"
-			  style="white-space: pre-wrap"
+              :class="{ 'msg-txt-isme': isMe }"
               data-tip="txt"
               v-else-if="
                 +doc.type == 0 && doc?.data.toString().indexOf('[') === -1
@@ -168,14 +167,10 @@
 <script>
 import { ImagePreview, Toast } from "vant";
 import userPic from "@/assets/img/user-room.png";
-import sysPic from "@/assets/img/systemUser.png";
 import bindBuy from "@/views/chat/components/bindBuy.vue";
 import imgMsg from "@/views/chat/components/imgMsg.vue";
 import opensMsg from "@/views/chat/components/opensMsg.vue";
-import balanceMsg from "@/views/chat/components/balanceMsg.vue";
-import winMsg from "@/views/chat/components/winMsg.vue";
 import redImg from "@/views/chat/components/redImg.vue";
-import bets from "@/views/chat/components/bets.vue";
 
 import repalyMsg from "@/views/chat/components/repalyMsg.vue";
 import { wxEmojis } from "@/utils/wxEmojis";
@@ -199,7 +194,6 @@ export default {
   data() {
     return {
       userPic,
-	  sysPic,
       actions: [
         { text: "撤回", value: 1, disabled: false },
         { text: "回复", value: 2, disabled: false },
@@ -210,16 +204,13 @@ export default {
   components: {
     bindBuy,
     redImg,
-	bets,
     imgMsg,
     repalyMsg,
     opensMsg,
-	balanceMsg,
-	winMsg
   },
   computed: {
     popoverDisabled() {
-      if (![0, 8, 10, 13, 6, 2, 3].includes(+this.doc.type)) {
+      if (![0, 8, 10, 13].includes(+this.doc.type)) {
         return true;
       }
       return this.disabled;
@@ -348,28 +339,21 @@ export default {
       }
     },
     currentComponent(type) {
-		console.log(type)
       switch (type) {
         case 2:
-		  //订单列表
+          //合买
           return "bindBuy";
-        case 3:
-          //开奖数据
-          return "bets";
-        case 14:
+        case 4:
+          //红包
+          return "redImg";
+        case 8:
           //图片
           return "imgMsg";
         case 13:
           //回复
           return "repalyMsg";
-        case 6:
-          //用户余额列表
-          return "balanceMsg";
-        // case 7:
-        //   //结算列表
-        //   return "winMsg";
-        case 8:
-          //开奖信息
+        case 14:
+          //开奖
           return "opensMsg";
         default:
           return "redImg";
@@ -478,24 +462,6 @@ export default {
     border-radius: 0px 16px 16px 16px;
     display: inline-flex;
   }
-  
-  @media (min-width: 750px) {
-    .user-pic {
-  		width: 180px;
-  		height: 180px;
-  		margin-left: 24px !important;
-  		margin-right: 24px !important;
-    }
-	.name{
-		font-size: 76px;
-	}
-	.msg-txt{
-		font-size: 76px;
-	}
-  }
-  .msg-txt-blue{
-    color: #1989fa;
-  }
   .msg-txt-isme {
     color: #fff;
     background: #bf2834;
@@ -513,12 +479,6 @@ export default {
     text-align: left;
     font-style: normal;
     text-transform: none;
-  }
-  
-  @media (min-width: 750px) {
-  	.time{
-  		font-size: 64px;
-  	}
   }
 }
 
@@ -604,11 +564,6 @@ export default {
   // }
 }
 
-@media (min-width: 750px) {
-  .mainIsNotMeContent {
-	padding: 24px 0 30px 0;
-  }
-}
 .mainIsTrueMeContent {
   // background: #FFFFFF;
   position: relative;

@@ -1,6 +1,6 @@
 <template>
   <div class="app-btm-bar">
-    <!-- <div class="height"></div> -->
+    <div class="height"></div>
     <div class="app-btm-fix">
       <ul class="app-btm-list">
         <li
