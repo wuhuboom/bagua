@@ -100,10 +100,10 @@
       <!-- <div class="height"></div> -->
 	  <div class="quick">
 		  <div class="item-box">
-			  <div class="btn center-center font13" style="background-color: #5dcf05;" @click="sendQuick('上分')" >上分</div>
+			  <div class="btn center-center font13" style="background-color: #5dcf05;" @click="openScores" >上分</div>
 		  </div>
 		  <div class="item-box">
-			  <div class="btn center-center font13" style="background-color: #d50019;" @click="sendQuick('下分')" >下分</div>
+			  <div class="btn center-center font13" style="background-color: #d50019;" @click="openDownScores" >下分</div>
 		  </div>
 		  <div class="item-box">
 			  <div class="btn center-center font13" style="background-color: #0d79ff;" @click="sendQuick('走势')" >走势</div>
@@ -161,6 +161,26 @@
 			</div>
 		</div>
     </van-popup>
+    <van-popup class="upScores" v-model="upScoresShow">
+		<div class="scores-title">
+			快捷金额
+		</div>
+		<div class="scores-panel">
+			<div class="item" v-for="(item, index) in scoresList" :key="index">
+				<div class="val" @click="upScores(item)">{{item}}</div>
+			</div>
+		</div>
+    </van-popup>
+	<van-popup class="upScores" v-model="downScoresShow">
+		<div class="scores-title">
+			快捷金额
+		</div>
+		<div class="scores-panel">
+			<div class="item" v-for="(item, index) in downScoresList" :key="index">
+				<div class="val" @click="downScores(item)">{{item}}</div>
+			</div>
+		</div>
+	</van-popup>
     <bindBetPop ref="$bindBetPop" />
     <RedPacketTips/>
   </div>
@@ -230,8 +250,12 @@ export default {
       // baifoImage,
       // sx1Image,
       // sx2Image,
+	  upScoresShow: false,
+	  downScoresShow: false,
 	  repurchaseShow: false,
 	  orderList: [],
+	  scoresList:[100, 200, 500, 1000, 5000, 10000],
+	  downScoresList:[100, 200, 500, 1000, 5000, 10000, '全部'],
       showButton: false,
       filteredUsers: [],
       showUserList: false,
@@ -593,6 +617,27 @@ export default {
 		}else{
 			this.$toast("暂未投注，请先投注！");
 		}
+	},
+	openScores(){
+		this.upScoresShow = true;
+	},
+	openDownScores(){
+		this.downScoresShow = true;
+	},
+	upScores(v){
+		let str = "上分" + v
+		this.sendQuick(str);
+		this.upScoresShow = false;
+	},
+	downScores(v){
+		let str = '';
+		if(v=='全部'){
+			str = '全下分' 
+		}else{
+			str = "下分" + v
+		}
+		this.sendQuick(str);
+		this.downScoresShow = false;
 	},
     //微信默认表情包回显
     wxEmojis(html) {
@@ -1622,6 +1667,40 @@ export default {
 		  padding: 4px 16px;
 		  border-radius: 8px;
 	  }
+  }
+}
+ 
+.item {
+}
+.upScores{
+  width: 480px;
+  border-radius: 16px;
+  .scores-title{
+	border-bottom: 2px solid #e0e0e0;
+	padding: 20px;
+  }
+  .scores-panel{
+	  padding: 20px;
+	  .item{
+		  text-align: center;
+		  display: inline-block;
+		  width: 25%; /* 每个项目占20%的宽度 */
+		  box-sizing: border-box; /* 确保padding和border不会影响宽度计算 */
+		  font-size: 16px; /* 重置字体大小 */
+		  vertical-align: top; /* 可选，确保元素顶部对齐 */
+		  padding: 10px;
+		  .val{
+			  width: 100%;
+			  height: 45px;
+			  line-height: 45px;
+			  border-radius: 8px;
+			  background-color: #d3d2d5;
+		  }
+		  .up{
+			background-image: linear-gradient(to bottom, #e74855, #d72034);
+			color: #fff;
+		  }
+		}
   }
 }
 @media (min-width: 750px) {
