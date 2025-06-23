@@ -300,9 +300,12 @@ export default {
 	padding-top: 0px;
 	position: initial;
   }
+  .top-bets-bot{
+	padding: .32rem 0;
+  }
 }
 .top-bets-bot{
-	padding: .32rem 0;
+	padding: .06rem 0;
 	margin: 0 .4rem .2rem .4rem;
 	// width: 9.06667rem;
 	border-radius: .13333rem;
