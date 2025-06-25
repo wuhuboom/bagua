@@ -1,16 +1,7 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div class="page chatHeight">
-	  <div class="opr">
-		  <div class="font16">请输入token</div>
-		  <input
-		    type="text"
-		    class="input font13"
-		    ref="inputRef"
-		    v-model="text"
-		  />
-		  <el-button class="btn" @click="login">确认</el-button>
-	  </div>
+	  <img src="@/assets/img/jump.png">
   </div>
 </template>
 
@@ -76,10 +67,11 @@ export default {
 	height: calc(100vh - @height);
 }
 .page {
-	display: flex;
-	align-items: center;
-	justify-content: center;
 	height: 100vh;
+	background-color: #454545;
+	img{
+		width: 100%;
+	}
 	.opr{
 		background-color: #e0e0e0;
 		border-radius: 20px;

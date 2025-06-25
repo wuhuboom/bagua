@@ -23,14 +23,21 @@ const routes = [
       default: () => import("@/views/chat/Chat.vue"),
     },
   },
+  {
+    path: "/jump",
+    name: "Jump",
+    components: {
+      default: () => import("@/views/Jump.vue"),
+    },
+  },
   
-  // {
-  //   path: "/login/SignIn",
-  //   name: "Login",
-  //   components: {
-  //     default: () => import("@/views/Login.vue"),
-  //   },
-  // },
+  {
+    path: "/login/SignIn",
+    name: "token",
+    components: {
+      default: () => import("@/views/Login.vue"),
+    },
+  },
 ];
 
 const router = new VueRouter({
@@ -43,8 +50,11 @@ router.beforeEach(async (to, from, next) => {
   Nprogress.start();
   // let token = window.location.pathname.split('/')[1]
   let token = window.location.search.split('token=')[1]
-  
-  store.commit("setToken", token);  
+  if(token){
+	store.commit("setToken", token);  
+  }else{
+	store.commit("setToken", '');  
+  }
   
   if (auth.getToken()) {
     const [error] = await store.dispatch("getInfo");
@@ -80,9 +90,10 @@ router.beforeEach(async (to, from, next) => {
     //   next();
     // } else {
     //   Nprogress.done();
-    //   // next("/login/SignIn");
+    //   next("/login/SignIn");
     // }
 	// next("/login/SignIn");
+	next();
   }
   next();
 });

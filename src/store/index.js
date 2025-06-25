@@ -301,7 +301,7 @@ export default new Vuex.Store({
       state.paySet = null;
       state.user = {};
       auth.clearToken();
-      app.$router.push("/login/SignIn");
+      // app.$router.push("/login/SignIn");
     },
     setCodeList(state, data) {
       state.config = data;

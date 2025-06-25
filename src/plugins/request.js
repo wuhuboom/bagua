@@ -64,16 +64,17 @@ instance.interceptors.response.use(
     if ([401, 402, 403].includes(code)) {
       const isLogin = res.config.url.includes("/auth/login");
       app.$toast.clear();
-      if (!isLogin) {
-        app.$store.commit("loginOut");
+	  let token = window.location.search.split('token=')[1]
+      if (!token ) {
+        // app.$store.commit("loginOut");
         app.$router.push({
-          name: "Login",
+          name: "token",
           backUrl: app.$router.currentRoute.fullPath,
         });
       }
-      if (code == 403 && isLogin) {
-        app.$toast(app.$t("login.fail"));
-      }
+      // if (code == 403 && isLogin) {
+      //   app.$toast(app.$t("login.fail"));
+      // }
       return Promise.reject({ code });
     }
 

@@ -97,7 +97,6 @@
       </ul>
     </van-action-sheet>
     <div ref="bottomBox" class="bottom-box">
-      <!-- <div class="height"></div> -->
 	  <div class="quick">
 		  <div class="item-box">
 			  <div class="btn center-center font13" style="background-color: #5dcf05;" @click="openScores" >上分</div>
@@ -118,27 +117,6 @@
       <div class="wrap-box" :class="{ 'btm-disabled': disabled }">
     
         <div class="input-box" @keydown.enter.prevent="send">
-          <!-- <div contentEditable="true" contenteditable="plaintext-only" ref="inputRef" id="chatTextarea"
-            class="chatTextarea" @keyup="handkeKeyUp" @keydown="handleKeyDown" @blur="chatTextareaClick"></div>
- -->
-          <!-- <quill-editor
-        v-model="content"
-        ref="myQuillEditor"
-        :options="editorOption"
-        @blur="onEditorBlur($event)"
-        @focus="onEditorFocus($event)"
-        @change="onEditorChange($event)">
-    </quill-editor> -->
-
-          <!-- <van-field label="">
-
-          </van-field> -->
-
-          <!-- <quill-editor v-model="text" :options="editorOptions" class="editor" ref="quillEditor"
-            @blur="onEditorBlur($event)" @focus="onEditorFocus($event)" /> -->
-
-          <!-- <vue-quill-editor v-model="text" ref="quillEditor" :options="editorOptions" @change="onInput" /> -->
-          <!-- :class="{ 'inputClearBg': !ableChat }" -->
           <input
             type="text"
             class="input font13"
@@ -153,6 +131,11 @@
         <div class="btn center-center font13" @click="send" >发送</div>
       </div>
     </div>
+	<!-- 客服 -->
+	<div class="customer" @click="openCustomer">
+		<img src="@/assets/img/customer.png">
+	</div>
+	<!-- 复购 -->
     <van-popup class="popupMoney" v-model="repurchaseShow">
 		<div class="repurchase-panel">
 			<div class="item" v-for="(item, index) in orderList" :key="index">
@@ -161,24 +144,50 @@
 			</div>
 		</div>
     </van-popup>
+	<!-- 上分 -->
     <van-popup class="upScores" v-model="upScoresShow">
 		<div class="scores-title">
 			快捷金额
 		</div>
 		<div class="scores-panel">
-			<div class="item" v-for="(item, index) in scoresList" :key="index">
-				<div class="val" @click="upScores(item)">{{item}}</div>
+			<input 
+				class="input"
+				type="number"
+				v-model="upMoney"
+				placeholder="输入金额"
+			/>
+		</div>
+		<div class="scores-panel">
+			<div class="item" v-for="(item, index) in scoresList" :key="index" @click="setUpMoney(item)">
+				<div class="val" :class="{up:upMoney==item}">{{item}}</div>
 			</div>
 		</div>
+		<div class="scores-panel">
+			<div class="btn center-center font13" @click="closeScores" >取消</div>
+			<div class="btn btn2 center-center font13"  @click="upScores()" >发送</div>
+		</div>
     </van-popup>
+	<!-- 下分 -->
 	<van-popup class="upScores" v-model="downScoresShow">
 		<div class="scores-title">
 			快捷金额
 		</div>
 		<div class="scores-panel">
-			<div class="item" v-for="(item, index) in downScoresList" :key="index">
-				<div class="val" @click="downScores(item)">{{item}}</div>
+			<input 
+				class="input"
+				type="number"
+				v-model="downMoney"
+				placeholder="输入金额"
+			/>
+		</div>
+		<div class="scores-panel">
+			<div class="item" v-for="(item, index) in downScoresList" :key="index" @click="setDownMoney(item)">
+				<div class="val" :class="{up:downMoney==item||downMoneyAll==item}">{{item}}</div>
 			</div>
+		</div>
+		<div class="scores-panel">
+			<div class="btn center-center font13" @click="closeScores" >取消</div>
+			<div class="btn btn2 center-center font13"  @click="downScores(item)" >发送</div>
 		</div>
 	</van-popup>
     <bindBetPop ref="$bindBetPop" />
@@ -250,6 +259,10 @@ export default {
       // baifoImage,
       // sx1Image,
       // sx2Image,
+	  cusUrl: '',
+	  upMoney: '',
+	  downMoney: '',
+	  downMoneyAll: '',
 	  upScoresShow: false,
 	  downScoresShow: false,
 	  repurchaseShow: false,
@@ -391,6 +404,14 @@ export default {
     },
   },
   methods: {
+	async getCustomer(){
+		const [err, res] = await userApi.servReq();
+		if (err) return;
+		this.cusUrl = res.data.serviceAddr
+	},
+	openCustomer(){
+		window.open(this.cusUrl)
+	},
     updateMinlossBox(head) {
       this.isHeadClosed = !head; // 当 head 为 false 时，隐藏 minlossBox
     },
@@ -618,23 +639,41 @@ export default {
 			this.$toast("暂未投注，请先投注！");
 		}
 	},
+	closeScores(){
+		this.upScoresShow = false;
+		this.downScoresShow = false;
+	},
 	openScores(){
 		this.upScoresShow = true;
 	},
 	openDownScores(){
 		this.downScoresShow = true;
 	},
-	upScores(v){
-		let str = "上分" + v
-		this.sendQuick(str);
-		this.upScoresShow = false;
+	setUpMoney(v){
+		this.upMoney = v
 	},
-	downScores(v){
+	upScores(){
+		if(this.upMoney){
+			let str = "上分" + this.upMoney
+			this.sendQuick(str);
+			this.upScoresShow = false;
+		}
+	},
+	setDownMoney(v){
+		if(v!=='全部'){
+			this.downMoney = v
+			this.downMoneyAll = ''
+		}else{
+			this.downMoney = ''
+			this.downMoneyAll = '全部'
+		}
+	},
+	downScores(){
 		let str = '';
-		if(v=='全部'){
+		if(this.downMoneyAll){
 			str = '全下分' 
 		}else{
-			str = "下分" + v
+			str = "下分" + this.downMoney
 		}
 		this.sendQuick(str);
 		this.downScoresShow = false;
@@ -950,7 +989,7 @@ export default {
     }
 
     // this.clearContentData([]);
-
+	this.getCustomer()
     this.$store.dispatch("getSharaData");
     this.scrollToBottom();
   },
@@ -1641,7 +1680,14 @@ export default {
   transform: translateY(100%);
   opacity: 0;
 }
-
+.customer{
+	position: fixed;
+	right: 10px;
+	top: 40vh;
+	img{
+		width: 90px;
+	}
+}
 .popupMoney {
   width: 480px;
   border-radius: 16px;
@@ -1673,12 +1719,34 @@ export default {
 .upScores{
   width: 480px;
   border-radius: 16px;
+  padding-bottom: 10px;
+  display: inline-grid;
   .scores-title{
 	border-bottom: 2px solid #e0e0e0;
 	padding: 16px;
   }
   .scores-panel{
-	  padding: 20px;
+	  padding: 10px 20px;
+	  .input{
+		  width: 100%;
+		  border: none;
+		  border-radius: 10px;
+		  padding: 14px;
+		  padding-left: 30px;
+		  background: #eaeaea;
+	  }
+	  .btn{
+		  width: calc(50% - 10px);
+		  float: left;
+		  height: 60px;
+		  border-radius: 10px;
+		  background-color: #878787;
+		  color: #fff;
+	  }
+	  .btn2{
+		  float: right;
+		  background-color: #b01629;
+	  }
 	  .item{
 		  text-align: center;
 		  display: inline-block;
@@ -1724,6 +1792,15 @@ export default {
 	  }
 	}
 	
+	.customer{
+		position: fixed;
+		top: 40vh !important;
+		right: inherit !important;
+		margin-left: 30rem !important;
+		img{
+			width: 240px !important;
+		}
+	}
 	.upScores{
 	  width: 1460px;
 	  border-radius: 32px;
@@ -1732,7 +1809,17 @@ export default {
 		padding: 40px;
 	  }
 	  .scores-panel{
-		  padding: 40px;
+		  padding: 20px 40px;
+		  .input{
+		  	border-radius: 20px;
+		  	padding: 28px;
+		  	padding-left: 60px;
+		  }
+		  .btn{
+		  	width: calc(50% - 20px);
+		  	height: 180px;
+		  	border-radius: 16px;
+		  }
 		  .item{
 			  text-align: center;
 			  display: inline-block;

@@ -59,38 +59,33 @@ export default {
       return {};
     },
   },
+  methods: {
+	  detectApp(){
+	    const ua = navigator.userAgent.toLowerCase();
+	    return {
+	      isWeChat: ua.includes("micromessenger"),
+	      isQQ: ua.includes("qq/") || ua.includes("qqbrowser"),
+	      isTelegram: ua.includes("telegram"),
+	    };
+	  }
+  },
   created() {
     window.$router = this.$router;
-    this.$store.commit("setBalanceRecord", [
-      { value: 0, label: i18n.t("dropdown.billing.all.title.text") },
-      {
-        label: i18n.t("dropdown.billing.rebate"),
-        value: [5, 21, 24, 25, 26, 27, 28],
-        text: "返利",
-      },
-      { label: i18n.t("investment"), value: [3, 4, 9], text: "投资" },
-      {
-        label: i18n.t("home.index.recharge.text"),
-        value: [1, 11],
-        text: "充值",
-      },
-      {
-        label: i18n.t("home.index.withdraw.text"),
-        value: [2, 12, 33],
-        text: "提现",
-      },
-      {
-        label: i18n.t("backapi.self.home.tool.wheel.text"),
-        value: [29, 30],
-        text: "抽奖",
-      },
-      {
-        label: i18n.t("dropdown.billing.other"),
-        value: [6, 8, 34, 36],
-        key: "other",
-        text: "其他",
-      },
-    ]);
+	let result = this.detectApp();
+	if (result.isWeChat) {
+	  console.log("在微信中打开");
+	  this.$router.push('/Jump');
+	} else if (result.isQQ) {
+	  console.log("在QQ中打开");
+	  this.$router.push('/Jump');
+	} else if (result.isTelegram) {
+	  console.log("在Telegram中打开");
+	  this.$router.push('/Jump');
+	} else {
+	  console.log("未知或普通浏览器");
+	}
+	
+	
     setInterval(() => {
       //获取环境变量
       if (process.env.NODE_ENV === "development") {
