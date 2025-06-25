@@ -2,14 +2,14 @@
 <template>
   <div class="page chatHeight">
 	  <div class="opr">
-		  <div class="font16">请输入token</div>
+		  <div class="font16">玩家输入链接</div>
 		  <input
 		    type="text"
 		    class="input font13"
 		    ref="inputRef"
 		    v-model="text"
 		  />
-		  <el-button class="btn" @click="login">确认</el-button>
+		  <el-button class="btn font13" @click="login">确认</el-button>
 	  </div>
   </div>
 </template>
