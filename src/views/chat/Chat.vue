@@ -1,6 +1,6 @@
 <template>
-  <!-- <div class="chat-con flex-column" :style="{ height: `${chatHeight}px` }"> -->
-  <div class="chat-con flex-column chatHeight">
+  <div class="chat-con flex-column" :style="{ height: `${chatHeight}px` }">
+  <!-- <div class="chat-con flex-column chatHeight"> -->
     <AppTopBar ref="topBar" topBarTitle="聊天室">
      <!-- <template #left>
         <p class="center-center colorfff moneyLeft" @click="checkMoney">
@@ -97,38 +97,40 @@
       </ul>
     </van-action-sheet>
     <div ref="bottomBox" class="bottom-box">
-	  <div class="quick">
-		  <div class="item-box">
-			  <div class="btn center-center font13" style="background-color: #5dcf05;" @click="openScores" >上分</div>
-		  </div>
-		  <div class="item-box">
-			  <div class="btn center-center font13" style="background-color: #d50019;" @click="openDownScores" >下分</div>
-		  </div>
-		  <div class="item-box">
-			  <div class="btn center-center font13" style="background-color: #0d79ff;" @click="sendQuick('走势')" >走势</div>
-		  </div>
-		  <div class="item-box">
-			  <div class="btn center-center font13" style="background-color: #4e09ff;" @click="openPopup" >复投</div>
-		  </div>
-		  <div class="item-box">
-			  <div class="btn center-center font13" style="background-color: #5a5f64;" @click="sendQuick('取消')" >取消</div>
-		  </div>
-	  </div>
       <div class="wrap-box" :class="{ 'btm-disabled': disabled }">
-    
-        <div class="input-box" @keydown.enter.prevent="send">
-          <input
-            type="text"
-            class="input font13"
-            ref="inputRef"
-            :placeholder="placeholder"
-            v-model="text"
-            @input="onInput"
-            :disabled="!ableChat "
-          />
-        </div>
-
-        <div class="btn center-center font13" @click="send" >发送</div>
+		
+		 <div class="quick">
+			  <div class="item-box-q">
+				  <div class="btn-q center-center font13" style="background-color: #5dcf05;" @click="openScores" >上分</div>
+			  </div>
+			  <div class="item-box-q">
+				  <div class="btn-q center-center font13" style="background-color: #d50019;" @click="openDownScores" >下分</div>
+			  </div>
+			  <div class="item-box-q">
+				  <div class="btn-q center-center font13" style="background-color: #0d79ff;" @click="sendQuick('走势')" >走势</div>
+			  </div>
+			  <div class="item-box-q">
+				  <div class="btn-q center-center font13" style="background-color: #4e09ff;" @click="openPopup" >复投</div>
+			  </div>
+			  <div class="item-box-q">
+				  <div class="btn-q center-center font13" style="background-color: #5a5f64;" @click="sendQuick('取消')" >取消</div>
+			  </div>
+		  </div>
+		<div class="opr">
+			  <div class="input-box" @keydown.enter.prevent="send">
+			    <input
+			      type="text"
+			      class="input font13"
+			      ref="inputRef"
+			      :placeholder="placeholder"
+			      v-model="text"
+			      @input="onInput"
+			      :disabled="!ableChat "
+			    />
+			  </div>
+			  
+			  <div class="btn center-center font13" @click="send" >发送</div>
+		</div>
       </div>
     </div>
 	<!-- 客服 -->
@@ -280,7 +282,7 @@ export default {
       ],
       showPopover: false,
       actions: [{ text: "选项一" }, { text: "选项二" }, { text: "选项三" }],
-      chatHeight: window.innerHeight,
+      chatHeight: window.innerHeight - 82,
       userPic,
       text: "",
       shareData: {
@@ -1029,7 +1031,7 @@ export default {
 };
 </script>
 <style scoped lang="less">
-@height: 104px;
+@height: 164px;
 .chat-con {
   // background-image: url("../../assets/img/chatBg.png");
   // background-size: 100% 100%;
@@ -1129,9 +1131,29 @@ export default {
     height: @height;
     background: #fff;
     padding: 0 16px;
-    display: flex;
-    align-items: center;
-
+	
+	.quick{
+		  width: 100%;
+		  margin: 20px 0;
+		  background-color: transparent;
+		  display: flex;
+		  flex-wrap: wrap;
+		  .item-box-q{
+			flex: 1 0 20%; 
+			box-sizing: border-box; 
+			padding: 0 16px;
+			.btn-q{
+				color: #fff;
+				padding: 2px 0;
+				border-radius: 8px;
+			}
+		  }
+	}
+	.opr{
+		width: 100%;
+		display: flex;
+		align-items: center;
+	}
     .icon-box {
       .icon {
         color: #666;
@@ -1181,22 +1203,6 @@ export default {
       // font-size: 26px;
     }
   }
-  .quick{
-	  width: 100%;
-	  background-color: transparent;
-	  display: flex;
-	  flex-wrap: wrap;
-	  .item-box{
-		flex: 1 0 20%; 
-		box-sizing: border-box; 
-		padding: 0 16px;
-		.btn{
-			color: #fff;
-			padding: 2px 0;
-			border-radius: 8px;
-		}
-	  }
-  }
 }
 .chatHeight{
 	height: calc(100vh - @height);
@@ -1212,6 +1218,18 @@ export default {
 	  height: 300px !important;
 	  position: inherit !important;
       padding: 0 48px !important;
+	  
+	  .quick{
+		  margin: 40px 0;
+	  	  .item-box{
+	  		padding: 0 40px !important;
+	  		.btn{
+	  			color: #fff;
+	  			padding: 6px 0 !important;
+	  			border-radius: 20px !important;
+	  		}
+	  	  }
+	  }
 	  .input-box {
 		  height: 240px;
 		  .input {
@@ -1223,16 +1241,6 @@ export default {
 		width: 340px !important;
 		height: 240px !important;
 	  }
-  }
-  .quick{
-  	  .item-box{
-  		padding: 0 40px !important;
-  		.btn{
-  			color: #fff;
-  			padding: 6px 0 !important;
-  			border-radius: 20px !important;
-  		}
-  	  }
   }
 }
 .face-box {

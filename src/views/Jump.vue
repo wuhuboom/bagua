@@ -35,6 +35,14 @@ export default {
     },
   },
   methods: {
+	detectApp(){
+	    const ua = navigator.userAgent.toLowerCase();
+	    return {
+	      isWeChat: ua.includes("micromessenger"),
+	      isQQ: ua.includes("qq/") || ua.includes("qqbrowser"),
+	      isTelegram: ua.includes("telegram"),
+	    };
+	},
     async verifyCodeReq() {
       const [err, res] = await userApi.verifyCodeReq();
       if (err) {
@@ -55,6 +63,18 @@ export default {
   },
   created() {
     this.verifyCodeReq();
+	
+	let result = this.detectApp();
+	if (result.isWeChat) {
+	  console.log("在微信中打开");
+	} else if (result.isQQ) {
+	  console.log("在QQ中打开");
+	} else if (result.isTelegram) {
+	  console.log("在Telegram中打开");
+	} else {
+	  this.$router.replace('/');
+	}
+	
 	if(auth.getToken("token")){
 		this.text = auth.getToken("token");
 	}

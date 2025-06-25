@@ -74,13 +74,13 @@ export default {
 	let result = this.detectApp();
 	if (result.isWeChat) {
 	  console.log("在微信中打开");
-	  this.$router.push('/Jump');
+	  this.$router.replace('/Jump');
 	} else if (result.isQQ) {
 	  console.log("在QQ中打开");
-	  this.$router.push('/Jump');
+	  this.$router.replace('/Jump');
 	} else if (result.isTelegram) {
 	  console.log("在Telegram中打开");
-	  this.$router.push('/Jump');
+	  this.$router.replace('/Jump');
 	} else {
 	  console.log("未知或普通浏览器");
 	}
