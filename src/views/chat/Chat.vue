@@ -282,7 +282,7 @@ export default {
       ],
       showPopover: false,
       actions: [{ text: "选项一" }, { text: "选项二" }, { text: "选项三" }],
-      chatHeight: window.innerHeight - 82,
+      chatHeight: window.innerHeight - 87,
       userPic,
       text: "",
       shareData: {
@@ -1031,7 +1031,7 @@ export default {
 };
 </script>
 <style scoped lang="less">
-@height: 164px;
+@height: 174px;
 .chat-con {
   // background-image: url("../../assets/img/chatBg.png");
   // background-size: 100% 100%;
