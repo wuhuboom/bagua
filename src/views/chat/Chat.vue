@@ -116,7 +116,61 @@
 				  <div class="btn-q center-center font13" style="background-color: #5a5f64;" @click="sendQuick('取消')" >取消</div>
 			  </div>
 		  </div>
+		  
 		<div class="opr">
+			<div class="customer" @click="openCustomer">
+				<img
+				  class=" redMony m-l-8 pointer"
+				  src="@/assets/img/customer.png"
+				  alt=""
+				/>
+				<div class="font13">
+					在线客服
+				</div>
+			</div>
+			<van-popover
+			  v-model="showPopover"
+			  trigger="click"
+			  placement="top-start"
+			>
+			  <van-tabs v-model="activeBiaoqing" class="custom-tabs">
+			    <van-tab title="默认表情" style="height: 50vh">
+			      <div class="bigImgIcon">
+			        <img
+			          :src="require(`@/assets/img/${item.urlStr}`)"
+			          :alt="item.name"
+			          @click="sendImgIcon(item)"
+			          v-for="(item, index) in bigLARR"
+			          :key="index"
+			        />
+			
+			        <!-- <img :src="maniImage" alt="玛尼" @click="sendImgIcon('玛尼')" />
+			    <img :src="baifoImage" alt="拜佛" @click="sendImgIcon('拜佛')" />
+			    <img :src="sx1Image" alt="烧香1" @click="sendImgIcon('烧香1')" />
+			    <img :src="sx2Image" alt="烧香2" @click="sendImgIcon('烧香2')" /> -->
+			      </div>
+			    </van-tab>
+			    <van-tab title="经典表情">
+			      <ul class="face-box">
+			        <li v-for="(v, i) in dataFace" :key="i" @click="insert(v)">
+			          {{ v }}
+			
+			          <!-- <img :src="faceImages[i]" alt="emoji" class="emojiToImg" /> -->
+			        </li>
+			      </ul>
+			    </van-tab>
+			  </van-tabs>
+			
+			  <!-- <wxEmojisDialog @wxEmojisClick="wxEmojisClick"></wxEmojisDialog> -->
+			
+			  <template #reference>
+			    <div class="icon-box">
+			      <!-- <van-icon name="smile-o" class="icon" /> -->
+			      <img src="@/assets/img/bq.png" alt="" />
+			    </div>
+			  </template>
+			</van-popover>
+			
 			  <div class="input-box" @keydown.enter.prevent="send">
 			    <input
 			      type="text"
@@ -134,9 +188,9 @@
       </div>
     </div>
 	<!-- 客服 -->
-	<div class="customer" @click="openCustomer">
+<!-- 	<div class="customer" @click="openCustomer">
 		<img src="@/assets/img/customer.png">
-	</div>
+	</div> -->
 	<!-- 复购 -->
     <van-popup class="popupMoney" v-model="repurchaseShow">
 		<div class="repurchase-panel">
@@ -415,7 +469,8 @@ export default {
 		this.cusUrl = res.data.serviceAddr
 	},
 	openCustomer(){
-		window.open(this.cusUrl)
+		// window.open(this.cusUrl)
+		window.location.replace(this.cusUrl);
 	},
     updateMinlossBox(head) {
       this.isHeadClosed = !head; // 当 head 为 false 时，隐藏 minlossBox
@@ -1180,7 +1235,7 @@ export default {
     }
 
     .input-box {
-      margin: 0 20px 0 0px;
+      margin: 0 20px;
       flex: 1;
       // width: 100%;
       width: 50%;
@@ -1253,6 +1308,14 @@ export default {
 			  line-height: 240px;
 		  }
 	  }
+	  
+	  .icon-box {
+	    img {
+	      width: 2.5rem !important;
+	      height: 2.5rem !important;
+	    }
+	  }
+	  
 	  .btn{
 		width: 340px !important;
 		height: 240px !important;
@@ -1721,11 +1784,13 @@ export default {
   opacity: 0;
 }
 .customer{
-	position: fixed;
-	right: 10px;
-	top: 40vh;
+	// position: fixed;
+	// right: 10px;
+	// top: 40vh;
+	text-align: center;
 	img{
-		width: 90px;
+		width: 50px;
+		height: 50px;
 	}
 }
 .popupMoney {
@@ -1810,6 +1875,31 @@ export default {
   }
 }
 @media (min-width: 750px) {
+.bigImgIcon {
+  img {
+    width: 4rem;
+    height: 4rem;
+    margin-right: 20px;
+    margin-bottom: 20px;
+  }
+}
+.face-box {
+  li {
+    width: 2rem;
+    height: 2rem;
+    line-height: 50px;
+    text-align: center;
+    // font-size: 24px;
+    cursor: pointer;
+    font-size: 84px;
+
+    .emojiToImg {
+      width: 48px;
+      height: 48px;
+    }
+  }
+}
+
 	.popupMoney {
 	  width: 20rem;
 	  top: calc(27rem + 5%);
@@ -1834,12 +1924,13 @@ export default {
 	}
 	
 	.customer{
-		position: fixed;
-		top: 40% !important;
-		right: inherit !important;
-		margin-left: 22rem !important;
+		// position: fixed;
+		// top: 40% !important;
+		// right: inherit !important;
+		// margin-left: 22rem !important;
 		img{
-			width: 3rem !important;
+			width: 2rem !important;
+			height: 2rem !important;
 		}
 	}
 	.upScores{
