@@ -118,7 +118,7 @@
 		  </div>
 		  
 		<div class="opr">
-			<div class="customer" @click="openCustomer">
+			<!-- <div class="customer" @click="openCustomer">
 				<img
 				  class=" redMony m-l-8 pointer"
 				  src="@/assets/img/customer.png"
@@ -127,7 +127,7 @@
 				<div class="font13">
 					在线客服
 				</div>
-			</div>
+			</div> -->
 			<van-popover
 			  v-model="showPopover"
 			  trigger="click"
@@ -188,9 +188,9 @@
       </div>
     </div>
 	<!-- 客服 -->
-<!-- 	<div class="customer" @click="openCustomer">
-		<img src="@/assets/img/customer.png">
-	</div> -->
+	<div class="customer" @click="openCustomer">
+		<img src="@/assets/img/customer1.png">
+	</div>
 	<!-- 复购 -->
     <van-popup class="popupMoney" v-model="repurchaseShow">
 		<div class="repurchase-panel">
@@ -469,8 +469,9 @@ export default {
 		this.cusUrl = res.data.serviceAddr
 	},
 	openCustomer(){
-		// window.open(this.cusUrl)
-		window.location.replace(this.cusUrl);
+		if(this.cusUrl){
+			this.$router.push('/customer');
+		}
 	},
     updateMinlossBox(head) {
       this.isHeadClosed = !head; // 当 head 为 false 时，隐藏 minlossBox
@@ -1784,13 +1785,13 @@ export default {
   opacity: 0;
 }
 .customer{
-	// position: fixed;
-	// right: 10px;
-	// top: 40vh;
-	text-align: center;
+	position: fixed;
+	right: 10px;
+	top: 40vh;
+	// text-align: center;
 	img{
-		width: 50px;
-		height: 50px;
+		width: 100px;
+		height: 100px;
 	}
 }
 .popupMoney {
@@ -1924,13 +1925,13 @@ export default {
 	}
 	
 	.customer{
-		// position: fixed;
-		// top: 40% !important;
-		// right: inherit !important;
-		// margin-left: 22rem !important;
+		position: fixed;
+		top: 40% !important;
+		right: inherit !important;
+		margin-left: 22rem !important;
 		img{
-			width: 2rem !important;
-			height: 2rem !important;
+			width: 3rem !important;
+			height: 3rem !important;
 		}
 	}
 	.upScores{

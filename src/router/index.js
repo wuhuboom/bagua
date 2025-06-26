@@ -30,6 +30,13 @@ const routes = [
       default: () => import("@/views/Jump.vue"),
     },
   },
+  {
+    path: "/customer",
+    name: "customer",
+    components: {
+      default: () => import("@/views/customer.vue"),
+    },
+  },
   
   {
     path: "/login/SignIn",
