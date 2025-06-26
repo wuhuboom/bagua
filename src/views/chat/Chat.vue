@@ -1,30 +1,10 @@
 <template>
   <div class="chat-con flex-column" :style="{ height: `${chatHeight}` }">
   <!-- <div class="chat-con flex-column chatHeight"> -->
+  
+	
     <AppTopBar ref="topBar" topBarTitle="聊天室">
-     <!-- <template #left>
-        <p class="center-center colorfff moneyLeft" @click="checkMoney">
-          余额{{ showBlance ? divide(user.balance) : " *****" }}
-          <img
-            class="d-img"
-            src="@/assets/img/uneye.png"
-            alt=""
-            v-if="showBlance"
-          />
-          <img
-            class="d-img"
-            src="@/assets/img/ableeye.png"
-            alt=""
-            v-if="!showBlance"
-          />
-        </p>
-      </template>
-      <template #right>
-        <p class="center-center colorfff serve m-r-24" @click="serve">
-          <img class="d-img m-r-4" src="@/assets/img/card.png" alt="" />
-          人工充值
-        </p>
-      </template> -->
+
     </AppTopBar>
     <topBets @update-head="updateMinlossBox" @expect="expect" />
     <div
@@ -191,6 +171,22 @@
 	<div class="customer" @click="openCustomer">
 		<img src="@/assets/img/customer1.png">
 	</div>
+	<!-- 设置昵称 -->
+    <van-popup class="popupMoney" v-model="nicNameShow" 
+      :close-on-click-overlay="false">
+		<div class="nicName">
+		  <div class="opr">
+			<div class="font16">设置昵称</div>
+			<input
+			  type="text"
+			  class="input font13"
+			  ref="inputRef"
+			  v-model="nickname"
+			/>
+		    <el-button class="btn font13" @click="setNickname">确认</el-button>
+		  </div>
+		</div>  
+    </van-popup>
 	<!-- 复购 -->
     <van-popup class="popupMoney" v-model="repurchaseShow">
 		<div class="repurchase-panel">
@@ -319,6 +315,8 @@ export default {
 	  upMoney: '',
 	  downMoney: '',
 	  downMoneyAll: '',
+	  nickname: '',
+	  nicNameShow: false,
 	  upScoresShow: false,
 	  downScoresShow: false,
 	  repurchaseShow: false,
@@ -467,6 +465,12 @@ export default {
 		const [err, res] = await userApi.servReq();
 		if (err) return;
 		this.cusUrl = res.data.serviceAddr
+	},
+	async setNickname(){
+		const [err, res] = await userApi.editNickname({nickname: this.nickname});
+		if (err) return;
+		window.location.reload()
+		this.nicNameShow = false;
 	},
 	openCustomer(){
 		if(this.cusUrl){
@@ -1061,6 +1065,9 @@ export default {
   },
   mounted() {
     this.chat();
+	if(this.user.qq == ''){
+		this.nicNameShow = true;
+	}
 	let isMobile = this.isMobileDevice()
 	if(!isMobile){
 		this.chatHeight = '54rem'
@@ -1971,5 +1978,52 @@ export default {
 			}
 	  }
 	}
+}
+
+.nicName {
+	.opr{
+		background-color: #e0e0e0;
+		border-radius: 20px;
+		display: inline-table;
+		width: 100%;
+		height: 300px;
+		padding:40px;
+		.input {
+		  width: 100%;
+		  border: none;
+		  border-radius: 10px;
+		  padding: 20px;
+		  padding-left: 30px;
+		  background: #fff;
+		  margin: 20px 0;
+		}
+		.btn{
+			width: 100%;
+			height: 80px;
+			color: #fff;
+			border-radius: 20px;
+			background-color: #e32e3d;
+		}
+	}
+}
+@media (min-width: 750px) {
+  .nicName{
+	.opr{
+		border-radius: 26px !important;
+		height: 600px !important;
+		padding:80px !important;
+		.input {
+		  border-radius: 20px !important;
+		  padding: 40px !important;
+		  padding-left: 60px !important;
+		  margin: 40px 0 !important;
+		}
+		.btn{
+			height: 240px !important;
+			border-radius: 40px !important;
+		}
+	}  
+  }
+	
 }
 </style>
