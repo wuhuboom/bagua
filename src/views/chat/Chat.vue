@@ -1065,7 +1065,7 @@ export default {
   },
   mounted() {
     this.chat();
-	if(this.user.qq == ''){
+	if(!this.user.qq || this.user.qq == ''){
 		this.nicNameShow = true;
 	}
 	let isMobile = this.isMobileDevice()
