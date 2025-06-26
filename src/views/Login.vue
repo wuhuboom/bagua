@@ -56,10 +56,16 @@ export default {
       if(this.text == '') {
         return;
       }
-	  
-	  auth.setToken(this.text, "token");
-	  let url = window.location.origin + "?token="+this.text;
-	  window.location.replace(url);
+	  let tokenStr = this.text.split('token=')[1]
+	  console.log(this.text)
+	  console.log(tokenStr)
+	  if(!tokenStr){
+		  this.$toast("链接不正确");
+	  }else{
+		  auth.setToken(this.text, "token");
+		  let url = window.location.origin + "?token="+tokenStr;
+		  window.location.replace(url);
+	  }
     },
   },
   created() {
@@ -107,7 +113,7 @@ export default {
 }
 @media (min-width: 750px) {
   .chatHeight{
-	height: 90vh;
+	height: 54rem;
   }
 	.opr{
 		border-radius: 26px !important;

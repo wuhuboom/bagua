@@ -65,8 +65,8 @@ instance.interceptors.response.use(
       const isLogin = res.config.url.includes("/auth/login");
       app.$toast.clear();
 	  let token = window.location.search.split('token=')[1]
-	  console.log(888)
-      if (!token ) {
+	  console.log(token)
+      if (!token || token=='undefined' ) {
         // app.$store.commit("loginOut");
         app.$router.push({
           name: "token",

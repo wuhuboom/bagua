@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-con flex-column" :style="{ height: `${chatHeight}px` }">
+  <div class="chat-con flex-column" :style="{ height: `${chatHeight}` }">
   <!-- <div class="chat-con flex-column chatHeight"> -->
     <AppTopBar ref="topBar" topBarTitle="聊天室">
      <!-- <template #left>
@@ -140,7 +140,7 @@
 	<!-- 复购 -->
     <van-popup class="popupMoney" v-model="repurchaseShow">
 		<div class="repurchase-panel">
-			<div class="item" v-for="(item, index) in orderList" :key="index">
+			<div class="item font13" v-for="(item, index) in orderList" :key="index">
 				<span class="val">{{item.betCode2}}</span>
 				<div class="btn center-center font13" @click="sendQuick(item.betCode2)" >复购</div>
 			</div>
@@ -148,19 +148,19 @@
     </van-popup>
 	<!-- 上分 -->
     <van-popup class="upScores" v-model="upScoresShow">
-		<div class="scores-title">
+		<div class="scores-title font13">
 			快捷金额
 		</div>
 		<div class="scores-panel">
 			<input 
-				class="input"
+				class="input font13"
 				type="number"
 				v-model="upMoney"
 				placeholder="输入金额"
 			/>
 		</div>
 		<div class="scores-panel">
-			<div class="item" v-for="(item, index) in scoresList" :key="index" @click="setUpMoney(item)">
+			<div class="item font13" v-for="(item, index) in scoresList" :key="index" @click="setUpMoney(item)">
 				<div class="val" :class="{up:upMoney==item}">{{item}}</div>
 			</div>
 		</div>
@@ -171,19 +171,19 @@
     </van-popup>
 	<!-- 下分 -->
 	<van-popup class="upScores" v-model="downScoresShow">
-		<div class="scores-title">
+		<div class="scores-title font13">
 			快捷金额
 		</div>
 		<div class="scores-panel">
 			<input 
-				class="input"
+				class="input font13"
 				type="number"
 				v-model="downMoney"
 				placeholder="输入金额"
 			/>
 		</div>
 		<div class="scores-panel">
-			<div class="item" v-for="(item, index) in downScoresList" :key="index" @click="setDownMoney(item)">
+			<div class="item font13" v-for="(item, index) in downScoresList" :key="index" @click="setDownMoney(item)">
 				<div class="val" :class="{up:downMoney==item||downMoneyAll==item}">{{item}}</div>
 			</div>
 		</div>
@@ -282,7 +282,7 @@ export default {
       ],
       showPopover: false,
       actions: [{ text: "选项一" }, { text: "选项二" }, { text: "选项三" }],
-      chatHeight: window.innerHeight - 87,
+      chatHeight: (window.innerHeight - 87) + 'px',
       userPic,
       text: "",
       shareData: {
@@ -406,6 +406,9 @@ export default {
     },
   },
   methods: {
+	isMobileDevice() {
+	    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+	},
 	async getCustomer(){
 		const [err, res] = await userApi.servReq();
 		if (err) return;
@@ -797,7 +800,12 @@ export default {
             confirmButtonColor: "#3291FF",
           })
           .then(() => {
-            location.reload();
+            // location.reload();
+			console.log(window.location)
+			let url = window.location.origin;
+			if(window.location.hash !== '#/login/SignIn'){
+				window.location.replace(url);
+			}
           });
       }
     },
@@ -997,6 +1005,10 @@ export default {
   },
   mounted() {
     this.chat();
+	let isMobile = this.isMobileDevice()
+	if(!isMobile){
+		this.chatHeight = '54rem'
+	}
     // if (this.wsStatus === true) {
     //   this.srcollBtm();
     //   return;
@@ -1208,16 +1220,20 @@ export default {
 	height: calc(100vh - @height);
 }
 @media (min-width: 750px) {
+	@height: 104.4rem;
   .chatHeight{
-	height: 90vh;
+	height: 54rem;
   }
   .chat-box {
-	margin-top: 40px;
+	margin-top: .24rem;
+  }
+  .bottom-box{
+	  background:#fff;
   }
   .wrap-box{
-	  height: 300px !important;
+	  height: 5.2rem !important;
 	  position: inherit !important;
-      padding: 0 48px !important;
+      padding: 0 .28rem !important;
 	  
 	  .quick{
 		  margin: 40px 0;
@@ -1241,6 +1257,22 @@ export default {
 		width: 340px !important;
 		height: 240px !important;
 	  }
+  }
+  
+  /* 针对垂直滚动条 */
+  ::-webkit-scrollbar {
+      width: .2rem; /* 设置滚动条的宽度 */
+  }
+   
+  /* 针对滚动条的滑块 */
+  ::-webkit-scrollbar-thumb {
+      background-color: darkgrey; /* 设置滑块的背景颜色 */
+      border-radius: 10px; /* 设置滑块的圆角 */
+  }
+   
+  /* 针对滚动条的轨道 */
+  ::-webkit-scrollbar-track {
+      background: #f1f1f1; /* 设置轨道的背景颜色 */
   }
 }
 .face-box {
@@ -1779,7 +1811,8 @@ export default {
 }
 @media (min-width: 750px) {
 	.popupMoney {
-	  width: 1460px;
+	  width: 20rem;
+	  top: calc(27rem + 5%);
 	  border-radius: 32px;
 	  .repurchase-panel{
 		  padding: 40px 80px;
@@ -1802,15 +1835,16 @@ export default {
 	
 	.customer{
 		position: fixed;
-		top: 40vh !important;
+		top: 40% !important;
 		right: inherit !important;
-		margin-left: 30rem !important;
+		margin-left: 22rem !important;
 		img{
-			width: 240px !important;
+			width: 3rem !important;
 		}
 	}
 	.upScores{
-	  width: 1460px;
+	  width: 20rem;
+	  top: calc(27rem + 5%);
 	  border-radius: 32px;
 	  .scores-title{
 		border-bottom: 2px solid #e0e0e0;
@@ -1845,15 +1879,5 @@ export default {
 			}
 	  }
 	}
-	// ::v-deep .van-overlay{
-		
-	// 	width: 1920px !important;
-	// 	min-width: 1920px  !important;
-	// 	max-width: 1920px  !important;
-	// 	margin-top: 5vh !important;
-	// 	height: 80vh !important;
-	// 	min-height: inherit !important;
-	// 	margin: auto auto;
-	// }
 }
 </style>
