@@ -246,7 +246,9 @@ export default {
     // 处理接收到的消息
     handleMessage({ commit }, message) {
       //0 文本消息 2 分享合买 4 红包消息 8图片 10 @消息 13 回复消息
-      if ([0, 2,  8, 10, 13, 6,  3, 7].includes(+message.type)) {
+	  console.log(999999)
+	  console.log(message)
+      if ([0, 2, 8, 10, 13, 6,  3, 7].includes(+message.type)) {
         // 文本消息
         commit("ADD_MESSAGE", { message });
         if (+message.type === 4) {
@@ -299,7 +301,8 @@ export default {
         let data = JSON.parse(message.data);
         app.$toast("消息发送频繁");
       }else if ([5].includes(+message.type)) {
-        let data = message.data[0];
+		  console.log(message)
+        let data = JSON.parse(message.data)[0];
 		if(data.msgKey == 'currUnopen'){
 			app.$toast("未开盘");
 		}else if(data.msgKey == 'currClosed'){
@@ -312,6 +315,8 @@ export default {
 			app.$toast("余额不为0,不能回水");
 		}else if(data.msgKey == 'noWater'){
 			app.$toast("当前无回水");
+		}else if(data.msgKey == 'betTooMin'){
+			app.$toast("下注金额不得低于100");
 		}
       }  else if ([9].includes(+message.type)) {
         //撤回消息修改status
