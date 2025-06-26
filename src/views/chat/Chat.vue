@@ -344,7 +344,7 @@ export default {
       },
       loadingShare: false,
       doc: {},
-      // unChat: true,
+      unChat: true,
       chatTextarea: "",
       selectionN: null,
       plainText: "",
@@ -416,10 +416,11 @@ export default {
     //   return bigListArr.bigListArr
     // },
     placeholder() {
-      // return this.unGame
-      //   ? "封盘状态下禁止下注！"
-      //   : "请输入内容";
-	  return "请输入内容";
+		console.log(this.ableChat)
+      return !this.unChat
+        ? "您已被系统禁言！"
+        : "请输入内容";
+	  // return "请输入内容";
     },
     disabled() {
       return (
@@ -810,13 +811,13 @@ export default {
     },
 
     notAllow() {
-      this.$dialog.alert({
-        message: "你已经被禁言",
-        confirmButtonColor: "#3291FF",
-      });
+      // this.$dialog.alert({
+      //   message: "你已经被禁言",
+      //   confirmButtonColor: "#3291FF",
+      // });
 
       this.setUnAllowChat(false);
-      // this.unChat = false
+      this.unChat = false
     },
     notView() {
       this.$dialog
@@ -860,12 +861,7 @@ export default {
             confirmButtonColor: "#3291FF",
           })
           .then(() => {
-            // location.reload();
-			console.log(window.location)
-			let url = window.location.origin;
-			if(window.location.hash !== '#/login/SignIn'){
-				window.location.replace(url);
-			}
+            location.reload();
           });
       }
     },

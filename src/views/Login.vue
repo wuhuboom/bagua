@@ -57,12 +57,10 @@ export default {
         return;
       }
 	  let tokenStr = this.text.split('token=')[1]
-	  console.log(this.text)
-	  console.log(tokenStr)
 	  if(!tokenStr){
 		  this.$toast("链接不正确");
 	  }else{
-		  auth.setToken(this.text, "token");
+		  auth.setToken(tokenStr, "token");
 		  let url = window.location.origin + "?token="+tokenStr;
 		  window.location.replace(url);
 	  }
@@ -70,9 +68,9 @@ export default {
   },
   created() {
     this.verifyCodeReq();
-	if(auth.getToken("token")){
-		this.text = auth.getToken("token");
-	}
+	// if(auth.getToken("token")){
+	// 	this.text = auth.getToken("token");
+	// }
   },
 };
 </script>
