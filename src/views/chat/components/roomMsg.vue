@@ -149,9 +149,7 @@
               <span
                 class="contentTxt"
                 :class="{ padText: !isMe, 'contentTxt-me': isMe }"
-              >
-                {{ doc.data }}</span
-              >
+              >{{doc.data}}</span>
               <div class="center-center time-box" v-if="isMe">
                 <p class="time" v-if="!isMe">
                   {{ $dayjsSingleTime(doc.time) }}
@@ -365,9 +363,9 @@ export default {
         case 6:
           //用户余额列表
           return "balanceMsg";
-        // case 7:
-        //   //结算列表
-        //   return "winMsg";
+        // case 9:
+          //结算列表
+          // return "winMsg";
         case 8:
           //开奖信息
           return "opensMsg";
