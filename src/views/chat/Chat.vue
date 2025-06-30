@@ -211,7 +211,7 @@
 		</div>
 		<div class="scores-panel">
 			<div class="item font13" v-for="(item, index) in scoresList" :key="index" @click="setUpMoney(item)">
-				<div class="val" :class="{up:upMoney==item}">{{item}}</div>
+				<div class="val font13" :class="{up:upMoney==item}">{{item}}</div>
 			</div>
 		</div>
 		<div class="scores-panel">
@@ -234,7 +234,7 @@
 		</div>
 		<div class="scores-panel">
 			<div class="item font13" v-for="(item, index) in downScoresList" :key="index" @click="setDownMoney(item)">
-				<div class="val" :class="{up:downMoney==item||downMoneyAll==item}">{{item}}</div>
+				<div class="val font13" :class="{up:downMoney==item||downMoneyAll==item}">{{item}}</div>
 			</div>
 		</div>
 		<div class="scores-panel">
@@ -334,7 +334,7 @@ export default {
       ],
       showPopover: false,
       actions: [{ text: "选项一" }, { text: "选项二" }, { text: "选项三" }],
-      chatHeight: (window.innerHeight - 87) + 'px',
+      chatHeight: (window.innerHeight - 95) + 'px',
       userPic,
       text: "",
       shareData: {
@@ -683,7 +683,8 @@ export default {
     },
     openPopup() {
 	  this.getOrder()
-	  // this.orderList = [{str:"100"},{str:"100"},{str:"100"},{str:"100"}]
+	  // this.repurchaseShow = true;
+	  // this.orderList = [{betCode2:"100"},{betCode2:"100"},{betCode2:"100"},{betCode2:"100"}]
     },
 	async getOrder() {
 		let params = {
@@ -1066,7 +1067,7 @@ export default {
 	}
 	let isMobile = this.isMobileDevice()
 	if(!isMobile){
-		this.chatHeight = '54rem'
+		this.chatHeight = '53.2rem'
 	}
     // if (this.wsStatus === true) {
     //   this.srcollBtm();
@@ -1102,7 +1103,7 @@ export default {
 };
 </script>
 <style scoped lang="less">
-@height: 174px;
+@height: 190px;
 .chat-con {
   // background-image: url("../../assets/img/chatBg.png");
   // background-size: 100% 100%;
@@ -1215,7 +1216,7 @@ export default {
 			padding: 0 16px;
 			.btn-q{
 				color: #fff;
-				padding: 2px 0;
+				padding: 10px 0;
 				border-radius: 8px;
 			}
 		  }
@@ -1290,17 +1291,16 @@ export default {
 	  background:#fff;
   }
   .wrap-box{
-	  height: 5.2rem !important;
+	  height: 5.9rem !important;
 	  position: inherit !important;
       padding: 0 .28rem !important;
 	  
 	  .quick{
 		  margin: 40px 0;
-	  	  .item-box{
+	  	  .item-box-q{
 	  		padding: 0 40px !important;
-	  		.btn{
-	  			color: #fff;
-	  			padding: 6px 0 !important;
+	  		.btn-q{
+	  			padding: 20px 0 !important;
 	  			border-radius: 20px !important;
 	  		}
 	  	  }
@@ -1798,7 +1798,7 @@ export default {
 	}
 }
 .popupMoney {
-  width: 480px;
+  width: 85%;
   border-radius: 16px;
   .repurchase-panel{
 	  padding: 20px;
@@ -1826,7 +1826,7 @@ export default {
 }
  
 .upScores{
-  width: 480px;
+  width: 85%;
   border-radius: 16px;
   padding-bottom: 10px;
   display: inline-grid;
@@ -1866,8 +1866,8 @@ export default {
 		  padding: 10px;
 		  .val{
 			  width: 100%;
-			  height: 45px;
-			  line-height: 45px;
+			  height: 60px;
+			  line-height: 60px;
 			  border-radius: 8px;
 			  background-color: #d3d2d5;
 		  }
@@ -1938,7 +1938,7 @@ export default {
 		}
 	}
 	.upScores{
-	  width: 20rem;
+	  width: 22rem;
 	  top: calc(27rem + 5%);
 	  border-radius: 32px;
 	  .scores-title{
