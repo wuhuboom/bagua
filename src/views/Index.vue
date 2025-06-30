@@ -444,6 +444,7 @@ export default {
       return typeof val === "number" && !isNaN(val);
     },
     async getVersion() {
+		console.log(9999)
       const [err] = await userApi.versionReq();
       if (!this.isNumber(+err)) {
         return;

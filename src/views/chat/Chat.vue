@@ -244,10 +244,33 @@
 	</van-popup>
     <bindBetPop ref="$bindBetPop" />
     <RedPacketTips/>
+	
+	<!-- 发现新版本 -->
+	<div class="version-box" v-if="fromModal2">
+	  <div class="bg"></div>
+	  <div class="version-wrap">
+	    <div class="top-icon"></div>
+	    <!-- 立即更新 -->
+	    <div class="wrap-box" v-if="!progressBarState">
+	      <div class="text font13">发现新版本</div>
+	      <div class="btn center-center font13" @click="simulateProgressBar">
+	        立即更新
+	      </div>
+	    </div>
+	    <!-- 更新中 -->
+	    <div class="wrap-box" v-else>
+	      <div class="text font13">
+	        更新中 <span class="num">{{ this.progressBar }}%</span>
+	      </div>
+	      <div class="dex center-center font13">正在更新中,请勿关闭当前页面…</div>
+	    </div>
+	  </div>
+	</div>
   </div>
 </template>
 
 <script>
+import auth from "@/plugins/auth";
 import userApi from "@/api/user";
 import userPic from "@/assets/img/user-room.png";
 import dataFace from "@/plugins/dataFace.json";
@@ -365,7 +388,12 @@ export default {
       bigLARR: [],
       timerMap: {},
 	  nextExpect:{},
-	  unGame: false
+	  unGame: false,
+      version: "",
+	  fromModal2: false,
+      progressBarState: false,
+      progressBar: 0,
+      key: "storageVersion",
     };
   },
   directives: {
@@ -1040,7 +1068,45 @@ export default {
         }
       });
       
-    }
+    },
+	simulateProgressBar() {
+	  this.progressBarState = true;
+	  var duration = Math.floor(Math.random() * 6) + 5; // 生成5到10之间的随机秒数
+	  var increment = 100 / (duration * 10); // 计算每100毫秒增加的进度
+	
+	  var progress = 0;
+	
+	  this.interval = setInterval(() => {
+	    progress += increment;
+	    this.progressBar = parseInt(progress);
+	    if (progress >= 100) {
+	      console.log("done");
+	      auth.setToken(this.version, this.key);
+	      location.reload();
+	      clearInterval(this.interval);
+	    }
+	  }, 100);
+	},
+	isNumber(val) {
+	  return typeof val === "number" && !isNaN(val);
+	},
+	async getVersion() {
+	  const [err] = await userApi.versionReq();
+	  console.log(this.isNumber(+err))
+	  if (!this.isNumber(+err)) {
+	    return;
+	  }
+	  const res = +err;
+	  let storageVersion = auth.getToken(this.key);
+	  console.log(auth.getToken(this.key))
+	  console.log(res)
+	  if (storageVersion && storageVersion != res) {
+	    this.fromModal2 = true;
+	    this.version = res;
+	  } else {
+	    auth.setToken(res, this.key);
+	  }
+	},
   },
   created() {
     const storedItem = localStorage.getItem("selectedImgBqItem");
@@ -1059,6 +1125,8 @@ export default {
 	this.getCustomer()
     this.$store.dispatch("getSharaData");
     this.scrollToBottom();
+	
+	this.getVersion();
   },
   mounted() {
     this.chat();
@@ -2002,6 +2070,73 @@ export default {
 		}
 	}
 }
+
+.version-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .version-wrap {
+    position: relative;
+    border-radius: 6px 6px 30px 30px;
+    background: #ffffff;
+    width: 560px;
+    height: 376px;
+
+    .top-icon {
+      position: absolute;
+      width: 100%;
+      height: 320px;
+      // left: 154px;
+      top: -180px;
+      background: url("@/assets/img/Index/upload.png") no-repeat;
+      background-size: 100% auto;
+    }
+
+    .wrap-box {
+      padding-top: 170px;
+      .text {
+        font-size: 32px;
+        font-weight: 600;
+        text-align: center;
+        height: 100px;
+
+        .num {
+          color: #508EFF;
+        }
+      }
+
+      .btn {
+        border-top: 1px solid #e5e5e5;
+        height: 98px;
+        color: #508EFF;
+        font-weight: 600;
+        font-size: 32px;
+      }
+
+      .dex {
+        color: #999999;
+        font-size: 24px;
+        margin-top: 10px;
+      }
+    }
+  }
+}
 @media (min-width: 750px) {
   .nicName{
 	.opr{
@@ -2020,6 +2155,53 @@ export default {
 		}
 	}  
   }
-	
+  .version-box {
+  
+    .version-wrap {
+      position: relative;
+      border-radius: 6px 6px 80px 80px;
+      background: #ffffff;
+      width: 22rem;
+      height: 782px;
+  
+      .top-icon {
+        position: absolute;
+        width: 100%;
+        height: 1240px;
+        // left: 154px;
+        top: -660px;
+        background: url("@/assets/img/Index/upload.png") no-repeat;
+        background-size: 100% auto;
+      }
+  
+      .wrap-box {
+        padding-top: 340px !important;
+        .text {
+          // font-size: 32px;
+          font-weight: bold;
+          text-align: center;
+          height: 200px;
+  
+          .num {
+            color: #508EFF;
+          }
+        }
+  
+        .btn {
+          border-top: 2px solid #e5e5e5 !important;
+          height: 226px !important;
+          color: #508EFF;
+          font-weight: 600;
+		  width: inherit !important;
+        }
+  
+        .dex {
+          color: #999999;
+          font-size: 24px;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
 }
 </style>
