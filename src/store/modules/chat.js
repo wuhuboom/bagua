@@ -246,24 +246,6 @@ export default {
     // 处理接收到的消息
     handleMessage({ commit }, message) {
       //0 文本消息 2 分享合买 4 红包消息 8图片 10 @消息 13 回复消息
-	  message = {
-		  data: '[
-			{"qq":"4987","balance":"0","currDown":"27355","nickname":"哈哈","currUp":"27355","water":"999"},
-			{"qq":"4987","balance":"0","currDown":"8","nickname":"哈哈","currUp":"27355","water":"999"},
-			{"qq":"4987","balance":"0","currDown":"27355","nickname":"哈哈","currUp":"3","water":"0"},
-			{"qq":"4987","balance":"0","currDown":"7","nickname":"哈哈","currUp":"2","water":"0"},
-			]',
-		  id: 4010,
-		  img: "",
-		  msgId: "",
-		  playerId: 0,
-		  status: 0,
-		  time: 1751277451055,
-		  type: 9,
-		  type2: 0,
-		  user: "系统",
-		  user2: "系统"
-	  }
 		// console.log(JSON.parse(message.data))
       if ([0, 2, 8, 10, 13, 6,  3, 7, 9].includes(+message.type)) {
         // 文本消息

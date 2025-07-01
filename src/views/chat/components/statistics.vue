@@ -1,17 +1,17 @@
 <template>
   <div class="opens-list">
 	<div class="content font9">
-		<div class="item" v-for="(item, index) in data">
-		  <div class="nav nav1">{{item.qq}}</div>
-		  <div class="nav">上</div>
-		  <div class="nav nav2">{{item.currUp}}</div>
-		  <div class="nav">下</div>
-		  <div class="nav nav3">{{item.currDown}}</div>
-		  <div class="nav">回</div>
-		  <div class="nav nav4">{{item.water}}</div>
-		  <div class="nav">{{item.nickname}}</div>
-		  <div class="nav">:</div>
-		  <div class="nav">{{item.balance}}</div>
+		<div class="item font9" v-for="(item, index) in data">
+		  <div class="nav nav1 font9">{{item.qq}}</div>
+		  <div class="nav font9">上</div>
+		  <div class="nav nav2 font9">{{item.currUp}}</div>
+		  <div class="nav font9">下</div>
+		  <div class="nav nav3 font9">{{item.currDown}}</div>
+		  <div class="nav font9">回</div>
+		  <div class="nav nav4 font9">{{item.water}}</div>
+		  <div class="nav font9">{{item.nickname}}</div>
+		  <div class="nav font9">:</div>
+		  <div class="nav font9">{{item.balance}}</div>
 		</div>
 	</div>
   </div>
