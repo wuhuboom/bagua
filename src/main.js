@@ -43,7 +43,7 @@ Vue.prototype.$dayjsTime = (time = new Date(), f = "YYYY-MM-DD HH:mm:ss") => {
   return dayjs(time).format(f);
 };
 Vue.prototype.$dayjsSingleTime = (time = new Date()) => {
-  return dayjs(time).format("MM-DD HH:mm");
+  return dayjs(time).format("MM-DD HH:mm:ss");
 };
 
 Vue.prototype.$betName = (v) => {
