@@ -316,6 +316,10 @@ export default {
 			app.$toast("当前无回水");
 		}else if(data.msgKey == 'betTooMin'){
 			app.$toast("下注金额不得低于100");
+		}else if(data.msgKey == 'noOrder'){
+			app.$toast("取消失败,没有订单");
+		}else if(data.msgKey == 'canClose'){
+			app.$toast("取消失败,已经封盘");
 		}
       }  else if ([9].includes(+message.type)) {
         //撤回消息修改status
