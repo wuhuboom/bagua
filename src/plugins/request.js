@@ -142,6 +142,7 @@ export default ({
   headers,
   responseType,
   noAutoFormData = true,
+  onUploadProgress,            
 }) => {
   const promise = instance({
     url,
@@ -151,6 +152,7 @@ export default ({
     responseType,
     headers,
     noAutoFormData,
+	onUploadProgress,       
   });
   return to(promise);
 };

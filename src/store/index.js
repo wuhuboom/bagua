@@ -190,6 +190,7 @@ export default new Vuex.Store({
     bankCard: [],
     notice: [],
     hallId: null,
+    fileProgress: 0, // 当前文件的进度条
     shareData: {
       // chatAble
       // recharge 3000
@@ -214,6 +215,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+	setFileProgress(state, data) {
+	  state.fileProgress = data;
+	},
     setCashDetail(state, data) {
       state.cashDetail = data;
     },

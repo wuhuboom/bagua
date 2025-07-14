@@ -1,4 +1,5 @@
 import request from "@/plugins/request";
+import store from "@/store";
 export default {
   //invest/pre
   investPre(data) {
@@ -20,6 +21,11 @@ export default {
       url: "/home/upload_file",
       method: "post",
       data,
+	  onUploadProgress:function(progressEvent) {
+		const percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
+		console.log(`Upload progress: ${percentCompleted}%`);
+		store.commit("setFileProgress", percentCompleted); 
+	  }
     });
   },
   lotteryMyOrderAll(data) {

@@ -150,9 +150,9 @@
 			    </div>
 			  </template>
 			</van-popover>
-			<van-uploader class="m-l-8" :accept="'*'" :after-read="afterFileRead" v-if="user.isAdmin==1">
+			<van-uploader class="icon-box" :accept="'*'" :after-read="afterFileRead" v-if="user.isAdmin==1">
 			  <!-- <van-icon :size="28" name="photo-o" /> -->
-			  <img src="@/assets/img/fj.png" alt="" class="fjBox" />
+			  <img src="@/assets/img/fj.png" alt="" class="" />
 			</van-uploader>
 			
 			  <div class="input-box" @keydown.enter.prevent="send">
@@ -267,6 +267,19 @@
 	        更新中 <span class="num">{{ this.progressBar }}%</span>
 	      </div>
 	      <div class="dex center-center font13">正在更新中,请勿关闭当前页面…</div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 文件进度条 -->
+	<div class="file-box" v-if="fileModal">
+	  <div class="bg"></div>
+	  <div class="file-wrap">
+	    <div class="wrap-box">
+	      <div class="text">
+	        上传中 <span class="num">{{ `${$store.state.fileProgress}` }}%</span>
+	      </div>
+	      <div class="dex center-center">正在上传文件中,请勿关闭当前页面…</div>
 	    </div>
 	  </div>
 	</div>
@@ -395,6 +408,7 @@ export default {
 	  unGame: false,
       version: "",
 	  fromModal2: false,
+	  fileModal: false,
       progressBarState: false,
       progressBar: 0,
       key: "storageVersion",
@@ -712,18 +726,20 @@ export default {
       // });
     },
 	async afterFileRead({ file }) {
-	  this.$toast.loading({
-	    duration: 0,
-	    forbidClick: true,
-	  });
+	  this.fileModal = true;
+	  // this.$toast.loading({
+	  //   duration: 19,
+	  //   forbidClick: true,
+	  // });
 	  // const [err, res] = await userApi.uploadImg({ file });
 	  const [err, res] = await userApi.uploadFile({ file });
 	  if (err) return;
-	  this.$toast.clear();
-	  console.log(res);
+	  // this.$toast.clear();
+	  this.fileModal = false;
+	  // console.log(res);
 	  // this.sendMessage({
-	  //   data: res.data,
-	  //   type: 3,
+	  //   data: '8888',
+	  //   type: 10,
 	  // });
 	},
     onSelect(action) {
@@ -1118,8 +1134,6 @@ export default {
 	  }
 	  const res = +err;
 	  let storageVersion = auth.getToken(this.key);
-	  console.log(auth.getToken(this.key))
-	  console.log(res)
 	  if (storageVersion && storageVersion != res) {
 	    this.fromModal2 = true;
 	    this.version = res;
@@ -2090,7 +2104,59 @@ export default {
 		}
 	}
 }
-
+.file-box{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+	.bg {
+	  position: absolute;
+	  width: 100%;
+	  height: 100%;
+	  left: 0;
+	  top: 0;
+	  background: rgba(0, 0, 0, 0.8);
+	}  
+	.file-wrap {
+	  position: relative;
+	  border-radius: 30px 30px 30px 30px;
+	  background: #ffffff;
+	  width: 560px;
+	  height: 376px;
+	  .wrap-box {
+	    padding-top: 120px;
+	    .text {
+	      font-size: 32px;
+	      font-weight: 600;
+	      text-align: center;
+	      height: 100px;
+	  
+	      .num {
+	        color: #508EFF;
+	      }
+	    }
+	  
+	    .btn {
+	      border-top: 1px solid #e5e5e5;
+	      height: 98px;
+	      color: #508EFF;
+	      font-weight: 600;
+	      font-size: 32px;
+	    }
+	  
+	    .dex {
+	      color: #999999;
+	      font-size: 24px;
+	      margin-top: 10px;
+	    }
+	  }
+	}
+}
 .version-box {
   position: fixed;
   top: 0;
@@ -2127,7 +2193,6 @@ export default {
       background: url("@/assets/img/Index/upload.png") no-repeat;
       background-size: 100% auto;
     }
-
     .wrap-box {
       padding-top: 170px;
       .text {
@@ -2174,6 +2239,18 @@ export default {
 			border-radius: 40px !important;
 		}
 	}  
+  }
+  .file-box{
+	.file-wrap {
+	  position: relative;
+	  border-radius: 80px 80px 80px 80px;
+	  background: #ffffff;
+	  width: 22rem;
+	  height: 782px;
+	  .wrap-box {
+	    padding-top: 240px !important;
+	  }
+	}
   }
   .version-box {
   
