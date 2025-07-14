@@ -23,8 +23,11 @@ export default {
       data,
 	  onUploadProgress:function(progressEvent) {
 		const percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
-		console.log(`Upload progress: ${percentCompleted}%`);
+		// console.log(`Upload progress: ${percentCompleted}%`);
 		store.commit("setFileProgress", percentCompleted); 
+		if(percentCompleted >= 100){
+			store.commit("setFileProgress", 0); 
+		}
 	  }
     });
   },
