@@ -15,6 +15,13 @@ export default {
       data,
     });
   },
+  uploadFile(data) {
+    return request({
+      url: "/home/upload_file",
+      method: "post",
+      data,
+    });
+  },
   lotteryMyOrderAll(data) {
     return request({
       url: "/lottery/my_order/all",

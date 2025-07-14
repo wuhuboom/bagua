@@ -150,6 +150,10 @@
 			    </div>
 			  </template>
 			</van-popover>
+			<van-uploader class="m-l-8" :accept="'*'" :after-read="afterFileRead" v-if="user.isAdmin==1">
+			  <!-- <van-icon :size="28" name="photo-o" /> -->
+			  <img src="@/assets/img/fj.png" alt="" class="fjBox" />
+			</van-uploader>
 			
 			  <div class="input-box" @keydown.enter.prevent="send">
 			    <input
@@ -697,7 +701,8 @@ export default {
         duration: 0,
         forbidClick: true,
       });
-      const [err, res] = await userApi.uploadImg({ file });
+      // const [err, res] = await userApi.uploadImg({ file });
+      const [err, res] = await userApi.uploadFile({ file });
       if (err) return;
       this.$toast.clear();
       console.log(res);
@@ -706,6 +711,21 @@ export default {
       //   type: 3,
       // });
     },
+	async afterFileRead({ file }) {
+	  this.$toast.loading({
+	    duration: 0,
+	    forbidClick: true,
+	  });
+	  // const [err, res] = await userApi.uploadImg({ file });
+	  const [err, res] = await userApi.uploadFile({ file });
+	  if (err) return;
+	  this.$toast.clear();
+	  console.log(res);
+	  // this.sendMessage({
+	  //   data: res.data,
+	  //   type: 3,
+	  // });
+	},
     onSelect(action) {
       console.log(action);
     },

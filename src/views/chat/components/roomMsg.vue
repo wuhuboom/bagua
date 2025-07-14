@@ -28,7 +28,7 @@
 
         <ul
           class="flex-column"
-          v-if="[2, 4, 8, 13, 14, 6, 3, 9].includes(+doc.type)"
+          v-if="[2, 4, 8, 13, 14, 6, 3, 9, 16, 17].includes(+doc.type)"
           :class="{ mainContent: !isMe, 'txtPad mainIsTrueMeContent': isMe }"
         >
           <li class="name align-center nameAndTime">
@@ -42,7 +42,7 @@
             v-long-press="() => recallMessage(doc)"
           >
             <component
-              v-if="[2, 4, 8, 13, 14, 6, 3, 9].includes(+doc.type)"
+              v-if="[2, 4, 8, 13, 14, 6, 3, 9, 16, 17].includes(+doc.type)"
               :is="currentComponent(+doc.type)"
               :userPic="doc.user=='系统'?sysPic:userPic"
               :doc="doc"
@@ -78,7 +78,7 @@
 
         <ul
           class="flex-column"
-          v-if="![2, 4, 8, 13, 14,6, 3, 9].includes(+doc.type)"
+          v-if="![2, 4, 8, 13, 14,6, 3, 9, 16, 17].includes(+doc.type)"
           :class="{ txtPad: isMe, mainIsNotMeContent: !isMe }"
         >
           <li class="name align-center nameAndTime" v-if="!isMe">
@@ -170,6 +170,7 @@ import sysPic from "@/assets/img/systemUser.png";
 import bindBuy from "@/views/chat/components/bindBuy.vue";
 import imgMsg from "@/views/chat/components/imgMsg.vue";
 import opensMsg from "@/views/chat/components/opensMsg.vue";
+import fileMsg from "@/views/chat/components/fileMsg.vue";
 import balanceMsg from "@/views/chat/components/balanceMsg.vue";
 import winMsg from "@/views/chat/components/winMsg.vue";
 import statistics from "@/views/chat/components/statistics.vue";
@@ -213,13 +214,14 @@ export default {
     imgMsg,
     repalyMsg,
     opensMsg,
+	fileMsg,
 	balanceMsg,
 	winMsg,
 	statistics
   },
   computed: {
     popoverDisabled() {
-      if (![0, 8, 10, 13, 6, 2, 3, 9].includes(+this.doc.type)) {
+      if (![0, 8, 10, 13, 6, 2, 3, 9, 16, 17].includes(+this.doc.type)) {
         return true;
       }
       return this.disabled;
@@ -356,7 +358,7 @@ export default {
         case 3:
           //开奖数据
           return "bets";
-        case 14:
+        case 17:
           //图片
           return "imgMsg";
         case 13:
@@ -374,6 +376,9 @@ export default {
         case 8:
           //开奖信息
           return "opensMsg";
+        case 16:
+          //开奖信息
+          return "fileMsg";
         default:
           return "redImg";
       }
