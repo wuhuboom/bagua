@@ -388,6 +388,9 @@ export default {
 </script>
 <style lang="scss">
 .my-msg {
+  .video{
+	  float: right;
+  }
   justify-content: flex-end;
   //翻转
   //flex-direction: row-reverse;
