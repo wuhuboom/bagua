@@ -736,6 +736,7 @@ export default {
 	  if (err) return;
 	  // this.$toast.clear();
 	  this.fileModal = false;
+	  this.$store.commit("setFileProgress", 0); 
 	  // console.log(res);
 	  // this.sendMessage({
 	  //   data: '8888',
