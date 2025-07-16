@@ -2002,9 +2002,11 @@ export default {
 .unread-mention {
 	align-items: end !important;
   	position: fixed;
-  	top: 35% !important;
+  	// top: 55% !important;
+	top: calc(5% + 40.2rem);
   	right: inherit !important;
   	margin-left: 19.5rem !important;
+	justify-content: inherit !important;
   	.at-symbol {
   	  min-width: 262px;
   	  height: 136px;
