@@ -91,7 +91,7 @@ export default {
   //虚线
   border-top: 1px dashed #62b6f8;
 }
-@media (min-width: 750px) {
+@media (min-width: 500px) {
 .opens-list{
   width: 21rem;
 }

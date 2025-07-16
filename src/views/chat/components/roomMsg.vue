@@ -28,7 +28,7 @@
 
         <ul
           class="flex-column"
-          v-if="[2, 4, 8, 13, 14, 6, 3, 9, 16, 17].includes(+doc.type)"
+          v-if="[2, 4, 8, 13, 14, 6, 3, 9, 16, 17, 10].includes(+doc.type)"
           :class="{ mainContent: !isMe, 'txtPad mainIsTrueMeContent': isMe }"
         >
           <li class="name align-center nameAndTime">
@@ -42,7 +42,7 @@
             v-long-press="() => recallMessage(doc)"
           >
             <component
-              v-if="[2, 4, 8, 13, 14, 6, 3, 9, 16, 17].includes(+doc.type)"
+              v-if="[2, 4, 8, 13, 14, 6, 3, 9, 16, 17, 10].includes(+doc.type)"
               :is="currentComponent(+doc.type)"
               :userPic="doc.user=='系统'?sysPic:userPic"
               :doc="doc"
@@ -78,7 +78,7 @@
 
         <ul
           class="flex-column"
-          v-if="![2, 4, 8, 13, 14,6, 3, 9, 16, 17].includes(+doc.type)"
+          v-if="![2, 4, 8, 13, 14,6, 3, 9, 16, 17, 10].includes(+doc.type)"
           :class="{ txtPad: isMe, mainIsNotMeContent: !isMe }"
         >
           <li class="name align-center nameAndTime" v-if="!isMe">
@@ -173,6 +173,7 @@ import opensMsg from "@/views/chat/components/opensMsg.vue";
 import fileMsg from "@/views/chat/components/fileMsg.vue";
 import balanceMsg from "@/views/chat/components/balanceMsg.vue";
 import winMsg from "@/views/chat/components/winMsg.vue";
+import callMsg from "@/views/chat/components/callMsg.vue";
 import statistics from "@/views/chat/components/statistics.vue";
 import redImg from "@/views/chat/components/redImg.vue";
 import bets from "@/views/chat/components/bets.vue";
@@ -217,6 +218,7 @@ export default {
 	fileMsg,
 	balanceMsg,
 	winMsg,
+	callMsg,
 	statistics
   },
   computed: {
@@ -350,7 +352,7 @@ export default {
       }
     },
     currentComponent(type) {
-		// console.log(type)
+		console.log(type)
       switch (type) {
         case 2:
 		  //订单列表
@@ -364,6 +366,9 @@ export default {
         case 13:
           //回复
           return "repalyMsg";
+        case 10:
+          //回复
+          return "callMsg";
         case 6:
           //用户余额列表
           return "balanceMsg";
@@ -452,7 +457,7 @@ export default {
       margin-right: 0;
     }
   }
-  @media (min-width: 750px) {
+  @media (min-width: 500px) {
   	.contentTxt{
   		font-size: 76px !important;
   	}
@@ -495,7 +500,7 @@ export default {
     display: inline-flex;
   }
   
-  @media (min-width: 750px) {
+  @media (min-width: 500px) {
     .user-pic {
   		width: 180px;
   		height: 180px;
@@ -531,7 +536,7 @@ export default {
     text-transform: none;
   }
   
-  @media (min-width: 750px) {
+  @media (min-width: 500px) {
   	.time{
   		font-size: 64px;
   	}
@@ -620,7 +625,7 @@ export default {
   // }
 }
 
-@media (min-width: 750px) {
+@media (min-width: 500px) {
   .mainIsNotMeContent {
 	padding: 24px 0 30px 0;
   }

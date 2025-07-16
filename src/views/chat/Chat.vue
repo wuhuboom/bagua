@@ -32,11 +32,13 @@
 
 
     
-    <div class="unread-mention center-center flex-column">
+    <div class="unread-mention center-center flex-column font13">
       <div @click="goBtm" v-if="aites.length">
-        <van-badge :data-badge="aites.length" :content="aites.length" max="99">
-          <span class="at-symbol center-center">@</span>
-        </van-badge>
+       <!-- <van-badge :data-badge="aites.length" :content="aites.length" max="99">
+          <span class="at-symbol center-center">@ {{aites.length}}</span>
+        </van-badge> -->
+		
+		<span class="at-symbol center-center">@ {{aites.length}}</span>
       </div>
       <div
         class="align-center m-t-32 at-symbol"
@@ -46,17 +48,18 @@
         <div class="imgB">
           <img src="@/assets/img/gobottom.png" />
         </div>
-        <div class="txt">回到底部</div>
+        <div class="txt font13">回到底部</div>
       </div>
     </div>
     <van-action-sheet
       :overlay="false"
+	  :transition="null"
       v-model="showUserList"
       class="aite-box-sheet"
     >
       <ul class="user-list">
         <li
-          class="align-center"
+          class="align-center font13"
           v-for="(user, index) in filteredUsers"
           :key="index"
           :class="{ active: index === selectedIndex }"
@@ -72,10 +75,15 @@
                 : userPic
             "
           />
-          @{{ user.username }}
+          @{{ user.user }}
         </li>
       </ul>
     </van-action-sheet>
+	<div>
+	<!-- 	<el-select>
+			<el-option>4444</el-option>
+		</el-select> -->
+	</div>
     <div ref="bottomBox" class="bottom-box">
       <div class="wrap-box" :class="{ 'btm-disabled': disabled }">
 		
@@ -576,7 +584,7 @@ export default {
       if (user) {
         const beforeMention = this.text.slice(0, this.mentionPosition);
         const afterMention = this.text.slice(this.getCursorPosition());
-        this.text = `${beforeMention}@${user.username} ${afterMention}`;
+        this.text = `${beforeMention}@${user.user} ${afterMention}`;
         this.showUserList = false;
       }
     },
@@ -602,7 +610,7 @@ export default {
       //以@结尾
       if (value[value.length - 1] == "@") {
         this.filteredUsers = this.onlineUser.map((v) => v);
-        // this.showUserList = true;
+        this.showUserList = true;
         this.mentionPosition = atIndex;
         return;
       }
@@ -618,7 +626,7 @@ export default {
         }
         this.selectedIndex = 0;
         this.filteredUsers = this.onlineUser.filter((user) =>
-          user.username.toLowerCase().includes(lastMatch.toLowerCase())
+          user.user.toLowerCase().includes(lastMatch.toLowerCase())
         );
         this.showUserList = true;
         this.mentionPosition = atIndex;
@@ -1012,9 +1020,9 @@ export default {
           .filter((name) => name.length > 0);
         if (matches.length > 0) {
           const users = this.onlineUser.filter((user) =>
-            matches.includes(user.username)
+            matches.includes(user.user)
           );
-          let playerId = users.map((v) => v.playerId);
+          let playerId = users.map((v) => v.id);
           //去重复 playerId
           playerId = [...new Set(playerId)];
           this.sendMessage({
@@ -1142,6 +1150,14 @@ export default {
 	    auth.setToken(res, this.key);
 	  }
 	},
+	async getChatMember() {
+	  const [err, res] = await userApi.chatMember();
+	  if (err) {
+	    return;
+	  }
+	  
+      this.$store.commit("chat/setOnlineUser", res.data);
+	},
   },
   created() {
     const storedItem = localStorage.getItem("selectedImgBqItem");
@@ -1162,6 +1178,7 @@ export default {
     this.scrollToBottom();
 	
 	this.getVersion();
+	this.getChatMember();
   },
   mounted() {
     this.chat();
@@ -1382,7 +1399,7 @@ export default {
 .chatHeight{
 	height: calc(100vh - @height);
 }
-@media (min-width: 750px) {
+@media (min-width: 500px) {
 	@height: 104.4rem;
   .chatHeight{
 	height: 54rem;
@@ -1658,8 +1675,8 @@ export default {
   justify-content: center;
 
   color: white;
-  font-size: 32px;
-  font-weight: bold;
+  // font-size: 32px;
+  // font-weight: bold;
 
   color: #666;
 }
@@ -1981,7 +1998,68 @@ export default {
 		}
   }
 }
-@media (min-width: 750px) {
+@media (min-width: 500px) {
+.unread-mention {
+	align-items: end !important;
+  	position: fixed;
+  	top: 35% !important;
+  	right: inherit !important;
+  	margin-left: 19.5rem !important;
+  	.at-symbol {
+  	  min-width: 262px;
+  	  height: 136px;
+	  line-height: 116px;
+  	  background: #ffffff;
+  	  border-radius: 60px 0px 0px 60px;
+  	  // margin-left: 20px;
+  	
+  	  padding: 0 40px;
+  	
+  	  .imgB {
+  	    img {
+  	      width: 64px !important;
+  	      height: 64px !important;
+  	      vertical-align: middle;
+  	      margin-top: -8px !important;
+  	      margin-right: 16px !important;
+  	    }
+  	  }
+  	
+  	  .txt {
+  	    line-height: 22px;
+  	  }
+  	}
+}
+.aite-box-sheet{
+	padding-bottom: 0;
+	transition: none !important;
+	bottom: inherit !important; 
+	left: inherit !important;
+	width: 26rem !important;
+	min-width: 26rem  !important;
+	max-width: 26rem  !important;
+	max-height: 40%;
+	position: relative;
+	.user-pic{
+		width: 152px !important;
+		height: 152px !important;
+	}
+	.user-list li {
+	  padding: 0 20px !important;
+	  height: 172px !important;
+	  .user-pic {
+		width: 152px !important;
+		height: 152px !important;
+	  }
+	}
+	::v-deep .van-action-sheet-enter-active{
+		transition: none !important;
+	}
+	::v-deep .van-action-sheet-leave-active{
+		transition: none !important;
+	}
+}
+	
 .bigImgIcon {
   img {
     width: 4rem;
@@ -2223,7 +2301,7 @@ export default {
     }
   }
 }
-@media (min-width: 750px) {
+@media (min-width: 500px) {
   .nicName{
 	.opr{
 		border-radius: 26px !important;

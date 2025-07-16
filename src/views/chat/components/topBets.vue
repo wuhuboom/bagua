@@ -294,7 +294,7 @@ export default {
   overflow: visible;
 }
 
-@media (min-width: 750px) {
+@media (min-width: 500px) {
   .chat-top-bets {
 	margin: auto auto;
 	padding-top: 0px;
@@ -363,7 +363,7 @@ export default {
 		margin-left: 6px;
 	  }
 	  
-		@media (min-width: 750px) {
+		@media (min-width: 500px) {
 		  img {
 		  		width: 112px;
 		  		height: 112px;

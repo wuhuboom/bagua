@@ -43,7 +43,7 @@ export default {
 	width: 40%;
 		// float: right;
 }
-@media (min-width: 750px) {
+@media (min-width: 500px) {
 	.opens-list {
 	  width: inherit !important; 
 	}

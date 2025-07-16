@@ -478,6 +478,11 @@ export default {
       url: "/player_info",
     });
   },
+  chatMember() {
+    return request({
+      url: "/home/chat_mer",
+    });
+  },
   homeswiper(params) {
     return request({
       url: "/home/slider2",
