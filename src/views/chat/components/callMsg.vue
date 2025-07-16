@@ -1,7 +1,7 @@
 <!-- eslint-disable no-empty -->
 <!-- eslint-disable no-empty -->
 <template>
-  <div class="repaly-txt p-x-16 m-t-4 font12">
+  <div class="repaly-txt p-x-16 m-t-4 font13">
     <p v-html="highlightedText(doc.data?.msg)"></p>
   </div>
 </template>
