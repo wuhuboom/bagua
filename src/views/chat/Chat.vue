@@ -2008,7 +2008,7 @@ export default {
   	// top: 55% !important;
 	top: calc(5% + 40.2rem);
   	right: inherit !important;
-  	margin-left: 23.5rem !important;
+  	margin-left: 25.5rem !important;
 	justify-content: inherit !important;
   	.at-symbol {
   	  min-width: 262px;
@@ -2041,8 +2041,8 @@ export default {
 	bottom: inherit !important; 
 	left: inherit !important;
 	width: 26rem !important;
-	min-width: 30rem  !important;
-	max-width: 30rem  !important;
+	min-width: 32rem !important;
+	max-width: 32rem !important;
 	max-height: 40%;
 	position: relative;
 	.user-pic{
@@ -2117,7 +2117,7 @@ export default {
 		position: fixed;
 		top: 38% !important;
 		right: inherit !important;
-		margin-left: 25rem !important;
+		margin-left: 27rem !important;
 		img{
 			width: 3.5rem !important;
 			height: 3.5rem !important;
