@@ -371,7 +371,7 @@ export default {
 	  orderList: [],
 	  scoresList:[100, 200, 500, 1000, 5000, 10000],
 	  downScoresList:[100, 200, 500, 1000, 5000, 10000, '全部'],
-      showButton: false,
+      showButton: true,
       filteredUsers: [],
       showUserList: false,
       selectedIndex: 0,
@@ -1411,16 +1411,16 @@ export default {
 	  background:#fff;
   }
   .wrap-box{
-	  height: 5.9rem !important;
+	  height: 6.6rem !important;
 	  position: inherit !important;
       padding: 0 .28rem !important;
 	  
 	  .quick{
-		  margin: 40px 0;
+		  margin: 45px 0 !important;
 	  	  .item-box-q{
 	  		padding: 0 40px !important;
 	  		.btn-q{
-	  			padding: 20px 0 !important;
+	  			padding: 40px 0 !important;
 	  			border-radius: 20px !important;
 	  		}
 	  	  }
@@ -1999,13 +1999,16 @@ export default {
   }
 }
 @media (min-width: 500px) {
+.chat-con{
+	height: 60rem !important;
+}
 .unread-mention {
 	align-items: end !important;
   	position: fixed;
   	// top: 55% !important;
 	top: calc(5% + 40.2rem);
   	right: inherit !important;
-  	margin-left: 19.5rem !important;
+  	margin-left: 23.5rem !important;
 	justify-content: inherit !important;
   	.at-symbol {
   	  min-width: 262px;
@@ -2038,8 +2041,8 @@ export default {
 	bottom: inherit !important; 
 	left: inherit !important;
 	width: 26rem !important;
-	min-width: 26rem  !important;
-	max-width: 26rem  !important;
+	min-width: 30rem  !important;
+	max-width: 30rem  !important;
 	max-height: 40%;
 	position: relative;
 	.user-pic{
@@ -2112,12 +2115,12 @@ export default {
 	
 	.customer{
 		position: fixed;
-		top: 40% !important;
+		top: 38% !important;
 		right: inherit !important;
-		margin-left: 22rem !important;
+		margin-left: 25rem !important;
 		img{
-			width: 3rem !important;
-			height: 3rem !important;
+			width: 3.5rem !important;
+			height: 3.5rem !important;
 		}
 	}
 	.upScores{
