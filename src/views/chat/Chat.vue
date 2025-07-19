@@ -470,9 +470,16 @@ export default {
     //   return bigListArr.bigListArr
     // },
     placeholder() {
-	  return !this.ableChat
-	    ? "您已被系统禁言！"
-	    : "请输入内容"; 
+		if(!this.unChat){
+			return "您已被系统禁言！"
+		} else if(!this.ableChat){
+			return "全体禁言"
+		} else{
+			return "请输入内容"
+		}
+	  // return !this.ableChat
+	  //   ? "您已被系统禁言！"
+	  //   : "请输入内容"; 
 	  // return "请输入内容";
     },
     disabled() {
