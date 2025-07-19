@@ -470,10 +470,9 @@ export default {
     //   return bigListArr.bigListArr
     // },
     placeholder() {
-		console.log(this.ableChat)
-      return !this.unChat
-        ? "您已被系统禁言！"
-        : "请输入内容";
+	  return !this.ableChat
+	    ? "您已被系统禁言！"
+	    : "请输入内容"; 
 	  // return "请输入内容";
     },
     disabled() {
@@ -916,7 +915,6 @@ export default {
         //踢出
         this.notView();
       } else if (+res.data.chatStatus === 0) {
-        // this.unChat = true
         this.setUnAllowChat(true);
       }
     },

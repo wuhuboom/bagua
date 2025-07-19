@@ -248,6 +248,7 @@ export default {
       //0 文本消息 2 分享合买 4 红包消息 8图片 10 @消息 13 回复消息
 		// console.log(JSON.parse(message.data))
 		// console.log(message.data)
+		// message = {"type":18,"data":0} 
       if ([0, 2, 8, 10, 13, 6,  3, 7, 9, 17, 16].includes(+message.type)) {
         // 文本消息
         commit("ADD_MESSAGE", { message });
@@ -296,6 +297,15 @@ export default {
           commit("setUnAllowChat", true);
         } else if (resResults == 1 || resResults == 2) {
           commit("setUnAllowChat", false);
+        }
+      }else if (message.type === 18) {
+        //接收消息:{"type":18,"data":0} (0.禁言 1.解除禁言)
+        const resResults = JSON.parse(message.data);
+        // console.log("resResults", resResults);
+        if (resResults == 0) {
+          commit("setUnAllowChat", false);
+        } else if (resResults == 1) {
+          commit("setUnAllowChat", true);
         }
       }else if ([4].includes(+message.type)) {
         let data = JSON.parse(message.data);
