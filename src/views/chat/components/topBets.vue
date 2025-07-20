@@ -14,7 +14,7 @@
         <ul class="justify-between p-l-8 p-r-8">
 		  
 		  <li class="align-center">
-		    <div class="flex-column align-center">
+		    <div class="flex-column align-center font13">
 			  <!-- <p class="rightExpect colorfff">{{ detail.nextExpect.nextExpect }}期</p> -->
 		      <div class="timeData" v-if="detail.nextExpect.countdown==-1&&detail.nextExpect.stopTime==-1">
 				  未开盘
@@ -50,7 +50,7 @@
             <div class=" align-center">
           
               <div class="sendBox">
-                <p class="center-center colorfff moneyLeft" @click="checkMoney">
+                <p class="center-center colorfff font13 moneyLeft" @click="checkMoney">
                   余额
                   <img
                     class="d-img"
