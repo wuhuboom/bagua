@@ -1411,6 +1411,7 @@ export default {
   }
   .chat-box {
 	margin-top: .24rem;
+	margin-bottom: .20rem;
   }
   .bottom-box{
 	  background:#fff;
