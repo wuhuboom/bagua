@@ -1237,6 +1237,7 @@ export default {
 .chat-box {
   overflow-y: auto;
   margin-top: 140px;
+  margin-bottom: 20px;
 
   .time-box {
     margin-top: 40px;
