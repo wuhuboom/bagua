@@ -290,14 +290,14 @@ export default {
 <style scoped lang="scss">
 .chat-top-bets {
   z-index: 3 !important;
-  padding-top: 90px;
+  padding-top: 20px;
   overflow: visible;
 }
 
 @media (min-width: 500px) {
   .chat-top-bets {
 	margin: auto auto;
-	padding-top: 0px;
+	padding-top: .2rem;
 	position: initial;
   }
   .top-bets-bot{

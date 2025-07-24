@@ -3,9 +3,9 @@
   <!-- <div class="chat-con flex-column chatHeight"> -->
   
 	
-    <AppTopBar ref="topBar" topBarTitle="聊天室">
+    <!-- <AppTopBar ref="topBar" topBarTitle="聊天室">
 
-    </AppTopBar>
+    </AppTopBar> -->
     <topBets @update-head="updateMinlossBox" @expect="expect" />
     <div
       ref="chatBox"
