@@ -1,11 +1,14 @@
 <template>
   <div class="opens-list">
-	<div class="num">
-		<p class="tops font12 ">
+	<div class="num font13">
+		<!-- <p class="tops font12 ">
 		  第{{ data.expect }}期玩家竞猜账单
+		</p> -->
+		<p class="tops font13 ">
+		  本期玩家竞猜账单
 		</p>
 	</div>
-	<div class="content font9">
+	<div class="content font13">
 		<div class="item" v-for="(item, index) in data" @click="open(item)">
 		  <div class="betName">
 			  <span>{{item.name}}</span>
@@ -22,11 +25,11 @@
 	  v-model="showOpen"
 	>
 	  <div class="modal-header">
-	    <div class="modal-title">
+	    <div class="modal-title font13">
 			<div style="float: left;">{{cur.name}}下注详情</div>
 			<div style="float: right;">{{cur.money}}</div>
 		</div>
-	    <div class="modal-subtitle">
+	    <div class="modal-subtitle font13">
 			<div v-for="(item,index) in cur.data" :key="index" class="item">
 				<div class="code">{{item.code}}</div>
 				<div style="float: right;">{{item.money}}</div>
@@ -175,6 +178,51 @@ export default {
 	  vertical-align: text-bottom;
 	}
 	
+}
+@media (min-width: 500px) {
+	.opens-list {
+		border-radius: 18px !important;
+		width: 21vw !important;
+		.num{
+			padding: 20px 36px;
+			line-height: 120px;
+			// background-color: #62b6f8;
+			border-bottom: 4px solid #e0e0e0;
+			border-top-left-radius: 18px;
+			border-top-right-radius: 18px;
+		}
+		.content{
+			  padding: 60px;
+			  .item{
+				  margin: 8px 8px;
+				  height: 160px;
+				  padding: 0 16px;
+				  .betName{
+					line-height: 160px;
+				  }
+			  }
+		}
+	}
+	.modal{
+		width: 21rem !important;
+		border-radius: 30px !important;
+		.modal-title {
+		  width: 100%;
+		  height: 180px;
+		  padding: 0px 50px;
+		  line-height: 180px;
+		  border-bottom: 4px solid #e0e0e0;
+		}
+		
+		.modal-subtitle {
+		  padding: 20px 50px;
+		  .item{
+			  height: 160px;
+			  line-height: 160px;
+		  }
+		}
+		
+	}
 }
 ::v-deep .van-overlay{
 	background-color: rgba(161, 159, 163, 0.3);
