@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="user-scalable=no">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover"/>
-    <link rel="icon" href="<%= BASE_URL %>static/icon.png">
+    <!-- <meta name="viewport" content="user-scalable=no"> -->
+    <!-- <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover"/> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="<%= BASE_URL %>static/icon.png">
     <meta name="msapplication-TileColor" content="#f6d2d2">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -40,12 +41,98 @@
          document.title = window.logoTxt;
      }
    </script>
+   <style>
+       body {
+           margin: 0;
+           padding: 0;
+           font-family: Arial;
+       }
+       /* 折叠控制按钮 */
+       .toggle-btn {
+           width: 100%;
+           /* padding: 8px 0; */
+		   height: 40px;
+		   line-height: 40px;
+           background: #f0f0f0;
+           border: none;
+           border-bottom: 1px solid #ddd;
+           font-size: 14px;
+           color: #666;
+       }
+       /* 直播容器（默认展开状态） */
+       .live-container {
+           width: 100%;
+           height: 20vh;
+           background: #000;
+           transition: height 0.3s ease;
+       }
+       /* 折叠状态 */
+       .live-container.collapsed {
+           height: 0;
+           overflow: hidden;
+       }
+       /* 内容区域 */
+       .content {
+           /* padding: 15px; */
+           height: calc(80vh + 40px);
+           overflow-y: auto;
+       }
+	   @media (min-width: 500px) {
+	   /* 内容区域 */
+	   		.content {
+	   		  height: initial;
+	   		}   
+	   }
+       /* 按钮图标（箭头） */
+       .icon {
+           display: inline-block;
+           margin-right: 5px;
+           transition: transform 0.3s;
+       }
+       .collapsed + .toggle-btn .icon {
+           transform: rotate(180deg);
+       }
+	   
+   </style>
+   
   </head>
   <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
+	<!-- 直播窗口 -->
+	<div class="live-container" id="liveContainer">
+	    <iframe 
+	        width="100%" 
+	        height="100%"  
+	        frameborder="0" 
+	        scrolling="no" 
+	        allowfullscreen
+	        src="https://liveshare.huya.com/iframe/216357">
+	    </iframe>
+	</div>
+	
+	<!-- 收展按钮 -->
+<!-- 	<button class="toggle-btn" onclick="toggleLive()">
+	    <span class="icon">▼</span>
+	    <span id="btnText">隐藏直播</span>
+	</button> -->
+	
+	<!-- 下方内容区 -->
+	<div class="content" id="hContent">
+	    <noscript>
+	      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+	    </noscript>
+	    <div id="app"></div>
+	</div>
+	
+	<script>
+	    function toggleLive5555() {
+	        const container = document.getElementById('liveContainer');
+	        const btnText = document.getElementById('btnText');
+	        
+	        container.classList.toggle('collapsed');
+	        btnText.innerText = container.classList.contains('collapsed') 
+	            ? '展开直播' 
+	            : '隐藏直播';
+	    }
+	</script>  
   </body>
 </html>

@@ -92,7 +92,6 @@ Vue.directive("long-press", {
     el.__longPressCleanup && el.__longPressCleanup();
   },
 });
-
 const app = new Vue({
   router,
   store,

@@ -289,6 +289,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .chat-top-bets {
+  position: inherit;
   z-index: 3 !important;
   padding-top: 20px;
   overflow: visible;

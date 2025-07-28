@@ -6,6 +6,10 @@
     <!-- <AppTopBar ref="topBar" topBarTitle="聊天室">
 
     </AppTopBar> -->
+	<button class="toggle-btn" @click="toggleLive">
+	    <span class="icon">▼</span>
+	    <span id="btnText">隐藏直播</span>
+	</button>
     <topBets @update-head="updateMinlossBox" @expect="expect" />
     <div
       ref="chatBox"
@@ -382,7 +386,7 @@ export default {
       ],
       showPopover: false,
       actions: [{ text: "选项一" }, { text: "选项二" }, { text: "选项三" }],
-      chatHeight: (window.innerHeight - 95) + 'px',
+      chatHeight: '0px',
       userPic,
       text: "",
       shareData: {
@@ -420,6 +424,7 @@ export default {
       progressBarState: false,
       progressBar: 0,
       key: "storageVersion",
+	  liveHeight: 0
     };
   },
   directives: {
@@ -570,7 +575,7 @@ export default {
     handleScroll() {
       const scrollContainer = this.$refs.chatBox;
       if (!scrollContainer) return;
-      console.log("scrollContainer", scrollHeight);
+      
       const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
       // 正确计算：用户滚动到接近底部（50px 以内）隐藏按钮
       this.showButton = scrollTop + clientHeight < scrollHeight - 50;
@@ -1163,6 +1168,43 @@ export default {
 	  
       this.$store.commit("chat/setOnlineUser", res.data);
 	},
+	toggleLive(){
+		const container = document.getElementById('liveContainer');
+		const btnText = document.getElementById('btnText');
+		
+		container.classList.toggle('collapsed');
+		btnText.innerText = container.classList.contains('collapsed') 
+		    ? '展开直播' 
+		    : '隐藏直播';
+		
+	
+		let content = document.getElementById('hContent');
+		let chatBox = document.getElementsByClassName('chat-con')[0];
+		let body = document.getElementsByTagName('html')[0].offsetHeight;
+		let toggle = document.getElementsByClassName('toggle-btn')[0].offsetHeight;
+		let chatTop = document.getElementsByClassName('chat-top-bets')[0].offsetHeight;
+		let bottomBox = document.getElementsByClassName('wrap-box')[0].offsetHeight;
+		
+		let isMobile = this.isMobileDevice()
+		if(!isMobile){
+			// this.chatHeight = '53.2rem'
+			if(container.classList.contains('collapsed')){
+				this.chatHeight = 'calc(60rem + 40px)'
+			}else{
+				this.chatHeight = 'calc(60rem - '+this.liveHeight+'px + 40px)'
+			}
+		}else{
+			if(container.classList.contains('collapsed')){
+				content.style.height = "calc(100vh + 40px)";
+				let contentHeight = content.offsetHeight
+				this.chatHeight = (contentHeight - bottomBox - 40) + 'px';
+			}else{
+				content.style.height = "calc(80vh + 40px)";
+				let contentHeight = content.offsetHeight
+				this.chatHeight = (contentHeight - bottomBox - 40) + 'px';
+			}
+		}
+	}
   },
   created() {
     const storedItem = localStorage.getItem("selectedImgBqItem");
@@ -1186,13 +1228,26 @@ export default {
 	this.getChatMember();
   },
   mounted() {
+	let isMobile = this.isMobileDevice()
+
+	let content = document.getElementById('hContent');
+	let contentHeight = content.offsetHeight
+	let chatCon = document.getElementsByClassName('chat-con')[0];
+	let body = document.getElementsByTagName('html')[0].offsetHeight;
+	let live = document.getElementsByClassName('live-container')[0].offsetHeight;
+	let toggle = document.getElementsByClassName('toggle-btn')[0].offsetHeight;
+	let chatTop = document.getElementsByClassName('chat-top-bets')[0].offsetHeight;
+	let bottomBox = document.getElementsByClassName('wrap-box')[0].offsetHeight;
+	if(!isMobile){
+		this.liveHeight = live
+		this.chatHeight = 'calc(60rem - '+live+'px + 40px)'
+	}else{
+		this.chatHeight = (contentHeight - bottomBox - 40) + 'px';
+	}
+	  
     this.chat();
 	if(!this.user.qq || this.user.qq == ''){
 		this.nicNameShow = true;
-	}
-	let isMobile = this.isMobileDevice()
-	if(!isMobile){
-		this.chatHeight = '53.2rem'
 	}
     // if (this.wsStatus === true) {
     //   this.srcollBtm();
@@ -1236,7 +1291,7 @@ export default {
 }
 .chat-box {
   overflow-y: auto;
-  margin-top: 140px;
+  // margin-top: 140px;
   margin-bottom: 20px;
 
   .time-box {
@@ -1402,16 +1457,10 @@ export default {
     }
   }
 }
-.chatHeight{
-	height: calc(100vh - @height);
-}
 @media (min-width: 500px) {
 	@height: 104.4rem;
-  .chatHeight{
-	height: 54rem;
-  }
   .chat-box {
-	margin-top: .24rem;
+	// margin-top: .24rem;
 	margin-bottom: .20rem;
   }
   .bottom-box{
@@ -2007,7 +2056,7 @@ export default {
 }
 @media (min-width: 500px) {
 .chat-con{
-	height: 60rem !important;
+	// height: 60rem !important;
 }
 .unread-mention {
 	align-items: end !important;
