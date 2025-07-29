@@ -6,10 +6,10 @@
     <!-- <AppTopBar ref="topBar" topBarTitle="聊天室">
 
     </AppTopBar> -->
-	<button class="toggle-btn" @click="toggleLive">
-	    <span class="icon">▼</span>
-	    <span id="btnText">隐藏直播</span>
-	</button>
+	<button class="toggle-btn" id="liveControl" @click="toggleLive">
+		<span class="icon">▼</span>
+		<span id="btnText">隐藏直播</span>
+	</button>	
     <topBets @update-head="updateMinlossBox" @expect="expect" />
     <div
       ref="chatBox"
@@ -1170,9 +1170,11 @@ export default {
 	},
 	toggleLive(){
 		const container = document.getElementById('liveContainer');
+		const liveControl = document.getElementById('liveControl');
 		const btnText = document.getElementById('btnText');
 		
 		container.classList.toggle('collapsed');
+		liveControl.classList.toggle('collapsed-btn');
 		btnText.innerText = container.classList.contains('collapsed') 
 		    ? '展开直播' 
 		    : '隐藏直播';
