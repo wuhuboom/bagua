@@ -81,7 +81,7 @@ export default {
 			  width: 80px;
 		  }
 		  .nav4{
-			  width: 50px;
+			  width: 60px;
 		  }
 	  }
   }
@@ -117,7 +117,7 @@ export default {
 				  width: 240px !important;
 			  }
 			  .nav4{
-				  width: 160px !important;
+				  width: 180px !important;
 			  }
 		  }
 	}

@@ -1231,7 +1231,6 @@ export default {
   },
   mounted() {
 	var iframe = document.getElementById('liveIframe');
-	
 	iframe.src = process.env.NODE_ENV === "production"
     ? window.LIVEPATH
     : process.env.VUE_APP_LIVEPATH;
