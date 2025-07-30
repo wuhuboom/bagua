@@ -1230,8 +1230,14 @@ export default {
 	this.getChatMember();
   },
   mounted() {
+	var iframe = document.getElementById('liveIframe');
+	
+	iframe.src = process.env.NODE_ENV === "production"
+    ? window.LIVEPATH
+    : process.env.VUE_APP_LIVEPATH;
+	
 	let isMobile = this.isMobileDevice()
-
+	
 	let content = document.getElementById('hContent');
 	let contentHeight = content.offsetHeight
 	let chatCon = document.getElementsByClassName('chat-con')[0];
