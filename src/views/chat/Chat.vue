@@ -1315,10 +1315,11 @@ export default {
 	this.getChatMember();
   },
   mounted() {
-	console.log(this.passwordCode)
     this.chat();
-	if(!this.user.qq || this.user.qq == ''){
-		this.nicNameShow = true;
+	if(this.passwordCode == 0){
+		if(!this.user.qq || this.user.qq == ''){
+			this.nicNameShow = true;
+		}
 	}
 	let isMobile = this.isMobileDevice()
 	if(!isMobile){
