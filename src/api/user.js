@@ -806,6 +806,14 @@ export default {
       data,
     });
   },
+  
+  setPwd(data) {
+    return request({
+      url: "/setPwd",
+      method: "post",
+      data,
+    });
+  },
   authEditPwd(data) {
     return request({
       url: "/auth/editPwd",

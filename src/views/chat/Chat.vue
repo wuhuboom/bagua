@@ -291,6 +291,87 @@
 	    </div>
 	  </div>
 	</div>
+	
+	<!-- 设置密码 -->
+	<div class="pwd-box" v-if="passwordCode == 1">
+	  <div class="bg"></div>
+	  <div class="pwd-wrap">
+		  <div class="title font16">密码认证</div>
+		  <van-form @submit="confirmPwd">
+		    <div class="forms-input-wrap">
+			  <div class="name font13">请设置密码</div>
+		      <div class="input-box flex-wrap">
+		        <van-field
+		          v-model.trim="pwdForm.pwd1"
+		          class="input font13"
+		          :type="!passwordShow1 ? 'password' : 'text'"
+				  :right-icon="!passwordShow1 ? 'closed-eye' : 'eye-o'"
+				  @click-right-icon="clickIcon1"
+		          placeholder="请输入6-12位密码"
+		        />
+		      </div>
+			  <div class="name font13">请再次输入密码</div>
+		      <div class="input-box flex-wrap">
+		        <van-field
+		          v-model.trim="pwdForm.pwd2"
+		          class="input font13"
+		          :type="!passwordShow2 ? 'password' : 'text'"
+				  :right-icon="!passwordShow2 ? 'closed-eye' : 'eye-o'"
+				  @click-right-icon="clickIcon2"
+		          placeholder="请再次输入密码"
+		         
+		        />
+		      </div>
+		    </div>
+			<div class="error font13">{{pwdError}}</div>
+		    <van-button class="pwdBtn center-center" native-type="submit"
+		      >确认</van-button
+		    >
+		  </van-form>
+	  </div>
+	</div>
+	
+	<!-- 登录密码 -->
+	<div class="pwd-box" v-if="passwordCode == 2">
+	  <div class="bg"></div>
+	  <div class="pwd-wrap pwd-wrap-login">
+		  <div class="title font16">密码认证</div>
+		  <van-form @submit="loginPwdFun">
+		    <div class="forms-input-wrap">
+			  <div class="name font13">请输入密码</div>
+		      <div class="input-box flex-wrap">
+		        <van-field
+		          v-model.trim="loginPwd"
+		          class="input font13"
+		          placeholder="请输入密码"
+		          :type="!passwordShow3 ? 'password' : 'text'"
+				  :right-icon="!passwordShow3 ? 'closed-eye' : 'eye-o'"
+				  @click-right-icon="clickIcon3"
+		        />
+		      </div>
+		    </div>
+			<!-- <div class="error font13">{{pwdError}}</div> -->
+		    <van-button class="pwdBtn pwdBtn1 center-center" native-type="submit"
+		      >确认</van-button
+		    >
+		  </van-form>
+	  </div>
+	</div>
+	<!-- 认证过程 -->
+	<!-- <div class="pwd-box" v-if="passwordCode == 1">
+	  <div class="bg"></div>
+	  <div class="pwd-status">
+		  <div class="img">
+			  <img src="@/assets/img/pwdSuccess.png">
+		  </div>
+		  <div class="title font16">
+			  认证中
+		  </div>
+		  <div>
+			  正在验证身份信息，请稍后...
+		  </div>
+	  </div>
+	</div> -->
   </div>
 </template>
 
@@ -420,6 +501,16 @@ export default {
       progressBarState: false,
       progressBar: 0,
       key: "storageVersion",
+	  pwdCode: 0,
+	  pwdForm: {
+		pwd1: '',
+		pwd2: ''
+	  },
+	  pwdError: "",
+	  loginPwd: "",
+	  passwordShow1: false,
+	  passwordShow2: false,
+	  passwordShow3: false,
     };
   },
   directives: {
@@ -493,6 +584,9 @@ export default {
     user() {
       return this.$store.state.user;
     },
+	...mapState({
+	  passwordCode: (state) => state.passwordCode, // 监听整个 repair 对象
+	}),
     ...mapState("chat", [
       "messages",
       "playerId",
@@ -507,8 +601,13 @@ export default {
     ...mapGetters("wxEmojisData", ["wxEmojisDataGet"]),
   },
   watch: {
+    passwordCode() {
+      this.pwdCode = this.passwordCode;
+    },
     wsStatus() {
-      this.alertReload();
+	  if(this.passwordCode == 0){
+		this.alertReload();
+	  }
     },
     contentData(newVal) {
       if (newVal && newVal.length) {
@@ -519,6 +618,36 @@ export default {
     },
   },
   methods: {
+	clickIcon1(){
+		this.passwordShow1 = !this.passwordShow1
+	},
+	clickIcon2(){
+		this.passwordShow2 = !this.passwordShow2
+	},
+	clickIcon3(){
+		this.passwordShow3 = !this.passwordShow3
+	},
+	pwdValidateTwo(value) {
+	  return value === this.pwdForm.pwd1;
+	},
+	loginPwdFun(){
+	  auth.setToken(this.loginPwd, 'pwd');
+	  location.reload(true)
+	},
+	async confirmPwd() {
+	  if(this.pwdForm.pwd1 !== this.pwdForm.pwd2){
+		  this.pwdError = '两次密码不一致！'
+		  return;
+	  }
+	  const [err] = await userApi.setPwd(this.pwdForm);
+	  this.loading = false;
+	  if (err) {
+		  // this.pwdError = err.message
+		  return;
+	  };
+	  auth.setToken(this.pwdForm.pwd1, 'pwd');
+	  location.reload(true)
+	},
 	isMobileDevice() {
 	    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
 	},
@@ -1186,6 +1315,7 @@ export default {
 	this.getChatMember();
   },
   mounted() {
+	console.log(this.passwordCode)
     this.chat();
 	if(!this.user.qq || this.user.qq == ''){
 		this.nicNameShow = true;
@@ -2313,6 +2443,87 @@ export default {
     }
   }
 }
+
+
+.pwd-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.8);
+  }
+ //  .pwd-status{
+ //    position: relative;
+ //    border-radius: 30px 30px 30px 30px;
+ //    background: #ffffff;
+ //    width: 90%;
+ //    height: 536px;
+	// padding: 40px 60px;
+	// text-align: center;
+	// .img{
+	// 	width: 100%;
+	// 	margin-bottom: 40px;
+	// 	img{
+	// 		width: 50%;
+	// 	}
+	// }
+	// .title{
+	// 	text-align: center;
+	// 	font-weight: bold;
+	// 	margin-bottom: 20px;
+	// }
+ //  }
+  .pwd-wrap{
+    position: relative;
+    border-radius: 30px 30px 30px 30px;
+    background: #ffffff;
+    width: 90%;
+    height: 626px;
+	padding: 40px 60px;
+	.title{
+		text-align: center;
+		font-weight: bold;
+		margin-bottom: 20px;
+	}
+	.name{
+		// font-weight: bold;
+		margin: 20px;
+	}
+	.input-box{
+		border: 2px solid #e0e0e0;
+	}
+	.pwdBtn{
+		margin-top: 20px;
+		width: 100%;
+		background: #145cff;
+		color: #fff;
+		border-radius: 20px;
+	}
+	.pwdBtn1{
+		margin-top: 40px;
+	}
+	.error{
+		margin-top: 20px;
+		min-height: 36px;
+		color: #ff0000;
+	}
+  }
+  .pwd-wrap-login{
+	height: 436px;  
+  }
+}
 @media (min-width: 500px) {
   .nicName{
 	.opr{
@@ -2391,5 +2602,48 @@ export default {
       }
     }
   }
+  
+  
+.pwd-box {
+  .pwd-wrap{
+    position: relative;
+    border-radius: 60px;
+    background: #ffffff;
+	width: 22rem;
+	height: 1302px;
+	padding: 80px 120px;
+	.title{
+		text-align: center;
+		font-weight: bold;
+		margin-bottom: 20px;
+	}
+	.name{
+		// font-weight: bold;
+		margin: 30px;
+	}
+	.input-box{
+		border: 2px solid #e0e0e0;
+	}
+	.pwdBtn{
+		margin-top: 20px !important;
+		width: -webkit-fill-available !important;
+		border-radius: 40px !important;
+	}
+	.pwdBtn1{
+		margin-top: 90px !important;
+	}
+	.error{
+		margin-top: 20px;
+		min-height: 120px;
+		color: #ff0000;
+	}
+	::v-deep .van-icon{
+		font-size: 92px !important;
+	}
+  }
+  .pwd-wrap-login{
+	height: 906px;  
+  }
+}
 }
 </style>

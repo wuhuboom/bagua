@@ -14,7 +14,9 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const token = app.$store.state.token;
+    const pwd = auth.getToken('pwd');
     if (token) config.headers.Token = token;
+    if (pwd) config.headers['X-account-pwd'] = pwd;
     if (config.data && typeof config.data === "object") {
       // 创建一个 FormData 实例
       const formData = new FormData();
@@ -60,6 +62,14 @@ instance.interceptors.response.use(
     if ([500].includes(code)) {
       msg = app.$t("system.fail");
     }
+    if ([411].includes(code)) {
+      app.$store.commit("setPasswordCode", 1);
+      return Promise.reject({ code });
+    }
+    if ([412].includes(code)) {
+      app.$store.commit("setPasswordCode", 2);
+      return Promise.reject({ code });
+    }
     //401-无权访问 402-未登录或者登录失效 403-账号已被禁用
     if ([401, 402, 403].includes(code)) {
       const isLogin = res.config.url.includes("/auth/login");
@@ -88,7 +98,7 @@ instance.interceptors.response.use(
       return result;
     }
 
-    if (code !== 200) {
+    if (code !== 200 ) {
       //&& msg
       if (!specialCode.includes(code)) {
         if (code === 188) {
@@ -123,6 +133,7 @@ instance.interceptors.response.use(
       }
       return Promise.reject(result);
     }
+	
     return result;
   },
   async (err) => {

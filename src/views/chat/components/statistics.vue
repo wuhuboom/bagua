@@ -51,7 +51,7 @@ export default {
 	padding: 10px 18px;
 	line-height: 50px;
 	font-weight: bold;
-	// background-color: #62b6f8;
+	// background-color: #bf2834;
 	border-bottom: 2px solid #e0e0e0;
 	border-top-left-radius: 6px;
 	border-top-right-radius: 6px;
@@ -63,7 +63,7 @@ export default {
 	  .item{
 		  margin: 0 4px;
 		  width: 100%;
-		  color: #1989fa;
+		  color: #bf2834;
 		  // width: calc(33.33% - 8px);
 		  // flex: 1 1 33.333%;
 		  // box-sizing: border-box;
@@ -89,7 +89,7 @@ export default {
 
 .doc-line {
   //虚线
-  border-top: 1px dashed #62b6f8;
+  border-top: 1px dashed #bf2834;
 }
 @media (min-width: 500px) {
 .opens-list{
@@ -99,7 +99,7 @@ export default {
 		  padding: 40px;
 		  .item{
 			  margin: 0 16px;
-			  color: #1989fa;
+			  color: #bf2834;
 			  // width: calc(33.33% - 8px);
 			  // flex: 1 1 33.333%;
 			  // box-sizing: border-box;

@@ -174,12 +174,14 @@ export default {
   actions: {
     // 初始化 WebSocket
     initWebSocket({ commit, dispatch }) {
+	  const pwd = auth.getToken('pwd');
       //wss://api.orz-orz.cc
       const site =
         process.env.NODE_ENV === "production"
           ? window.WSPATH
           : process.env.VUE_APP_WS;
-      const url = `${site}/player/ws/${auth.getToken()}`;
+      const url = `${site}/player/ws/${auth.getToken()}/${pwd}`;
+	  console.log(url)
       const playerId = app.$store.state.user.id;
 
       const ws = new WebSocket(url);

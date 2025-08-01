@@ -1,7 +1,10 @@
 <!-- eslint-disable no-empty -->
 <!-- eslint-disable no-empty -->
 <template>
-  <div class="repaly-txt p-x-16 m-t-4 font13">
+  <div 
+  class="repaly-txt p-x-16 m-t-4 font13"
+  :class="{'colorRed': doc.adminId==1}"
+  >
     <p v-html="highlightedText(doc.data?.msg)"></p>
   </div>
 </template>
@@ -69,5 +72,8 @@ export default {
 }
 .replays {
   background-color: #f5f5f5;
+}
+.colorRed{
+	color: #bf2834 !important;
 }
 </style>

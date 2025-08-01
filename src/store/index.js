@@ -197,6 +197,7 @@ export default new Vuex.Store({
       //"gainRed": 1, 可抢 0否 1是
       //gainRecharge
     },
+	passwordCode: 0
   },
   getters: {
     catList(state) {
@@ -215,6 +216,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+	setPasswordCode(state, data) {
+	  state.passwordCode = data;
+	},
 	setFileProgress(state, data) {
 	  state.fileProgress = data;
 	},

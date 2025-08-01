@@ -166,7 +166,7 @@
 
 <script>
 import userApi from "@/api/user";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -199,6 +199,9 @@ export default {
       // console.log('news', this.news);
       return this.$store.state.user;
     },
+	...mapState({
+	  passwordCode: (state) => state.passwordCode, // 监听整个 repair 对象
+	}),
   },
   watch: {
     head(val) {
@@ -278,7 +281,9 @@ export default {
 	this.getDetail();
     // getDetail d定时检查
     this.timer = setInterval(() => {
-      this.getDetail();
+	  if(this.passwordCode == 0){
+        this.getDetail();
+	  }
     }, 6000);
     document.addEventListener("click", this.handleClickOutside);
   },

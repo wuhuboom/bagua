@@ -139,17 +139,28 @@
 
             <div
               class="msg-txt p-x-16 align-center msgBoxTxt"
-			  :class="{'msg-txt-blue': doc.user=='系统', 'msg-txt-isme': isMe}"
+			  :class="{'msg-txt-blue': doc.user=='系统', 'msg-txt-isme': isMe, 'colorRed': doc.adminId == 1}"
 			  style="white-space: pre-wrap"
               data-tip="txt"
               v-else-if="
                 +doc.type == 0 && doc?.data.toString().indexOf('[') === -1
               "
             >
+			  <!-- 系统或管理员 -->
               <span
+				v-if="doc.adminId==1"
+                class="contentTxt"
+                :class="{ padText: !isMe, 'contentTxt-me': isMe }"
+				v-html="formattedText(doc.data)"
+              ></span>
+			  <!-- {{formattedText(doc.data)}} -->
+			  <!-- 普通用户 -->
+              <span
+				v-else
                 class="contentTxt"
                 :class="{ padText: !isMe, 'contentTxt-me': isMe }"
               >{{doc.data}}</span>
+			  
               <div class="center-center time-box" v-if="isMe">
                 <p class="time" v-if="!isMe">
                   {{ $dayjsSingleTime(doc.time) }}
@@ -388,6 +399,15 @@ export default {
           return "redImg";
       }
     },
+	
+	formattedText(data) {
+	  // 正则表达式匹配URL
+	  const urlPattern = /https?:\/\/[^\s$.?#].[^\s]*/g;
+	  return data.replace(urlPattern, (url) => {
+	    // 将匹配的URL替换为<a>标签
+	    return `<a href="${url}" target="_blank">${url}</a>`;
+	  });    
+	}
   },
 };
 </script>
@@ -656,5 +676,8 @@ export default {
 
 .jusCenter {
   justify-content: center;
+}
+.colorRed{
+	color: #bf2834 !important;
 }
 </style>
