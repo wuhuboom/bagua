@@ -350,7 +350,7 @@
 		        />
 		      </div>
 		    </div>
-			<!-- <div class="error font13">{{pwdError}}</div> -->
+			<div class="error font13">{{pwdError}}</div>
 		    <van-button class="pwdBtn pwdBtn1 center-center" native-type="submit"
 		      >确认</van-button
 		    >
@@ -632,7 +632,7 @@ export default {
 	},
 	loginPwdFun(){
 	  if(this.loginPwd == ''){
-		  this.pwdError = '请输入密码！'
+		  this.pwdError = '密码不能为空'
 		  return;
 	  }
 	  auth.setToken(this.loginPwd, 'pwd');
@@ -2512,7 +2512,7 @@ export default {
 	}
 	.name{
 		// font-weight: bold;
-		margin: 20px;
+		margin: 20px 0;
 	}
 	.input-box{
 		border: 2px solid #e0e0e0;
@@ -2525,16 +2525,17 @@ export default {
 		border-radius: 20px;
 	}
 	.pwdBtn1{
-		margin-top: 40px;
+		margin-top: 20px;
 	}
 	.error{
 		margin-top: 20px;
-		min-height: 36px;
+		// min-height: 36px;
 		color: #ff0000;
 	}
   }
   .pwd-wrap-login{
-	height: 436px;  
+	// height: 456px;  
+	height: initial;
   }
 }
 @media (min-width: 500px) {
@@ -2632,7 +2633,7 @@ export default {
 	}
 	.name{
 		// font-weight: bold;
-		margin: 30px;
+		margin: 30px 0px 40px 0px;
 	}
 	.input-box{
 		border: 2px solid #e0e0e0;
@@ -2643,11 +2644,11 @@ export default {
 		border-radius: 40px !important;
 	}
 	.pwdBtn1{
-		margin-top: 90px !important;
+		margin-top: 40px !important;
 	}
 	.error{
 		margin-top: 20px;
-		min-height: 120px;
+		// min-height: 120px;
 		color: #ff0000;
 	}
 	::v-deep .van-icon{
@@ -2655,7 +2656,8 @@ export default {
 	}
   }
   .pwd-wrap-login{
-	height: 906px;  
+	// height: 1046px;  
+	height: initial;
   }
 }
 }
