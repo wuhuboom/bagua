@@ -293,7 +293,7 @@
 	</div>
 	
 	<!-- 设置密码 -->
-	<div class="pwd-box" v-if="passwordCode == 1">
+	<div class="pwd-box" v-if="passwordCode == 2">
 	  <div class="bg"></div>
 	  <div class="pwd-wrap">
 		  <div class="title font16">密码认证</div>
@@ -332,7 +332,7 @@
 	</div>
 	
 	<!-- 登录密码 -->
-	<div class="pwd-box" v-if="passwordCode == 2">
+	<div class="pwd-box" v-if="passwordCode == 1">
 	  <div class="bg"></div>
 	  <div class="pwd-wrap pwd-wrap-login">
 		  <div class="title font16">密码认证</div>
@@ -631,10 +631,22 @@ export default {
 	  return value === this.pwdForm.pwd1;
 	},
 	loginPwdFun(){
+	  if(this.loginPwd == ''){
+		  this.pwdError = '请输入密码！'
+		  return;
+	  }
 	  auth.setToken(this.loginPwd, 'pwd');
 	  location.reload(true)
 	},
 	async confirmPwd() {
+	  if(this.pwdForm.pwd1 == ''){
+		  this.pwdError = '未设置密码！'
+		  return;
+	  }
+	  if(this.pwdForm.pwd2 == ''){
+		  this.pwdError = '请再次输入密码！'
+		  return;
+	  }
 	  if(this.pwdForm.pwd1 !== this.pwdForm.pwd2){
 		  this.pwdError = '两次密码不一致！'
 		  return;
@@ -2490,7 +2502,7 @@ export default {
     position: relative;
     border-radius: 30px 30px 30px 30px;
     background: #ffffff;
-    width: 90%;
+    width: 70%;
     height: 626px;
 	padding: 40px 60px;
 	.title{
@@ -2610,7 +2622,7 @@ export default {
     position: relative;
     border-radius: 60px;
     background: #ffffff;
-	width: 22rem;
+	width: 20rem;
 	height: 1302px;
 	padding: 80px 120px;
 	.title{
