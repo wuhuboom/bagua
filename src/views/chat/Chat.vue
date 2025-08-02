@@ -630,13 +630,23 @@ export default {
 	pwdValidateTwo(value) {
 	  return value === this.pwdForm.pwd1;
 	},
-	loginPwdFun(){
+	async loginPwdFun(){
 	  if(this.loginPwd == ''){
 		  this.pwdError = '密码不能为空'
 		  return;
 	  }
-	  auth.setToken(this.loginPwd, 'pwd');
-	  location.reload(true)
+	  const [err, res] = await userApi.checkPwd({pwd: this.loginPwd});
+	  if (err) {
+		  // this.pwdError = err.message
+		  return;
+	  };
+	  let data = res.data
+	  if(data.right == 0){
+		  this.pwdError = '密码错误'
+	  }else{
+		  auth.setToken(this.loginPwd, 'pwd');
+		  location.reload(true)
+	  }
 	},
 	async confirmPwd() {
 	  if(this.pwdForm.pwd1 == ''){
@@ -652,7 +662,6 @@ export default {
 		  return;
 	  }
 	  const [err] = await userApi.setPwd(this.pwdForm);
-	  this.loading = false;
 	  if (err) {
 		  // this.pwdError = err.message
 		  return;

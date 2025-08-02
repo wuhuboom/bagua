@@ -147,13 +147,18 @@
               "
             >
 			  <!-- 系统或管理员 -->
-              <span
+             <span
 				v-if="doc.adminId==1"
                 class="contentTxt"
-                :class="{ padText: !isMe, 'contentTxt-me': isMe }"
+                :class="{ padText: !isMe, 'contentTxt-me': isMe, 'colorWhite': isMe}"
 				v-html="formattedText(doc.data)"
               ></span>
-			  <!-- {{formattedText(doc.data)}} -->
+			  
+			<!--  <span
+			  	v-if="doc.adminId==1"
+			    class="contentTxt"
+			    :class="{ padText: !isMe, 'contentTxt-me': isMe }"
+			  >{{doc.data}}</span> -->
 			  <!-- 普通用户 -->
               <span
 				v-else
@@ -402,8 +407,9 @@ export default {
 	
 	formattedText(data) {
 	  // 正则表达式匹配URL
+	  var str = data.toString()
 	  const urlPattern = /https?:\/\/[^\s$.?#].[^\s]*/g;
-	  return data.replace(urlPattern, (url) => {
+	  return str.replace(urlPattern, (url) => {
 	    // 将匹配的URL替换为<a>标签
 	    return `<a href="${url}" target="_blank">${url}</a>`;
 	  });    
@@ -679,5 +685,8 @@ export default {
 }
 .colorRed{
 	color: #bf2834 !important;
+}
+.colorWhite{
+	color: #fff !important;
 }
 </style>

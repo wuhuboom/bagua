@@ -814,6 +814,13 @@ export default {
       data,
     });
   },
+  checkPwd(data) {
+    return request({
+      url: "/checkPwd",
+      method: "post",
+      data,
+    });
+  },
   authEditPwd(data) {
     return request({
       url: "/auth/editPwd",
