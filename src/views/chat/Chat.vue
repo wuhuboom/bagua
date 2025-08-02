@@ -293,7 +293,7 @@
 	</div>
 	
 	<!-- 设置密码 -->
-	<div class="pwd-box" v-if="passwordCode == 2">
+	<div class="pwd-box" v-if="passwordCode == 1">
 	  <div class="bg"></div>
 	  <div class="pwd-wrap">
 		  <div class="title font16">密码认证</div>
@@ -332,7 +332,7 @@
 	</div>
 	
 	<!-- 登录密码 -->
-	<div class="pwd-box" v-if="passwordCode == 1">
+	<div class="pwd-box" v-if="passwordCode == 2">
 	  <div class="bg"></div>
 	  <div class="pwd-wrap pwd-wrap-login">
 		  <div class="title font16">密码认证</div>
