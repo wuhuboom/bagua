@@ -37,6 +37,20 @@ const routes = [
       default: () => import("@/views/customer.vue"),
     },
   },
+  {
+    path: "/live",
+    name: "live",
+    components: {
+      default: () => import("@/views/live.vue"),
+    },
+  },
+  {
+    path: "/hisVideo",
+    name: "hisVideo",
+    components: {
+      default: () => import("@/views/hisVideo.vue"),
+    },
+  },
   
   // {
   //   path: "/login/SignIn",

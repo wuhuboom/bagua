@@ -1,11 +1,10 @@
 <template>
   <div class="chat-con flex-column" :style="{ height: `${chatHeight}` }">
+	  
   <!-- <div class="chat-con flex-column chatHeight"> -->
-  
-	
-    <!-- <AppTopBar ref="topBar" topBarTitle="聊天室">
+    <!-- <AppTopBar ref="topBar" topBarTitle="聊天室"> -->
 
-    </AppTopBar> -->
+    </AppTopBar>
     <topBets @update-head="updateMinlossBox" @expect="expect" />
     <div
       ref="chatBox"
@@ -182,6 +181,14 @@
 	<!-- 客服 -->
 	<div class="customer" @click="openCustomer">
 		<img src="@/assets/img/customer1.png">
+	</div>
+	<!-- 直播 -->
+	<div class="live" @click="openLive">
+		<img src="@/assets/img/live.png">
+	</div>
+	<!-- 历史 -->
+	<div class="hisLive" @click="openHisVideo">
+		<img src="@/assets/img/hisVideo.png">
 	</div>
 	<!-- 设置昵称 -->
     <van-popup class="popupMoney" v-model="nicNameShow" 
@@ -686,6 +693,16 @@ export default {
 	openCustomer(){
 		if(this.cusUrl){
 			this.$router.push('/customer');
+		}
+	},
+	openHisVideo(){
+		if(this.cusUrl){
+			this.$router.push('/hisVideo');
+		}
+	},
+	openLive(){
+		if(this.cusUrl){
+			this.$router.push('/live');
 		}
 	},
     updateMinlossBox(head) {
@@ -2072,6 +2089,26 @@ export default {
 	top: 40vh;
 	// text-align: center;
 	img{
+		width: 110px;
+		height: 110px;
+	}
+}
+.live{
+	position: fixed;
+	right: 10px;
+	top: 50vh;
+	// text-align: center;
+	img{
+		width: 100px;
+		height: 100px;
+	}
+}
+.hisLive{
+	position: fixed;
+	right: 10px;
+	top: 57vh;
+	// text-align: center;
+	img{
 		width: 100px;
 		height: 100px;
 	}
@@ -2275,6 +2312,27 @@ export default {
 	.customer{
 		position: fixed;
 		top: 38% !important;
+		right: inherit !important;
+		margin-left: 27rem !important;
+		img{
+			width: 3.5rem !important;
+			height: 3.5rem !important;
+		}
+	}
+	
+	.live{
+		position: fixed;
+		top: 45% !important;
+		right: inherit !important;
+		margin-left: 27rem !important;
+		img{
+			width: 3.5rem !important;
+			height: 3.5rem !important;
+		}
+	}
+	.hisLive{
+		position: fixed;
+		top: 51% !important;
 		right: inherit !important;
 		margin-left: 27rem !important;
 		img{

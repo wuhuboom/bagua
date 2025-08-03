@@ -1290,4 +1290,14 @@ export default {
       url: "/invest/my/t2",
     });
   },
+  live() {
+    return request({
+      url: "/home/live",
+    });
+  },
+  hisVideo() {
+    return request({
+      url: "/home/videos",
+    });
+  },
 };

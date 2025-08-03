@@ -128,7 +128,7 @@ export default {
       width: 100%;
       font-size: 34px;
       height: 90px;
-      color: #000;
+      color: #fff;
       flex: 1;
       text-align: center;
     }
@@ -141,7 +141,7 @@ export default {
       z-index: 1;
 
       .van-icon {
-        font-size: 40px;
+        // font-size: 40px;
       }
     }
   }
@@ -150,6 +150,7 @@ export default {
     .appp-top-bar {
         position: inherit;
         width: 100%;
+		// width: 26rem !important;
 		max-width: inherit;
         height: 2.8rem;
 		line-height: 2.8rem;

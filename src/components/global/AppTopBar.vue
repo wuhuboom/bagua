@@ -4,10 +4,10 @@
     <!-- <div class="height"></div> -->
     <div class="appp-top-bar align-center justify-between max-width750" :class="{ 'bg-black': fiexd }" :style="styleObj">
       <div class="appp-top-cont align-center justify-between">
-      <!--  <div class="left leftBox" v-if="showLeft">
-          <van-button @click="goback" class="icon-button" :icon="leftIcon" type="primary" />
+       <div class="left leftBox" v-if="showLeft">
+          <van-button @click="goback" class="icon-button font13" :icon="leftIcon" type="primary" />
           <slot name="left"></slot>
-        </div> -->
+        </div>
 
         <div class="appp-top-bar-title js-appp-top-bar-title center-center" :class="titleClass" @click.stop.prevent>
           {{ titleSolt ? "" : topBarTitle }}
@@ -51,7 +51,7 @@ export default {
     styleObj: {
       type: Object,
       default: () => ({
-        backgroundColor: "#fff",
+        backgroundColor: "#c30022",
       }),
     },
     showMsg: {
@@ -116,5 +116,11 @@ export default {
   top: 0;
   height: 90px;
   min-width: 43px;
+}
+@media (min-width: 500px) {
+  .leftBox{
+	position: inherit;
+  }
+	
 }
 </style>
