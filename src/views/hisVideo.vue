@@ -3,7 +3,7 @@
   <div class="video flex-column">
     <AppTopBar class="app-top-bar" topBarTitle="历史视频" :showLeft='showBack'> </AppTopBar>
 	<div class="list">
-		<div class="item" v-for="(item, index) in videoList" :key='index' @click="open(item.data)">
+		<div class="item" v-for="(item, index) in videoList" :key='index' @click="open(`${$baseURL}/${item.data}`)">
 			<img src="@/assets/img/tg_image.png">	
 			<!-- <img :src="item.img"> -->
 			<div class="font13">
