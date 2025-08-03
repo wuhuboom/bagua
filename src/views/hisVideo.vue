@@ -4,8 +4,8 @@
     <AppTopBar class="app-top-bar" topBarTitle="历史视频" :showLeft='showBack'> </AppTopBar>
 	<div class="list">
 		<div class="item" v-for="(item, index) in videoList" :key='index' @click="open(item.data)">
-			<!-- <img src="@/assets/img/pwdSuccess.png">	 -->
-			<img :src="item.img">
+			<img src="@/assets/img/tg_image.png">	
+			<!-- <img :src="item.img"> -->
 			<div class="font13">
 				{{ $dayjsTime(item.time) }}
 			</div>
