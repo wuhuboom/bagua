@@ -346,6 +346,10 @@ export default {
         //撤回消息修改status
         console.log('撤回消息')
         commit("setToBack", message);
+      } else if ([19].includes(+message.type)) {
+        //撤回消息修改status
+        console.log('撤回消息')
+        commit("setToBack", message);
       } else if ([12].includes(+message.type)) {
         // headImg
         // :
