@@ -50,9 +50,9 @@
             <div class=" align-center">
           
               <div class="sendBox">
-                <p class="center-center colorfff font13 moneyLeft" @click="checkMoney">
+                <p class="center-center colorfff font13 moneyLeft" @click="">
                   余额
-                  <img
+                 <!-- <img
                     class="d-img"
                     src="@/assets/img/uneye.png"
                     alt=""
@@ -63,7 +63,7 @@
                     src="@/assets/img/ableeye.png"
                     alt=""
                     v-if="!showBlance"
-                  />
+                  /> -->
                 </p>
 				<p class="font13 colorfff">
 					<span>{{ showBlance ? divide(user.balance) : " *****" }}</span>
@@ -176,7 +176,7 @@ export default {
       head: true,
       showother: false,
       showmenu: false,
-      showBlance: false,
+      showBlance: true,
       detail: {
         mulConfig: [],
         nextExpect: {},
@@ -353,7 +353,7 @@ export default {
 	}
 	
 	.moneyLeft {
-	  margin-left: -20px;
+	  // margin-left: -20px;
 	  font-family: PingFang SC, PingFang SC;
 	  font-weight: 400;
 	  // font-size: 24px;
