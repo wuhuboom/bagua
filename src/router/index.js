@@ -52,13 +52,13 @@ const routes = [
     },
   },
   
-  // {
-  //   path: "/login/SignIn",
-  //   name: "token",
-  //   components: {
-  //     default: () => import("@/views/Login.vue"),
-  //   },
-  // },
+  {
+    path: "/login/SignIn",
+    name: "token",
+    components: {
+      default: () => import("@/views/Login.vue"),
+    },
+  },
 ];
 
 const router = new VueRouter({
