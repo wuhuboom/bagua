@@ -1,4 +1,5 @@
-window.BASEPATH="https://api.orz-orz.cc";
+window.BASEPATH="https://api3.orz-orz.cc";
 window.UNIFIED_NUMBER = 100;
-window.Website="https://api.orz-orz.cc"
-window.WSPATH="wss://api.orz-orz.cc"
+window.Website="https://api3.orz-orz.cc"
+window.WSPATH="wss://api3.orz-orz.cc"
+window.CUSTOMER=false

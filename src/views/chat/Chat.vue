@@ -179,7 +179,7 @@
       </div>
     </div>
 	<!-- 客服 -->
-	<div class="customer" @click="openCustomer">
+	<div class="customer" @click="openCustomer" v-if="customerShow=='true'">
 		<img src="@/assets/img/customer1.png">
 	</div>
 	<!-- 直播 -->
@@ -518,6 +518,7 @@ export default {
 	  passwordShow1: false,
 	  passwordShow2: false,
 	  passwordShow3: false,
+	  customerShow: false
     };
   },
   directives: {
@@ -1309,7 +1310,7 @@ export default {
 	},
 	async getVersion() {
 	  const [err] = await userApi.versionReq();
-	  console.log(this.isNumber(+err))
+	  // console.log(this.isNumber(+err))
 	  if (!this.isNumber(+err)) {
 	    return;
 	  }
@@ -1353,6 +1354,10 @@ export default {
 	this.getChatMember();
   },
   mounted() {
+	  
+	this.customerShow = process.env.NODE_ENV === "production"
+	  ? window.CUSTOMER
+	  : process.env.VUE_APP_CUSTOMER;
     this.chat();
 	if(this.passwordCode == 0){
 		if(!this.user.qq || this.user.qq == ''){

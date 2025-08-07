@@ -181,7 +181,7 @@ export default {
           ? window.WSPATH
           : process.env.VUE_APP_WS;
       const url = `${site}/player/ws/${auth.getToken()}/${pwd}`;
-	  console.log(url)
+	  // console.log(url)
       const playerId = app.$store.state.user.id;
 
       const ws = new WebSocket(url);
