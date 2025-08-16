@@ -179,7 +179,7 @@
       </div>
     </div>
 	<!-- 客服 -->
-	<div class="customer" @click="openCustomer" v-if="customerShow=='true'">
+	<div class="customer" @click="openCustomer" v-if="customerShow=='1'">
 		<img src="@/assets/img/customer1.png">
 	</div>
 	<!-- 直播 -->
