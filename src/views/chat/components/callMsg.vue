@@ -56,7 +56,6 @@ export default {
       document.querySelector(`[data-msg-id="${v}"]`)?.scrollIntoView();
     },
     highlightedText(v) {
-		console.log(v)
       return v.replace(
         /@(\S+)/g,
         '<span style="color:#488fca;margin:0 4px;">@$1</span>'
