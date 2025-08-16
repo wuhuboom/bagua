@@ -160,7 +160,7 @@
 			    :class="{ padText: !isMe, 'contentTxt-me': isMe }"
 			  >{{doc.data}}</span> -->
 			  <!-- 普通用户 -->
-              <span
+             <span
 				v-else
                 class="contentTxt"
                 :class="{ padText: !isMe, 'contentTxt-me': isMe }"
@@ -256,7 +256,10 @@ export default {
     doc() {
       let data;
       try {
-        data = JSON.parse(this.item.data);
+		data = JSON.parse(this.item.data);
+		if(!isNaN(data) && !isNaN(parseFloat(data))){
+			data = this.item.data;
+		}
       } catch (error) {
         data = this.item.data;
       }
