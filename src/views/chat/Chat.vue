@@ -183,11 +183,11 @@
 		<img src="@/assets/img/customer1.png">
 	</div>
 	<!-- 直播 -->
-	<div class="live" @click="openLive">
+	<div class="live" @click="openLive" v-if="liveShow=='1'">
 		<img src="@/assets/img/live.png">
 	</div>
 	<!-- 历史 -->
-	<div class="hisLive" @click="openHisVideo">
+	<div class="hisLive" @click="openHisVideo" v-if="liveHisShow=='1'">
 		<img src="@/assets/img/hisVideo.png">
 	</div>
 	<!-- 设置昵称 -->
@@ -518,7 +518,9 @@ export default {
 	  passwordShow1: false,
 	  passwordShow2: false,
 	  passwordShow3: false,
-	  customerShow: false
+	  customerShow: false,
+	  liveHisShow: false,
+	  liveShow: false
     };
   },
   directives: {
@@ -1358,6 +1360,15 @@ export default {
 	this.customerShow = process.env.NODE_ENV === "production"
 	  ? window.CUSTOMER
 	  : process.env.VUE_APP_CUSTOMER;
+	
+	this.liveShow = process.env.NODE_ENV === "production"
+	  ? window.LIVE
+	  : process.env.VUE_APP_LIVE;
+	
+	this.liveHisShow = process.env.NODE_ENV === "production"
+	  ? window.HISLIVE
+	  : process.env.VUE_APP_HISLIVE;
+	
     this.chat();
 	if(this.passwordCode == 0){
 		if(!this.user.qq || this.user.qq == ''){

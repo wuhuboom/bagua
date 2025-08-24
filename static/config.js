@@ -3,3 +3,5 @@ window.UNIFIED_NUMBER = 100;
 window.Website="https://api3.orz-orz.cc"
 window.WSPATH="wss://api3.orz-orz.cc"
 window.CUSTOMER=0
+window.LIVE=1
+window.HISLIVE=1
