@@ -341,6 +341,8 @@ export default {
 			app.$toast("取消失败,已经封盘");
 		}else if(data.msgKey == 'betTooMax'){
 			app.$toast("下注超额");
+		}else if(data.msgKey == 'betNumMax'){
+			app.$toast("下注已超最大下注 重新下注");
 		}
       }  else if ([9].includes(+message.type)) {
         //撤回消息修改status
