@@ -84,17 +84,17 @@
           {{ divide(myRedMoney.money) }}
         </li>
         <li class="receive" @click="receive($event)">
-            查看领取详情
-            <svg class="double-arrow" viewBox="0 0 24 24">
-              <path
-                d="M5 4l8 8-8 8M13 4l8 8-8 8"
-                fill="none"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+          查看领取详情
+          <svg class="double-arrow" viewBox="0 0 24 24">
+            <path
+              d="M5 4l8 8-8 8M13 4l8 8-8 8"
+              fill="none"
+              stroke="white"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
         </li>
         <div class="modal-footer" @click="goDetail">已领取</div>
       </ul>
@@ -173,7 +173,14 @@ export default {
     };
   },
   computed: {
-    ...mapState("chat", ["messages", "playerId", "query", "ws", "wsStatus", "isGain"]),
+    ...mapState("chat", [
+      "messages",
+      "playerId",
+      "query",
+      "ws",
+      "wsStatus",
+      "isGain",
+    ]),
     isMe() {
       return this.doc.playerId === this.user.id;
     },
@@ -272,9 +279,7 @@ export default {
       "sendMessage",
       "fetchHistory",
     ]),
-	...mapMutations("chat", [
-	  "setGain"
-	]),
+    ...mapMutations("chat", ["setGain"]),
     // 领红包
     // ledPacket() {
     //   this.filteredMessages.forEach((item) => {
@@ -351,8 +356,8 @@ export default {
         duration: 3000, // 设置 3 秒后关闭
       });
       await this.sleep(1000);
-	  // 标识为普通红包功能触发
-	  this.setGain(false);
+      // 标识为普通红包功能触发
+      this.setGain(false);
       this.sendMessage({
         type: 6,
         msgId: this.doc.id,
@@ -367,8 +372,8 @@ export default {
         duration: 3000, // 设置 3 秒后关闭
       });
       await this.sleep(1000);
-	  // 标识为普通红包功能触发
-	  this.setGain(false);
+      // 标识为普通红包功能触发
+      this.setGain(false);
       this.sendMessage({
         type: 6,
         msgId: this.packetItem.id,
@@ -391,7 +396,7 @@ export default {
   },
   created() {
     EventBus.$on("redGetStatus", ({ msgId, data }) => {
-	  if(this.isGain) return;
+      if (this.isGain) return;
       if (+msgId === +this.doc.id) {
         this.redGetStatus();
         const { code } = data;

@@ -70,13 +70,12 @@ export default {
         if ([10, 13].includes(+v.type)) {
           const data = JSON.parse(v.data);
           if (!data.playerId) return false;
-		  return data.playerId.includes(app.$store.state.user.id);
-		  // if(Array.isArray(data.playerId)){
-			 //  return data.playerId.includes(app.$store.state.user.id);
-		  // }else{
-			 //  return data.playerId == app.$store.state.user.id
-		  // }
-          
+          return data.playerId.includes(app.$store.state.user.id);
+          // if(Array.isArray(data.playerId)){
+          //  return data.playerId.includes(app.$store.state.user.id);
+          // }else{
+          //  return data.playerId == app.$store.state.user.id
+          // }
         }
         return false;
       });
@@ -99,8 +98,10 @@ export default {
       }
     },
     setToBack(state, v) {
-      let userInfor = JSON.parse(v.data)
-      const index = state.messages.findIndex((item) => +item.id === +userInfor.id);
+      let userInfor = JSON.parse(v.data);
+      const index = state.messages.findIndex(
+        (item) => +item.id === +userInfor.id
+      );
       if (index === -1) return;
       app.$set(state.messages[index], "status", 1);
       app.$set(state.messages[index], "user", v.user);
@@ -174,14 +175,14 @@ export default {
   actions: {
     // 初始化 WebSocket
     initWebSocket({ commit, dispatch }) {
-	  const pwd = auth.getToken('pwd');
+      const pwd = auth.getToken("pwd");
       //wss://api.orz-orz.cc
       const site =
         process.env.NODE_ENV === "production"
           ? window.WSPATH
           : process.env.VUE_APP_WS;
       const url = `${site}/player/ws/${auth.getToken()}/${pwd}`;
-	  // console.log(url)
+      // console.log(url)
       const playerId = app.$store.state.user.id;
 
       const ws = new WebSocket(url);
@@ -254,17 +255,17 @@ export default {
     // 处理接收到的消息
     handleMessage({ commit }, message) {
       //0 文本消息 2 分享合买 4 红包消息 8图片 10 @消息 13 回复消息
-		// console.log(JSON.parse(message.data))
-		// console.log(message.data)
-		// message = {"type":18,"data":0} 
-      if ([0, 2, 8, 10, 13, 6,  3, 7, 9, 17, 16].includes(+message.type)) {
+      // console.log(JSON.parse(message.data))
+      // console.log(message.data)
+      // message = {"type":18,"data":0}
+      if ([0, 2, 8, 10, 13, 6, 3, 7, 9, 17, 16].includes(+message.type)) {
         // 文本消息
         commit("ADD_MESSAGE", { message });
         if (+message.type === 4) {
-			EventBus.$emit("newRedPacketNotice",{
-			  ...message,
-			  data: JSON.parse(message.data),
-			});
+          EventBus.$emit("newRedPacketNotice", {
+            ...message,
+            data: JSON.parse(message.data),
+          });
         }
         app.$nextTick(() => {
           const chatContainer = document.querySelector(".js-cont-room");
@@ -306,7 +307,7 @@ export default {
         } else if (resResults == 1 || resResults == 2) {
           commit("setUnAllowChat", false);
         }
-      }else if (message.type === 18) {
+      } else if (message.type === 18) {
         //接收消息:{"type":18,"data":0} (0.禁言 1.解除禁言)
         const resResults = JSON.parse(message.data);
         // console.log("resResults", resResults);
@@ -315,42 +316,42 @@ export default {
         } else if (resResults == 1) {
           commit("setUnAllowChat", true);
         }
-      }else if ([4].includes(+message.type)) {
+      } else if ([4].includes(+message.type)) {
         let data = JSON.parse(message.data);
         app.$toast("消息发送频繁");
-      }else if ([5].includes(+message.type)) {
-		  console.log(message)
+      } else if ([5].includes(+message.type)) {
+        console.log(message);
         let data = JSON.parse(message.data)[0];
-		if(data.msgKey == 'currUnopen'){
-			app.$toast("未开盘");
-		}else if(data.msgKey == 'currClosed'){
-			app.$toast("已封盘");
-		}else if(data.msgKey == 'buyCodeError'){
-			app.$toast("下注指令错误");
-		}else if(data.msgKey == 'balanceNotEnough'){
-			app.$toast("余额不足");
-		}else if(data.msgKey == 'hasBan'){
-			app.$toast("余额不为0,不能回水");
-		}else if(data.msgKey == 'noWater'){
-			app.$toast("当前无回水");
-		}else if(data.msgKey == 'betTooMin'){
-			app.$toast("下注金额不得低于100");
-		}else if(data.msgKey == 'noOrder'){
-			app.$toast("取消失败,没有订单");
-		}else if(data.msgKey == 'canClose'){
-			app.$toast("取消失败,已经封盘");
-		}else if(data.msgKey == 'betTooMax'){
-			app.$toast("下注超额");
-		}else if(data.msgKey == 'betNumMax'){
-			app.$toast("下注已超最大下注 重新下注");
-		}
-      }  else if ([9].includes(+message.type)) {
+        if (data.msgKey == "currUnopen") {
+          app.$toast("未开盘");
+        } else if (data.msgKey == "currClosed") {
+          app.$toast("已封盘");
+        } else if (data.msgKey == "buyCodeError") {
+          app.$toast("下注指令错误");
+        } else if (data.msgKey == "balanceNotEnough") {
+          app.$toast("余额不足");
+        } else if (data.msgKey == "hasBan") {
+          app.$toast("余额不为0,不能回水");
+        } else if (data.msgKey == "noWater") {
+          app.$toast("当前无回水");
+        } else if (data.msgKey == "betTooMin") {
+          app.$toast("下注金额不得低于100");
+        } else if (data.msgKey == "noOrder") {
+          app.$toast("取消失败,没有订单");
+        } else if (data.msgKey == "canClose") {
+          app.$toast("取消失败,已经封盘");
+        } else if (data.msgKey == "betTooMax") {
+          app.$toast("下注超额");
+        } else if (data.msgKey == "betNumMax") {
+          app.$toast("下注已超最大下注 重新下注");
+        }
+      } else if ([9].includes(+message.type)) {
         //撤回消息修改status
-        console.log('撤回消息')
+        console.log("撤回消息");
         commit("setToBack", message);
       } else if ([19].includes(+message.type)) {
         //撤回消息修改status
-        console.log('撤回消息')
+        console.log("撤回消息");
         commit("setToBack", message);
       } else if ([12].includes(+message.type)) {
         // headImg

@@ -1,10 +1,9 @@
 <template>
   <div class="chat-con flex-column" :style="{ height: `${chatHeight}` }">
-	  
-  <!-- <div class="chat-con flex-column chatHeight"> -->
+    <!-- <div class="chat-con flex-column chatHeight"> -->
     <!-- <AppTopBar ref="topBar" topBarTitle="聊天室"> -->
 
-    </AppTopBar>
+    <!--    </AppTopBar>-->
     <topBets @update-head="updateMinlossBox" @expect="expect" />
     <div
       ref="chatBox"
@@ -27,17 +26,14 @@
         ref="$roomMsg"
       />
     </div>
-  
 
-
-    
     <div class="unread-mention center-center flex-column font13">
       <div @click="goBtm" v-if="aites.length">
-       <!-- <van-badge :data-badge="aites.length" :content="aites.length" max="99">
+        <!-- <van-badge :data-badge="aites.length" :content="aites.length" max="99">
           <span class="at-symbol center-center">@ {{aites.length}}</span>
         </van-badge> -->
-		
-		<span class="at-symbol center-center">@ {{aites.length}}</span>
+
+        <span class="at-symbol center-center">@ {{ aites.length }}</span>
       </div>
       <div
         class="align-center m-t-32 at-symbol"
@@ -52,7 +48,7 @@
     </div>
     <van-action-sheet
       :overlay="false"
-	  :transition="null"
+      :transition="null"
       v-model="showUserList"
       class="aite-box-sheet"
     >
@@ -78,34 +74,63 @@
         </li>
       </ul>
     </van-action-sheet>
-	<div>
-	<!-- 	<el-select>
+    <div>
+      <!-- 	<el-select>
 			<el-option>4444</el-option>
 		</el-select> -->
-	</div>
+    </div>
     <div ref="bottomBox" class="bottom-box">
       <div class="wrap-box" :class="{ 'btm-disabled': disabled }">
-		
-		 <div class="quick">
-			  <div class="item-box-q">
-				  <div class="btn-q center-center font13" style="background-color: #5dcf05;" @click="openScores" >上分</div>
-			  </div>
-			  <div class="item-box-q">
-				  <div class="btn-q center-center font13" style="background-color: #d50019;" @click="openDownScores" >下分</div>
-			  </div>
-			  <div class="item-box-q">
-				  <div class="btn-q center-center font13" style="background-color: #0d79ff;" @click="sendQuick('走势')" >走势</div>
-			  </div>
-			  <div class="item-box-q">
-				  <div class="btn-q center-center font13" style="background-color: #4e09ff;" @click="openPopup" >复投</div>
-			  </div>
-			  <div class="item-box-q">
-				  <div class="btn-q center-center font13" style="background-color: #5a5f64;" @click="sendQuick('取消')" >取消</div>
-			  </div>
-		  </div>
-		  
-		<div class="opr">
-			<!-- <div class="customer" @click="openCustomer">
+        <div class="quick">
+          <div class="item-box-q">
+            <div
+              class="btn-q center-center font13"
+              style="background-color: #5dcf05"
+              @click="openScores"
+            >
+              上分
+            </div>
+          </div>
+          <div class="item-box-q">
+            <div
+              class="btn-q center-center font13"
+              style="background-color: #d50019"
+              @click="openDownScores"
+            >
+              下分
+            </div>
+          </div>
+          <div class="item-box-q">
+            <div
+              class="btn-q center-center font13"
+              style="background-color: #0d79ff"
+              @click="sendQuick('走势')"
+            >
+              走势
+            </div>
+          </div>
+          <div class="item-box-q">
+            <div
+              class="btn-q center-center font13"
+              style="background-color: #4e09ff"
+              @click="openPopup"
+            >
+              复投
+            </div>
+          </div>
+          <div class="item-box-q">
+            <div
+              class="btn-q center-center font13"
+              style="background-color: #5a5f64"
+              @click="sendQuick('取消')"
+            >
+              取消
+            </div>
+          </div>
+        </div>
+
+        <div class="opr">
+          <!-- <div class="customer" @click="openCustomer">
 				<img
 				  class=" redMony m-l-8 pointer"
 				  src="@/assets/img/customer.png"
@@ -115,257 +140,318 @@
 					在线客服
 				</div>
 			</div> -->
-			<van-popover
-			  v-model="showPopover"
-			  trigger="click"
-			  placement="top-start"
-			>
-			  <van-tabs v-model="activeBiaoqing" class="custom-tabs">
-			    <van-tab title="默认表情" style="height: 50vh">
-			      <div class="bigImgIcon">
-			        <img
-			          :src="require(`@/assets/img/${item.urlStr}`)"
-			          :alt="item.name"
-			          @click="sendImgIcon(item)"
-			          v-for="(item, index) in bigLARR"
-			          :key="index"
-			        />
-			
-			        <!-- <img :src="maniImage" alt="玛尼" @click="sendImgIcon('玛尼')" />
+          <van-popover
+            v-model="showPopover"
+            trigger="click"
+            placement="top-start"
+          >
+            <van-tabs v-model="activeBiaoqing" class="custom-tabs">
+              <van-tab title="默认表情" style="height: 50vh">
+                <div class="bigImgIcon">
+                  <img
+                    :src="require(`@/assets/img/${item.urlStr}`)"
+                    :alt="item.name"
+                    @click="sendImgIcon(item)"
+                    v-for="(item, index) in bigLARR"
+                    :key="index"
+                  />
+
+                  <!-- <img :src="maniImage" alt="玛尼" @click="sendImgIcon('玛尼')" />
 			    <img :src="baifoImage" alt="拜佛" @click="sendImgIcon('拜佛')" />
 			    <img :src="sx1Image" alt="烧香1" @click="sendImgIcon('烧香1')" />
 			    <img :src="sx2Image" alt="烧香2" @click="sendImgIcon('烧香2')" /> -->
-			      </div>
-			    </van-tab>
-			    <van-tab title="经典表情">
-			      <ul class="face-box">
-			        <li v-for="(v, i) in dataFace" :key="i" @click="insert(v)">
-			          {{ v }}
-			
-			          <!-- <img :src="faceImages[i]" alt="emoji" class="emojiToImg" /> -->
-			        </li>
-			      </ul>
-			    </van-tab>
-			  </van-tabs>
-			
-			  <!-- <wxEmojisDialog @wxEmojisClick="wxEmojisClick"></wxEmojisDialog> -->
-			
-			  <template #reference>
-			    <div class="icon-box">
-			      <!-- <van-icon name="smile-o" class="icon" /> -->
-			      <img src="@/assets/img/bq.png" alt="" />
-			    </div>
-			  </template>
-			</van-popover>
-			<van-uploader class="icon-box" :accept="'*'" :after-read="afterFileRead" v-if="user.isAdmin==1">
-			  <!-- <van-icon :size="28" name="photo-o" /> -->
-			  <img src="@/assets/img/fj.png" alt="" class="" />
-			</van-uploader>
-			
-			  <div class="input-box" @keydown.enter.prevent="send">
-			    <input
-			      type="text"
-			      class="input font13"
-			      ref="inputRef"
-			      :placeholder="placeholder"
-			      v-model="text"
-			      @input="onInput"
-			      :disabled="!ableChat "
-			    />
-			  </div>
-			  
-			  <div class="btn center-center font13" @click="send" >发送</div>
-		</div>
+                </div>
+              </van-tab>
+              <van-tab title="经典表情">
+                <ul class="face-box">
+                  <li v-for="(v, i) in dataFace" :key="i" @click="insert(v)">
+                    {{ v }}
+
+                    <!-- <img :src="faceImages[i]" alt="emoji" class="emojiToImg" /> -->
+                  </li>
+                </ul>
+              </van-tab>
+            </van-tabs>
+
+            <!-- <wxEmojisDialog @wxEmojisClick="wxEmojisClick"></wxEmojisDialog> -->
+
+            <template #reference>
+              <div class="icon-box">
+                <!-- <van-icon name="smile-o" class="icon" /> -->
+                <img src="@/assets/img/bq.png" alt="" />
+              </div>
+            </template>
+          </van-popover>
+          <van-uploader
+            class="icon-box"
+            :accept="'*'"
+            :after-read="afterFileRead"
+            v-if="user.isAdmin == 1"
+          >
+            <!-- <van-icon :size="28" name="photo-o" /> -->
+            <img src="@/assets/img/fj.png" alt="" class="" />
+          </van-uploader>
+
+          <van-uploader
+            class="icon-box"
+            accept="image/*"
+            :max-count="1"
+            :multiple="false"
+            :after-read="afterFileUserRead"
+            v-if="user.isAdmin == 0"
+          >
+            <img src="@/assets/img/fj.png" alt="" class="" />
+          </van-uploader>
+
+          <div class="input-box" @keydown.enter.prevent="send">
+            <input
+              type="text"
+              class="input font13"
+              ref="inputRef"
+              :placeholder="placeholder"
+              v-model="text"
+              @input="onInput"
+              :disabled="!ableChat"
+            />
+          </div>
+
+          <div class="btn center-center font13" @click="send">发送</div>
+        </div>
       </div>
     </div>
-	<!-- 客服 -->
-	<div class="customer" @click="openCustomer" v-if="customerShow=='1'">
-		<img src="@/assets/img/customer1.png">
-	</div>
-	<!-- 直播 -->
-	<div class="live" @click="openLive" v-if="liveShow=='1'">
-		<img src="@/assets/img/live.png">
-	</div>
-	<!-- 历史 -->
-	<div class="hisLive" @click="openHisVideo" v-if="liveHisShow=='1'">
-		<img src="@/assets/img/hisVideo.png">
-	</div>
-	<!-- 设置昵称 -->
-    <van-popup class="popupMoney" v-model="nicNameShow" 
-      :close-on-click-overlay="false">
-		<div class="nicName">
-		  <div class="opr">
-			<div class="font16">设置昵称</div>
-			<input
-			  type="text"
-			  class="input font13"
-			  ref="inputRef"
-			  v-model="nickname"
-			/>
-		    <el-button class="btn font13" @click="setNickname">确认</el-button>
-		  </div>
-		</div>  
+    <!-- 客服 -->
+    <div class="customer" @click="openCustomer" v-if="customerShow == '1'">
+      <img src="@/assets/img/customer1.png" />
+    </div>
+    <!-- 直播 -->
+    <div class="live" @click="openLive" v-if="liveShow == '1'">
+      <img src="@/assets/img/live.png" />
+    </div>
+    <!-- 历史 -->
+    <div class="hisLive" @click="openHisVideo" v-if="liveHisShow == '1'">
+      <img src="@/assets/img/hisVideo.png" />
+    </div>
+    <!-- 设置昵称 -->
+    <van-popup
+      class="popupMoney"
+      v-model="nicNameShow"
+      :close-on-click-overlay="false"
+    >
+      <div class="nicName">
+        <div class="opr">
+          <div class="font16">设置昵称</div>
+          <input
+            type="text"
+            class="input font13"
+            ref="inputRef"
+            v-model="nickname"
+          />
+          <el-button class="btn font13" @click="setNickname">确认</el-button>
+        </div>
+      </div>
     </van-popup>
-	<!-- 复购 -->
+    <!-- 复购 -->
     <van-popup class="popupMoney" v-model="repurchaseShow">
-		<div class="repurchase-panel">
-			<div class="item font13" v-for="(item, index) in orderList" :key="index">
-				<span class="val">{{item.betCode2}}</span>
-				<div class="btn center-center font13" @click="sendQuick(item.betCode2)" >复购</div>
-			</div>
-		</div>
+      <div class="repurchase-panel">
+        <div
+          class="item font13"
+          v-for="(item, index) in orderList"
+          :key="index"
+        >
+          <span class="val">{{ item.betCode2 }}</span>
+          <div
+            class="btn center-center font13"
+            @click="sendQuick(item.betCode2)"
+          >
+            复购
+          </div>
+        </div>
+      </div>
     </van-popup>
-	<!-- 上分 -->
+    <!-- 上分 -->
     <van-popup class="upScores" v-model="upScoresShow">
-		<div class="scores-title font13">
-			快捷金额
-		</div>
-		<div class="scores-panel">
-			<input 
-				class="input font13"
-				type="number"
-				v-model="upMoney"
-				placeholder="输入金额"
-			/>
-		</div>
-		<div class="scores-panel">
-			<div class="item font13" v-for="(item, index) in scoresList" :key="index" @click="setUpMoney(item)">
-				<div class="val font13" :class="{up:upMoney==item}">{{item}}</div>
-			</div>
-		</div>
-		<div class="scores-panel">
-			<div class="btn center-center font13" @click="closeScores" >取消</div>
-			<div class="btn btn2 center-center font13"  @click="upScores()" >发送</div>
-		</div>
+      <div class="scores-title font13">快捷金额</div>
+      <div class="scores-panel">
+        <input
+          class="input font13"
+          type="number"
+          v-model="upMoney"
+          placeholder="输入金额"
+        />
+      </div>
+      <div class="scores-panel">
+        <div
+          class="item font13"
+          v-for="(item, index) in scoresList"
+          :key="index"
+          @click="setUpMoney(item)"
+        >
+          <div class="val font13" :class="{ up: upMoney == item }">
+            {{ item }}
+          </div>
+        </div>
+      </div>
+      <div class="scores-panel">
+        <div class="btn center-center font13" @click="closeScores">取消</div>
+        <div class="btn btn2 center-center font13" @click="upScores()">
+          发送
+        </div>
+      </div>
     </van-popup>
-	<!-- 下分 -->
-	<van-popup class="upScores" v-model="downScoresShow">
-		<div class="scores-title font13">
-			快捷金额
-		</div>
-		<div class="scores-panel">
-			<input 
-				class="input font13"
-				type="number"
-				v-model="downMoney"
-				placeholder="输入金额"
-			/>
-		</div>
-		<div class="scores-panel">
-			<div class="item font13" v-for="(item, index) in downScoresList" :key="index" @click="setDownMoney(item)">
-				<div class="val font13" :class="{up:downMoney==item||downMoneyAll==item}">{{item}}</div>
-			</div>
-		</div>
-		<div class="scores-panel">
-			<div class="btn center-center font13" @click="closeScores" >取消</div>
-			<div class="btn btn2 center-center font13"  @click="downScores(item)" >发送</div>
-		</div>
-	</van-popup>
+    <!-- 下分 -->
+    <van-popup class="upScores" v-model="downScoresShow">
+      <div class="scores-title font13">快捷金额</div>
+      <div class="scores-panel">
+        <input
+          class="input font13"
+          type="number"
+          v-model="downMoney"
+          placeholder="输入金额"
+        />
+      </div>
+      <div class="scores-panel">
+        <div
+          class="item font13"
+          v-for="(item, index) in downScoresList"
+          :key="index"
+          @click="setDownMoney(item)"
+        >
+          <div
+            class="val font13"
+            :class="{ up: downMoney == item || downMoneyAll == item }"
+          >
+            {{ item }}
+          </div>
+        </div>
+      </div>
+      <div class="scores-panel">
+        <div class="btn center-center font13" @click="closeScores">取消</div>
+        <div class="btn btn2 center-center font13" @click="downScores(item)">
+          发送
+        </div>
+      </div>
+    </van-popup>
     <bindBetPop ref="$bindBetPop" />
-    <RedPacketTips/>
-	
-	<!-- 发现新版本 -->
-	<div class="version-box" v-if="fromModal2">
-	  <div class="bg"></div>
-	  <div class="version-wrap">
-	    <div class="top-icon"></div>
-	    <!-- 立即更新 -->
-	    <div class="wrap-box" v-if="!progressBarState">
-	      <div class="text font13">发现新版本</div>
-	      <div class="btn center-center font13" @click="simulateProgressBar">
-	        立即更新
-	      </div>
-	    </div>
-	    <!-- 更新中 -->
-	    <div class="wrap-box" v-else>
-	      <div class="text font13">
-	        更新中 <span class="num">{{ this.progressBar }}%</span>
-	      </div>
-	      <div class="dex center-center font13">正在更新中,请勿关闭当前页面…</div>
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 文件进度条 -->
-	<div class="file-box" v-if="fileModal">
-	  <div class="bg"></div>
-	  <div class="file-wrap">
-	    <div class="wrap-box">
-	      <div class="text">
-	        上传中 <span class="num">{{ `${$store.state.fileProgress}` }}%</span>
-	      </div>
-	      <div class="dex center-center">正在上传文件中,请勿关闭当前页面…</div>
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 设置密码 -->
-	<div class="pwd-box" v-if="passwordCode == 1">
-	  <div class="bg"></div>
-	  <div class="pwd-wrap">
-		  <div class="title font16">密码认证</div>
-		  <van-form @submit="confirmPwd">
-		    <div class="forms-input-wrap">
-			  <div class="name font13">请设置密码</div>
-		      <div class="input-box flex-wrap">
-		        <van-field
-		          v-model.trim="pwdForm.pwd1"
-		          class="input font13"
-		          :type="!passwordShow1 ? 'password' : 'text'"
-				  :right-icon="!passwordShow1 ? 'closed-eye' : 'eye-o'"
-				  @click-right-icon="clickIcon1"
-		          placeholder="请输入6-12位密码"
-		        />
-		      </div>
-			  <div class="name font13">请再次输入密码</div>
-		      <div class="input-box flex-wrap">
-		        <van-field
-		          v-model.trim="pwdForm.pwd2"
-		          class="input font13"
-		          :type="!passwordShow2 ? 'password' : 'text'"
-				  :right-icon="!passwordShow2 ? 'closed-eye' : 'eye-o'"
-				  @click-right-icon="clickIcon2"
-		          placeholder="请再次输入密码"
-		         
-		        />
-		      </div>
-		    </div>
-			<div class="error font13">{{pwdError}}</div>
-		    <van-button class="pwdBtn center-center" native-type="submit"
-		      >确认</van-button
-		    >
-		  </van-form>
-	  </div>
-	</div>
-	
-	<!-- 登录密码 -->
-	<div class="pwd-box" v-if="passwordCode == 2">
-	  <div class="bg"></div>
-	  <div class="pwd-wrap pwd-wrap-login">
-		  <div class="title font16">密码认证</div>
-		  <van-form @submit="loginPwdFun">
-		    <div class="forms-input-wrap">
-			  <div class="name font13">请输入密码</div>
-		      <div class="input-box flex-wrap">
-		        <van-field
-		          v-model.trim="loginPwd"
-		          class="input font13"
-		          placeholder="请输入密码"
-		          :type="!passwordShow3 ? 'password' : 'text'"
-				  :right-icon="!passwordShow3 ? 'closed-eye' : 'eye-o'"
-				  @click-right-icon="clickIcon3"
-		        />
-		      </div>
-		    </div>
-			<div class="error font13">{{pwdError}}</div>
-		    <van-button class="pwdBtn pwdBtn1 center-center" native-type="submit"
-		      >确认</van-button
-		    >
-		  </van-form>
-	  </div>
-	</div>
-	<!-- 认证过程 -->
-	<!-- <div class="pwd-box" v-if="passwordCode == 1">
+    <RedPacketTips />
+
+    <!-- 发现新版本 -->
+    <div class="version-box" v-if="fromModal2">
+      <div class="bg"></div>
+      <div class="version-wrap">
+        <div class="top-icon"></div>
+        <!-- 立即更新 -->
+        <div class="wrap-box" v-if="!progressBarState">
+          <div class="text font13">发现新版本</div>
+          <div class="btn center-center font13" @click="simulateProgressBar">
+            立即更新
+          </div>
+        </div>
+        <!-- 更新中 -->
+        <div class="wrap-box" v-else>
+          <div class="text font13">
+            更新中 <span class="num">{{ this.progressBar }}%</span>
+          </div>
+          <div class="dex center-center font13">
+            正在更新中,请勿关闭当前页面…
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 文件进度条 -->
+    <div class="file-box" v-if="fileModal">
+      <div class="bg"></div>
+      <div class="file-wrap">
+        <div class="wrap-box">
+          <div class="text">
+            上传中
+            <span class="num">{{ `${$store.state.fileProgress}` }}%</span>
+          </div>
+          <div class="dex center-center">正在上传文件中,请勿关闭当前页面…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 图片进度条 -->
+    <div class="file-box" v-if="fileImgModal">
+      <div class="bg"></div>
+      <div class="file-wrap">
+        <div class="wrap-box">
+          <div class="text">
+            上传中
+            <span class="num">{{ `${$store.state.fileProgress}` }}%</span>
+          </div>
+          <div class="dex center-center">正在上传图片中,请勿关闭当前页面…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 设置密码 -->
+    <div class="pwd-box" v-if="passwordCode == 1">
+      <div class="bg"></div>
+      <div class="pwd-wrap">
+        <div class="title font16">密码认证</div>
+        <van-form @submit="confirmPwd">
+          <div class="forms-input-wrap">
+            <div class="name font13">请设置密码</div>
+            <div class="input-box flex-wrap">
+              <van-field
+                v-model.trim="pwdForm.pwd1"
+                class="input font13"
+                :type="!passwordShow1 ? 'password' : 'text'"
+                :right-icon="!passwordShow1 ? 'closed-eye' : 'eye-o'"
+                @click-right-icon="clickIcon1"
+                placeholder="请输入6-12位密码"
+              />
+            </div>
+            <div class="name font13">请再次输入密码</div>
+            <div class="input-box flex-wrap">
+              <van-field
+                v-model.trim="pwdForm.pwd2"
+                class="input font13"
+                :type="!passwordShow2 ? 'password' : 'text'"
+                :right-icon="!passwordShow2 ? 'closed-eye' : 'eye-o'"
+                @click-right-icon="clickIcon2"
+                placeholder="请再次输入密码"
+              />
+            </div>
+          </div>
+          <div class="error font13">{{ pwdError }}</div>
+          <van-button class="pwdBtn center-center" native-type="submit"
+            >确认</van-button
+          >
+        </van-form>
+      </div>
+    </div>
+
+    <!-- 登录密码 -->
+    <div class="pwd-box" v-if="passwordCode == 2">
+      <div class="bg"></div>
+      <div class="pwd-wrap pwd-wrap-login">
+        <div class="title font16">密码认证</div>
+        <van-form @submit="loginPwdFun">
+          <div class="forms-input-wrap">
+            <div class="name font13">请输入密码</div>
+            <div class="input-box flex-wrap">
+              <van-field
+                v-model.trim="loginPwd"
+                class="input font13"
+                placeholder="请输入密码"
+                :type="!passwordShow3 ? 'password' : 'text'"
+                :right-icon="!passwordShow3 ? 'closed-eye' : 'eye-o'"
+                @click-right-icon="clickIcon3"
+              />
+            </div>
+          </div>
+          <div class="error font13">{{ pwdError }}</div>
+          <van-button class="pwdBtn pwdBtn1 center-center" native-type="submit"
+            >确认</van-button
+          >
+        </van-form>
+      </div>
+    </div>
+    <!-- 认证过程 -->
+    <!-- <div class="pwd-box" v-if="passwordCode == 1">
 	  <div class="bg"></div>
 	  <div class="pwd-status">
 		  <div class="img">
@@ -447,18 +533,18 @@ export default {
       // baifoImage,
       // sx1Image,
       // sx2Image,
-	  cusUrl: '',
-	  upMoney: '',
-	  downMoney: '',
-	  downMoneyAll: '',
-	  nickname: '',
-	  nicNameShow: false,
-	  upScoresShow: false,
-	  downScoresShow: false,
-	  repurchaseShow: false,
-	  orderList: [],
-	  scoresList:[100, 200, 500, 1000, 5000, 10000],
-	  downScoresList:[100, 200, 500, 1000, 5000, 10000, '全部'],
+      cusUrl: "",
+      upMoney: "",
+      downMoney: "",
+      downMoneyAll: "",
+      nickname: "",
+      nicNameShow: false,
+      upScoresShow: false,
+      downScoresShow: false,
+      repurchaseShow: false,
+      orderList: [],
+      scoresList: [100, 200, 500, 1000, 5000, 10000],
+      downScoresList: [100, 200, 500, 1000, 5000, 10000, "全部"],
       showButton: true,
       filteredUsers: [],
       showUserList: false,
@@ -470,7 +556,7 @@ export default {
       ],
       showPopover: false,
       actions: [{ text: "选项一" }, { text: "选项二" }, { text: "选项三" }],
-      chatHeight: (window.innerHeight - 95) + 'px',
+      chatHeight: window.innerHeight - 95 + "px",
       userPic,
       text: "",
       shareData: {
@@ -500,27 +586,28 @@ export default {
       activeBiaoqing: 0,
       bigLARR: [],
       timerMap: {},
-	  nextExpect:{},
-	  unGame: false,
+      nextExpect: {},
+      unGame: false,
       version: "",
-	  fromModal2: false,
-	  fileModal: false,
+      fromModal2: false,
+      fileModal: false,
+      fileImgModal: false,
       progressBarState: false,
       progressBar: 0,
       key: "storageVersion",
-	  pwdCode: 0,
-	  pwdForm: {
-		pwd1: '',
-		pwd2: ''
-	  },
-	  pwdError: "",
-	  loginPwd: "",
-	  passwordShow1: false,
-	  passwordShow2: false,
-	  passwordShow3: false,
-	  customerShow: false,
-	  liveHisShow: false,
-	  liveShow: false
+      pwdCode: 0,
+      pwdForm: {
+        pwd1: "",
+        pwd2: "",
+      },
+      pwdError: "",
+      loginPwd: "",
+      passwordShow1: false,
+      passwordShow2: false,
+      passwordShow3: false,
+      customerShow: false,
+      liveHisShow: false,
+      liveShow: false,
     };
   },
   directives: {
@@ -563,25 +650,25 @@ export default {
     contentData() {
       return this.$store.state.chat.contentData; // 从 Vuex 获取 state
     },
-    user() {
-      // console.log('news', this.news);
-      return this.$store.state.user;
-    },
+    // user() {
+    //   // console.log('news', this.news);
+    //   return this.$store.state.user;
+    // },
     // bigLARR() {
     //   return bigListArr.bigListArr
     // },
     placeholder() {
-		if(!this.unChat){
-			return "您已被系统禁言！"
-		} else if(!this.ableChat){
-			return "全体禁言"
-		} else{
-			return "请输入内容"
-		}
-	  // return !this.ableChat
-	  //   ? "您已被系统禁言！"
-	  //   : "请输入内容"; 
-	  // return "请输入内容";
+      if (!this.unChat) {
+        return "您已被系统禁言！";
+      } else if (!this.ableChat) {
+        return "全体禁言";
+      } else {
+        return "请输入内容";
+      }
+      // return !this.ableChat
+      //   ? "您已被系统禁言！"
+      //   : "请输入内容";
+      // return "请输入内容";
     },
     disabled() {
       return (
@@ -594,9 +681,9 @@ export default {
     user() {
       return this.$store.state.user;
     },
-	...mapState({
-	  passwordCode: (state) => state.passwordCode, // 监听整个 repair 对象
-	}),
+    ...mapState({
+      passwordCode: (state) => state.passwordCode, // 监听整个 repair 对象
+    }),
     ...mapState("chat", [
       "messages",
       "playerId",
@@ -615,9 +702,9 @@ export default {
       this.pwdCode = this.passwordCode;
     },
     wsStatus() {
-	  if(this.passwordCode == 0){
-		this.alertReload();
-	  }
+      if (this.passwordCode == 0) {
+        this.alertReload();
+      }
     },
     contentData(newVal) {
       if (newVal && newVal.length) {
@@ -628,98 +715,103 @@ export default {
     },
   },
   methods: {
-	clickIcon1(){
-		this.passwordShow1 = !this.passwordShow1
-	},
-	clickIcon2(){
-		this.passwordShow2 = !this.passwordShow2
-	},
-	clickIcon3(){
-		this.passwordShow3 = !this.passwordShow3
-	},
-	pwdValidateTwo(value) {
-	  return value === this.pwdForm.pwd1;
-	},
-	async loginPwdFun(){
-	  if(this.loginPwd == ''){
-		  this.pwdError = '密码不能为空'
-		  return;
-	  }
-	  const [err, res] = await userApi.checkPwd({pwd: this.loginPwd});
-	  if (err) {
-		  // this.pwdError = err.message
-		  return;
-	  };
-	  let data = res.data
-	  if(data.right == 0){
-		  this.pwdError = '密码错误'
-	  }else{
-		  auth.setToken(this.loginPwd, 'pwd');
-		  location.reload(true)
-	  }
-	},
-	async confirmPwd() {
-	  if(this.pwdForm.pwd1 == ''){
-		  this.pwdError = '未设置密码！'
-		  return;
-	  }
-	  if(this.pwdForm.pwd2 == ''){
-		  this.pwdError = '请再次输入密码！'
-		  return;
-	  }
-	  if(this.pwdForm.pwd1 !== this.pwdForm.pwd2){
-		  this.pwdError = '两次密码不一致！'
-		  return;
-	  }
-	  const [err] = await userApi.setPwd(this.pwdForm);
-	  if (err) {
-		  // this.pwdError = err.message
-		  return;
-	  };
-	  auth.setToken(this.pwdForm.pwd1, 'pwd');
-	  location.reload(true)
-	},
-	isMobileDevice() {
-	    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
-	},
-	async getCustomer(){
-		const [err, res] = await userApi.servReq();
-		if (err) return;
-		this.cusUrl = res.data.serviceAddr
-	},
-	async setNickname(){
-		const [err, res] = await userApi.editNickname({nickname: this.nickname});
-		if (err) return;
-		window.location.reload()
-		this.nicNameShow = false;
-	},
-	openCustomer(){
-		if(this.cusUrl){
-			this.$router.push('/customer');
-		}
-	},
-	openHisVideo(){
-		if(this.cusUrl){
-			this.$router.push('/hisVideo');
-		}
-	},
-	openLive(){
-		if(this.cusUrl){
-			this.$router.push('/live');
-		}
-	},
+    clickIcon1() {
+      this.passwordShow1 = !this.passwordShow1;
+    },
+    clickIcon2() {
+      this.passwordShow2 = !this.passwordShow2;
+    },
+    clickIcon3() {
+      this.passwordShow3 = !this.passwordShow3;
+    },
+    pwdValidateTwo(value) {
+      return value === this.pwdForm.pwd1;
+    },
+    async loginPwdFun() {
+      if (this.loginPwd == "") {
+        this.pwdError = "密码不能为空";
+        return;
+      }
+      const [err, res] = await userApi.checkPwd({ pwd: this.loginPwd });
+      if (err) {
+        // this.pwdError = err.message
+        return;
+      }
+      let data = res.data;
+      if (data.right == 0) {
+        this.pwdError = "密码错误";
+      } else {
+        auth.setToken(this.loginPwd, "pwd");
+        location.reload(true);
+      }
+    },
+    async confirmPwd() {
+      if (this.pwdForm.pwd1 == "") {
+        this.pwdError = "未设置密码！";
+        return;
+      }
+      if (this.pwdForm.pwd2 == "") {
+        this.pwdError = "请再次输入密码！";
+        return;
+      }
+      if (this.pwdForm.pwd1 !== this.pwdForm.pwd2) {
+        this.pwdError = "两次密码不一致！";
+        return;
+      }
+      const [err] = await userApi.setPwd(this.pwdForm);
+      if (err) {
+        // this.pwdError = err.message
+        return;
+      }
+      auth.setToken(this.pwdForm.pwd1, "pwd");
+      location.reload(true);
+    },
+    isMobileDevice() {
+      return (
+        typeof window.orientation !== "undefined" ||
+        navigator.userAgent.indexOf("IEMobile") !== -1
+      );
+    },
+    async getCustomer() {
+      const [err, res] = await userApi.servReq();
+      if (err) return;
+      this.cusUrl = res.data.serviceAddr;
+    },
+    async setNickname() {
+      const [err, res] = await userApi.editNickname({
+        nickname: this.nickname,
+      });
+      if (err) return;
+      window.location.reload();
+      this.nicNameShow = false;
+    },
+    openCustomer() {
+      if (this.cusUrl) {
+        this.$router.push("/customer");
+      }
+    },
+    openHisVideo() {
+      if (this.cusUrl) {
+        this.$router.push("/hisVideo");
+      }
+    },
+    openLive() {
+      if (this.cusUrl) {
+        this.$router.push("/live");
+      }
+    },
     updateMinlossBox(head) {
       this.isHeadClosed = !head; // 当 head 为 false 时，隐藏 minlossBox
     },
-	expect(item){
-	  this.unGame = false;
-	  if(item.countdown==-1&&item.stopTime==-1){
-		  this.unGame = true
-	  }
-	  if(item.countdown<0&&item.stopTime>0){
-		  this.unGame = true
-	  }
-	},
+    expect(item) {
+      this.unGame = false;
+      if (item.countdown == -1 && item.stopTime == -1) {
+        this.unGame = true;
+      }
+      if (item.countdown < 0 && item.stopTime > 0) {
+        this.unGame = true;
+      }
+    },
     getImageUrl(imageName) {
       const images = require.context(
         "@/assets/img",
@@ -909,91 +1001,129 @@ export default {
       //   type: 3,
       // });
     },
-	async afterFileRead({ file }) {
-	  this.fileModal = true;
-	  // this.$toast.loading({
-	  //   duration: 19,
-	  //   forbidClick: true,
-	  // });
-	  // const [err, res] = await userApi.uploadImg({ file });
-	  const [err, res] = await userApi.uploadFile({ file });
-	  if (err) return;
-	  // this.$toast.clear();
-	  this.fileModal = false;
-	  this.$store.commit("setFileProgress", 0); 
-	  // console.log(res);
-	  // this.sendMessage({
-	  //   data: '8888',
-	  //   type: 10,
-	  // });
-	},
+    async afterFileRead({ file }) {
+      this.fileModal = true;
+      // this.$toast.loading({
+      //   duration: 19,
+      //   forbidClick: true,
+      // });
+      // const [err, res] = await userApi.uploadImg({ file });
+      const [err, res] = await userApi.uploadFile({ file });
+      if (err) return;
+      // this.$toast.clear();
+      this.fileModal = false;
+      this.$store.commit("setFileProgress", 0);
+      // console.log(res);
+      // this.sendMessage({
+      //   data: '8888',
+      //   type: 10,
+      // });
+    },
+
+    async afterFileUserRead({ file }) {
+      const f = file.file || file;
+      if (!f.type.startsWith("image/")) {
+        this.$toast("只能上传图片文件");
+        return;
+      }
+
+      this.fileImgModal = true;
+      // this.$toast.loading({
+      //   duration: 19,
+      //   forbidClick: true,
+      // });
+      // const [err, res] = await userApi.uploadImg({ file });
+      const [err, res] = await userApi.uploadImgApi({ file });
+      console.log("errerrerrerrerr", err);
+      // if (err) return;
+      if (err) {
+        const msgKey =
+          err?.data?.[0]?.msgKey || err?.response?.data?.data?.[0]?.msgKey;
+        if (msgKey === "sendImgLimit") {
+          console.warn("触发 sendImgLimit，已跳过拦截");
+          this.fileImgModal = false;
+          this.$store.commit("setFileProgress", 0);
+        } else {
+          return;
+        }
+      }
+
+      // this.$toast.clear();
+      this.fileImgModal = false;
+      this.$store.commit("setFileProgress", 0);
+      // console.log(res);
+      // this.sendMessage({
+      //   data: '8888',
+      //   type: 10,
+      // });
+    },
     onSelect(action) {
       console.log(action);
     },
     openPopup() {
-	  this.getOrder()
-	  // this.repurchaseShow = true;
-	  // this.orderList = [{betCode2:"100"},{betCode2:"100"},{betCode2:"100"},{betCode2:"100"}]
+      this.getOrder();
+      // this.repurchaseShow = true;
+      // this.orderList = [{betCode2:"100"},{betCode2:"100"},{betCode2:"100"},{betCode2:"100"}]
     },
-	async getOrder() {
-		let params = {
-			status: 3,
-			pageNo: 1,
-			pageSize: 5
-		}
-	    const [err, res] = await userApi.lotteryMyOrder(params);
-	    if (err) {
-		  this.orderList = []
-		  
-	      return;
-	    }
-		console.log(res)
-		this.orderList = res.data.results
-		if(this.orderList.length > 0){
-			this.repurchaseShow = true;
-		}else{
-			this.$toast("暂未投注，请先投注！");
-		}
-	},
-	closeScores(){
-		this.upScoresShow = false;
-		this.downScoresShow = false;
-	},
-	openScores(){
-		this.upScoresShow = true;
-	},
-	openDownScores(){
-		this.downScoresShow = true;
-	},
-	setUpMoney(v){
-		this.upMoney = v
-	},
-	upScores(){
-		if(this.upMoney){
-			let str = "上分" + this.upMoney
-			this.sendQuick(str);
-			this.upScoresShow = false;
-		}
-	},
-	setDownMoney(v){
-		if(v!=='全部'){
-			this.downMoney = v
-			this.downMoneyAll = ''
-		}else{
-			this.downMoney = ''
-			this.downMoneyAll = '全部'
-		}
-	},
-	downScores(){
-		let str = '';
-		if(this.downMoneyAll){
-			str = '全下分' 
-		}else{
-			str = "下分" + this.downMoney
-		}
-		this.sendQuick(str);
-		this.downScoresShow = false;
-	},
+    async getOrder() {
+      let params = {
+        status: 3,
+        pageNo: 1,
+        pageSize: 5,
+      };
+      const [err, res] = await userApi.lotteryMyOrder(params);
+      if (err) {
+        this.orderList = [];
+
+        return;
+      }
+      console.log(res);
+      this.orderList = res.data.results;
+      if (this.orderList.length > 0) {
+        this.repurchaseShow = true;
+      } else {
+        this.$toast("暂未投注，请先投注！");
+      }
+    },
+    closeScores() {
+      this.upScoresShow = false;
+      this.downScoresShow = false;
+    },
+    openScores() {
+      this.upScoresShow = true;
+    },
+    openDownScores() {
+      this.downScoresShow = true;
+    },
+    setUpMoney(v) {
+      this.upMoney = v;
+    },
+    upScores() {
+      if (this.upMoney) {
+        let str = "上分" + this.upMoney;
+        this.sendQuick(str);
+        this.upScoresShow = false;
+      }
+    },
+    setDownMoney(v) {
+      if (v !== "全部") {
+        this.downMoney = v;
+        this.downMoneyAll = "";
+      } else {
+        this.downMoney = "";
+        this.downMoneyAll = "全部";
+      }
+    },
+    downScores() {
+      let str = "";
+      if (this.downMoneyAll) {
+        str = "全下分";
+      } else {
+        str = "下分" + this.downMoney;
+      }
+      this.sendQuick(str);
+      this.downScoresShow = false;
+    },
     //微信默认表情包回显
     wxEmojis(html) {
       return wxEmojis(html);
@@ -1067,7 +1197,7 @@ export default {
       // });
 
       this.setUnAllowChat(false);
-      this.unChat = false
+      this.unChat = false;
     },
     notView() {
       this.$dialog
@@ -1281,58 +1411,57 @@ export default {
     srcollNow() {
       this.$nextTick(() => {
         const chatContainer = document.querySelector(".js-cont-room");
-        const savedTop = sessionStorage.getItem('listScrollTop');
+        const savedTop = sessionStorage.getItem("listScrollTop");
         if (chatContainer && savedTop) {
           chatContainer.scrollTop = parseInt(savedTop);
-          console.log('回到原点')
+          console.log("回到原点");
         }
       });
-      
     },
-	simulateProgressBar() {
-	  this.progressBarState = true;
-	  var duration = Math.floor(Math.random() * 6) + 5; // 生成5到10之间的随机秒数
-	  var increment = 100 / (duration * 10); // 计算每100毫秒增加的进度
-	
-	  var progress = 0;
-	
-	  this.interval = setInterval(() => {
-	    progress += increment;
-	    this.progressBar = parseInt(progress);
-	    if (progress >= 100) {
-	      console.log("done");
-	      auth.setToken(this.version, this.key);
-	      location.reload();
-	      clearInterval(this.interval);
-	    }
-	  }, 100);
-	},
-	isNumber(val) {
-	  return typeof val === "number" && !isNaN(val);
-	},
-	async getVersion() {
-	  const [err] = await userApi.versionReq();
-	  // console.log(this.isNumber(+err))
-	  if (!this.isNumber(+err)) {
-	    return;
-	  }
-	  const res = +err;
-	  let storageVersion = auth.getToken(this.key);
-	  if (storageVersion && storageVersion != res) {
-	    this.fromModal2 = true;
-	    this.version = res;
-	  } else {
-	    auth.setToken(res, this.key);
-	  }
-	},
-	async getChatMember() {
-	  const [err, res] = await userApi.chatMember();
-	  if (err) {
-	    return;
-	  }
-	  
+    simulateProgressBar() {
+      this.progressBarState = true;
+      var duration = Math.floor(Math.random() * 6) + 5; // 生成5到10之间的随机秒数
+      var increment = 100 / (duration * 10); // 计算每100毫秒增加的进度
+
+      var progress = 0;
+
+      this.interval = setInterval(() => {
+        progress += increment;
+        this.progressBar = parseInt(progress);
+        if (progress >= 100) {
+          console.log("done");
+          auth.setToken(this.version, this.key);
+          location.reload();
+          clearInterval(this.interval);
+        }
+      }, 100);
+    },
+    isNumber(val) {
+      return typeof val === "number" && !isNaN(val);
+    },
+    async getVersion() {
+      const [err] = await userApi.versionReq();
+      // console.log(this.isNumber(+err))
+      if (!this.isNumber(+err)) {
+        return;
+      }
+      const res = +err;
+      let storageVersion = auth.getToken(this.key);
+      if (storageVersion && storageVersion != res) {
+        this.fromModal2 = true;
+        this.version = res;
+      } else {
+        auth.setToken(res, this.key);
+      }
+    },
+    async getChatMember() {
+      const [err, res] = await userApi.chatMember();
+      if (err) {
+        return;
+      }
+
       this.$store.commit("chat/setOnlineUser", res.data);
-	},
+    },
   },
   created() {
     const storedItem = localStorage.getItem("selectedImgBqItem");
@@ -1348,37 +1477,39 @@ export default {
     }
 
     // this.clearContentData([]);
-	this.getCustomer()
+    this.getCustomer();
     this.$store.dispatch("getSharaData");
     this.scrollToBottom();
-	
-	this.getVersion();
-	this.getChatMember();
+
+    this.getVersion();
+    this.getChatMember();
   },
   mounted() {
-	  
-	this.customerShow = process.env.NODE_ENV === "production"
-	  ? window.CUSTOMER
-	  : process.env.VUE_APP_CUSTOMER;
-	
-	this.liveShow = process.env.NODE_ENV === "production"
-	  ? window.LIVE
-	  : process.env.VUE_APP_LIVE;
-	
-	this.liveHisShow = process.env.NODE_ENV === "production"
-	  ? window.HISLIVE
-	  : process.env.VUE_APP_HISLIVE;
-	
+    this.customerShow =
+      process.env.NODE_ENV === "production"
+        ? window.CUSTOMER
+        : process.env.VUE_APP_CUSTOMER;
+
+    this.liveShow =
+      process.env.NODE_ENV === "production"
+        ? window.LIVE
+        : process.env.VUE_APP_LIVE;
+
+    this.liveHisShow =
+      process.env.NODE_ENV === "production"
+        ? window.HISLIVE
+        : process.env.VUE_APP_HISLIVE;
+
     this.chat();
-	if(this.passwordCode == 0){
-		if(!this.user.qq || this.user.qq == ''){
-			this.nicNameShow = true;
-		}
-	}
-	let isMobile = this.isMobileDevice()
-	if(!isMobile){
-		this.chatHeight = '53.2rem'
-	}
+    if (this.passwordCode == 0) {
+      if (!this.user.qq || this.user.qq == "") {
+        this.nicNameShow = true;
+      }
+    }
+    let isMobile = this.isMobileDevice();
+    if (!isMobile) {
+      this.chatHeight = "53.2rem";
+    }
     // if (this.wsStatus === true) {
     //   this.srcollBtm();
     //   return;
@@ -1387,14 +1518,14 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      if(from.name != 'FinancialDetails' && from.name != 'CollectionDetails') {
+      if (from.name != "FinancialDetails" && from.name != "CollectionDetails") {
         if (vm.wsStatus === true) {
           vm.srcollBtm();
           return;
         }
         vm.initWebSocket();
       } else {
-        vm.srcollNow()
+        vm.srcollNow();
       }
       vm.startAllTimers();
     });
@@ -1403,13 +1534,13 @@ export default {
     this.clearAllTimers();
     const scrollContainer = this.$refs.chatBox;
     if (scrollContainer) {
-      sessionStorage.setItem('listScrollTop', scrollContainer.scrollTop);
+      sessionStorage.setItem("listScrollTop", scrollContainer.scrollTop);
     }
     next();
   },
   beforeDestroy() {
     this.clearAllTimers();
-  }
+  },
 };
 </script>
 <style scoped lang="less">
@@ -1497,7 +1628,6 @@ export default {
   }
 }
 
-
 .bottom-box {
   z-index: 13;
   position: relative;
@@ -1514,29 +1644,29 @@ export default {
     height: @height;
     background: #fff;
     padding: 0 16px;
-	
-	.quick{
-		  width: 100%;
-		  margin: 20px 0;
-		  background-color: transparent;
-		  display: flex;
-		  flex-wrap: wrap;
-		  .item-box-q{
-			flex: 1 0 20%; 
-			box-sizing: border-box; 
-			padding: 0 16px;
-			.btn-q{
-				color: #fff;
-				padding: 10px 0;
-				border-radius: 8px;
-			}
-		  }
-	}
-	.opr{
-		width: 100%;
-		display: flex;
-		align-items: center;
-	}
+
+    .quick {
+      width: 100%;
+      margin: 20px 0;
+      background-color: transparent;
+      display: flex;
+      flex-wrap: wrap;
+      .item-box-q {
+        flex: 1 0 20%;
+        box-sizing: border-box;
+        padding: 0 16px;
+        .btn-q {
+          color: #fff;
+          padding: 10px 0;
+          border-radius: 8px;
+        }
+      }
+    }
+    .opr {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
     .icon-box {
       .icon {
         color: #666;
@@ -1579,79 +1709,79 @@ export default {
       height: 80px;
       // padding: 30px;
       // background: linear-gradient(180deg, #ff6267 0%, #e7474c 100%);
-	  background-color: #1989fa;
-	  // border: .02667rem solid #1989fa;
+      background-color: #1989fa;
+      // border: .02667rem solid #1989fa;
       border-radius: 10px;
       color: #fff;
       // font-size: 26px;
     }
   }
 }
-.chatHeight{
-	height: calc(100vh - @height);
+.chatHeight {
+  height: calc(100vh - @height);
 }
 @media (min-width: 500px) {
-	@height: 104.4rem;
-  .chatHeight{
-	height: 54rem;
+  @height: 104.4rem;
+  .chatHeight {
+    height: 54rem;
   }
   .chat-box {
-	margin-top: .24rem;
-	margin-bottom: .20rem;
+    margin-top: 0.24rem;
+    margin-bottom: 0.2rem;
   }
-  .bottom-box{
-	  background:#fff;
+  .bottom-box {
+    background: #fff;
   }
-  .wrap-box{
-	  height: 6.6rem !important;
-	  position: inherit !important;
-      padding: 0 .28rem !important;
-	  
-	  .quick{
-		  margin: 45px 0 !important;
-	  	  .item-box-q{
-	  		padding: 0 40px !important;
-	  		.btn-q{
-	  			padding: 40px 0 !important;
-	  			border-radius: 20px !important;
-	  		}
-	  	  }
-	  }
-	  .input-box {
-		  height: 240px;
-		  .input {
-			  height: 240px;
-			  line-height: 240px;
-		  }
-	  }
-	  
-	  .icon-box {
-	    img {
-	      width: 2.5rem !important;
-	      height: 2.5rem !important;
-	    }
-	  }
-	  
-	  .btn{
-		width: 340px !important;
-		height: 240px !important;
-	  }
+  .wrap-box {
+    height: 6.6rem !important;
+    position: inherit !important;
+    padding: 0 0.28rem !important;
+
+    .quick {
+      margin: 45px 0 !important;
+      .item-box-q {
+        padding: 0 40px !important;
+        .btn-q {
+          padding: 40px 0 !important;
+          border-radius: 20px !important;
+        }
+      }
+    }
+    .input-box {
+      height: 240px;
+      .input {
+        height: 240px;
+        line-height: 240px;
+      }
+    }
+
+    .icon-box {
+      img {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+      }
+    }
+
+    .btn {
+      width: 340px !important;
+      height: 240px !important;
+    }
   }
-  
+
   /* 针对垂直滚动条 */
   ::-webkit-scrollbar {
-      width: .2rem; /* 设置滚动条的宽度 */
+    width: 0.2rem; /* 设置滚动条的宽度 */
   }
-   
+
   /* 针对滚动条的滑块 */
   ::-webkit-scrollbar-thumb {
-      background-color: darkgrey; /* 设置滑块的背景颜色 */
-      border-radius: 10px; /* 设置滑块的圆角 */
+    background-color: darkgrey; /* 设置滑块的背景颜色 */
+    border-radius: 10px; /* 设置滑块的圆角 */
   }
-   
+
   /* 针对滚动条的轨道 */
   ::-webkit-scrollbar-track {
-      background: #f1f1f1; /* 设置轨道的背景颜色 */
+    background: #f1f1f1; /* 设置轨道的背景颜色 */
   }
 }
 .face-box {
@@ -2099,329 +2229,329 @@ export default {
   transform: translateY(100%);
   opacity: 0;
 }
-.customer{
-	position: fixed;
-	right: 10px;
-	top: 40vh;
-	// text-align: center;
-	img{
-		width: 110px;
-		height: 110px;
-	}
+.customer {
+  position: fixed;
+  right: 10px;
+  top: 40vh;
+  // text-align: center;
+  img {
+    width: 110px;
+    height: 110px;
+  }
 }
-.live{
-	position: fixed;
-	right: 10px;
-	top: 50vh;
-	// text-align: center;
-	img{
-		width: 100px;
-		height: 100px;
-	}
+.live {
+  position: fixed;
+  right: 10px;
+  top: 50vh;
+  // text-align: center;
+  img {
+    width: 100px;
+    height: 100px;
+  }
 }
-.hisLive{
-	position: fixed;
-	right: 10px;
-	top: 57vh;
-	// text-align: center;
-	img{
-		width: 100px;
-		height: 100px;
-	}
+.hisLive {
+  position: fixed;
+  right: 10px;
+  top: 57vh;
+  // text-align: center;
+  img {
+    width: 100px;
+    height: 100px;
+  }
 }
 .popupMoney {
   width: 85%;
   border-radius: 16px;
-  .repurchase-panel{
-	  padding: 20px;
-	  .item{
-		  display: flow-root;
-		  border-bottom: 2px solid #e0e0e0;
-		  margin: 10px 0;
-		  padding: 10px 0;
-	  }
-	  .val{
-		  float: left;
-		  width: calc(100% - 100px);
-		  white-space: nowrap;      /* 确保文本不换行 */
-		  overflow: hidden;         /* 隐藏溢出的内容 */
-		  text-overflow: ellipsis;
-	  }
-	  .btn{
-		  float: right;
-		  background-image: linear-gradient(to bottom, #e74855, #d72034);
-		  color: #fff;
-		  padding: 4px 16px;
-		  border-radius: 8px;
-	  }
-  }
-}
- 
-.upScores{
-  width: 85%;
-  border-radius: 16px;
-  padding-bottom: 10px;
-  display: inline-grid;
-  .scores-title{
-	border-bottom: 2px solid #e0e0e0;
-	padding: 16px;
-  }
-  .scores-panel{
-	  padding: 10px 20px;
-	  .input{
-		  width: 100%;
-		  border: none;
-		  border-radius: 10px;
-		  padding: 14px;
-		  padding-left: 30px;
-		  background: #eaeaea;
-	  }
-	  .btn{
-		  width: calc(50% - 10px);
-		  float: left;
-		  height: 60px;
-		  border-radius: 10px;
-		  background-color: #878787;
-		  color: #fff;
-	  }
-	  .btn2{
-		  float: right;
-		  background-color: #b01629;
-	  }
-	  .item{
-		  text-align: center;
-		  display: inline-block;
-		  width: 25%; /* 每个项目占20%的宽度 */
-		  box-sizing: border-box; /* 确保padding和border不会影响宽度计算 */
-		  font-size: 16px; /* 重置字体大小 */
-		  vertical-align: top; /* 可选，确保元素顶部对齐 */
-		  padding: 10px;
-		  .val{
-			  width: 100%;
-			  height: 60px;
-			  line-height: 60px;
-			  border-radius: 8px;
-			  background-color: #d3d2d5;
-		  }
-		  .up{
-			background-image: linear-gradient(to bottom, #e74855, #d72034);
-			color: #fff;
-		  }
-		}
-  }
-}
-@media (min-width: 500px) {
-.chat-con{
-	height: 60rem !important;
-}
-.unread-mention {
-	align-items: end !important;
-  	position: fixed;
-  	// top: 55% !important;
-	top: calc(5% + 40.2rem);
-  	right: inherit !important;
-  	margin-left: 25.5rem !important;
-	justify-content: inherit !important;
-  	.at-symbol {
-  	  min-width: 262px;
-  	  height: 136px;
-	  line-height: 116px;
-  	  background: #ffffff;
-  	  border-radius: 60px 0px 0px 60px;
-  	  // margin-left: 20px;
-  	
-  	  padding: 0 40px;
-  	
-  	  .imgB {
-  	    img {
-  	      width: 64px !important;
-  	      height: 64px !important;
-  	      vertical-align: middle;
-  	      margin-top: -8px !important;
-  	      margin-right: 16px !important;
-  	    }
-  	  }
-  	
-  	  .txt {
-  	    line-height: 22px;
-  	  }
-  	}
-}
-.aite-box-sheet{
-	padding-bottom: 0;
-	transition: none !important;
-	bottom: inherit !important; 
-	left: inherit !important;
-	width: 26rem !important;
-	min-width: 32rem !important;
-	max-width: 32rem !important;
-	max-height: 40%;
-	position: relative;
-	.user-pic{
-		width: 152px !important;
-		height: 152px !important;
-	}
-	.user-list li {
-	  padding: 0 20px !important;
-	  height: 172px !important;
-	  .user-pic {
-		width: 152px !important;
-		height: 152px !important;
-	  }
-	}
-	::v-deep .van-action-sheet-enter-active{
-		transition: none !important;
-	}
-	::v-deep .van-action-sheet-leave-active{
-		transition: none !important;
-	}
-}
-	
-.bigImgIcon {
-  img {
-    width: 4rem;
-    height: 4rem;
-    margin-right: 20px;
-    margin-bottom: 20px;
-  }
-}
-.face-box {
-  li {
-    width: 2rem;
-    height: 2rem;
-    line-height: 50px;
-    text-align: center;
-    // font-size: 24px;
-    cursor: pointer;
-    font-size: 84px;
-
-    .emojiToImg {
-      width: 48px;
-      height: 48px;
+  .repurchase-panel {
+    padding: 20px;
+    .item {
+      display: flow-root;
+      border-bottom: 2px solid #e0e0e0;
+      margin: 10px 0;
+      padding: 10px 0;
+    }
+    .val {
+      float: left;
+      width: calc(100% - 100px);
+      white-space: nowrap; /* 确保文本不换行 */
+      overflow: hidden; /* 隐藏溢出的内容 */
+      text-overflow: ellipsis;
+    }
+    .btn {
+      float: right;
+      background-image: linear-gradient(to bottom, #e74855, #d72034);
+      color: #fff;
+      padding: 4px 16px;
+      border-radius: 8px;
     }
   }
 }
 
-	.popupMoney {
-	  width: 20rem;
-	  top: calc(27rem + 5%);
-	  border-radius: 32px;
-	  .repurchase-panel{
-		  padding: 40px 80px;
-		  .item{
-			  display: flow-root;
-			  border-bottom: 4px solid #e0e0e0;
-			  margin: 20px 0;
-			  padding: 20px 0;
-		  }
-		  .val{
-			width: calc(100% - 240px);
-			  float: left;
-		  }
-		  .btn{
-			  padding: 8px 32px;
-			  border-radius: 16px;
-		  }
-	  }
-	}
-	
-	.customer{
-		position: fixed;
-		top: 38% !important;
-		right: inherit !important;
-		margin-left: 27rem !important;
-		img{
-			width: 3.5rem !important;
-			height: 3.5rem !important;
-		}
-	}
-	
-	.live{
-		position: fixed;
-		top: 45% !important;
-		right: inherit !important;
-		margin-left: 27rem !important;
-		img{
-			width: 3.5rem !important;
-			height: 3.5rem !important;
-		}
-	}
-	.hisLive{
-		position: fixed;
-		top: 51% !important;
-		right: inherit !important;
-		margin-left: 27rem !important;
-		img{
-			width: 3.5rem !important;
-			height: 3.5rem !important;
-		}
-	}
-	.upScores{
-	  width: 22rem;
-	  top: calc(27rem + 5%);
-	  border-radius: 32px;
-	  .scores-title{
-		border-bottom: 2px solid #e0e0e0;
-		padding: 40px;
-	  }
-	  .scores-panel{
-		  padding: 20px 40px;
-		  .input{
-		  	border-radius: 20px;
-		  	padding: 28px;
-		  	padding-left: 60px;
-		  }
-		  .btn{
-		  	width: calc(50% - 20px);
-		  	height: 180px;
-		  	border-radius: 16px;
-		  }
-		  .item{
-			  text-align: center;
-			  display: inline-block;
-			  width: 25%; /* 每个项目占20%的宽度 */
-			  box-sizing: border-box; /* 确保padding和border不会影响宽度计算 */
-			  vertical-align: top; /* 可选，确保元素顶部对齐 */
-			  padding: 20px;
-			  .val{
-				  width: 100%;
-				  height: 140px;
-				  line-height: 140px;
-				  border-radius: 16px;
-				  background-color: #d3d2d5;
-			  }
-			}
-	  }
-	}
+.upScores {
+  width: 85%;
+  border-radius: 16px;
+  padding-bottom: 10px;
+  display: inline-grid;
+  .scores-title {
+    border-bottom: 2px solid #e0e0e0;
+    padding: 16px;
+  }
+  .scores-panel {
+    padding: 10px 20px;
+    .input {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      padding-left: 30px;
+      background: #eaeaea;
+    }
+    .btn {
+      width: calc(50% - 10px);
+      float: left;
+      height: 60px;
+      border-radius: 10px;
+      background-color: #878787;
+      color: #fff;
+    }
+    .btn2 {
+      float: right;
+      background-color: #b01629;
+    }
+    .item {
+      text-align: center;
+      display: inline-block;
+      width: 25%; /* 每个项目占20%的宽度 */
+      box-sizing: border-box; /* 确保padding和border不会影响宽度计算 */
+      font-size: 16px; /* 重置字体大小 */
+      vertical-align: top; /* 可选，确保元素顶部对齐 */
+      padding: 10px;
+      .val {
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        border-radius: 8px;
+        background-color: #d3d2d5;
+      }
+      .up {
+        background-image: linear-gradient(to bottom, #e74855, #d72034);
+        color: #fff;
+      }
+    }
+  }
+}
+@media (min-width: 500px) {
+  .chat-con {
+    height: 60rem !important;
+  }
+  .unread-mention {
+    align-items: end !important;
+    position: fixed;
+    // top: 55% !important;
+    top: calc(5% + 40.2rem);
+    right: inherit !important;
+    margin-left: 25.5rem !important;
+    justify-content: inherit !important;
+    .at-symbol {
+      min-width: 262px;
+      height: 136px;
+      line-height: 116px;
+      background: #ffffff;
+      border-radius: 60px 0px 0px 60px;
+      // margin-left: 20px;
+
+      padding: 0 40px;
+
+      .imgB {
+        img {
+          width: 64px !important;
+          height: 64px !important;
+          vertical-align: middle;
+          margin-top: -8px !important;
+          margin-right: 16px !important;
+        }
+      }
+
+      .txt {
+        line-height: 22px;
+      }
+    }
+  }
+  .aite-box-sheet {
+    padding-bottom: 0;
+    transition: none !important;
+    bottom: inherit !important;
+    left: inherit !important;
+    width: 26rem !important;
+    min-width: 32rem !important;
+    max-width: 32rem !important;
+    max-height: 40%;
+    position: relative;
+    .user-pic {
+      width: 152px !important;
+      height: 152px !important;
+    }
+    .user-list li {
+      padding: 0 20px !important;
+      height: 172px !important;
+      .user-pic {
+        width: 152px !important;
+        height: 152px !important;
+      }
+    }
+    ::v-deep .van-action-sheet-enter-active {
+      transition: none !important;
+    }
+    ::v-deep .van-action-sheet-leave-active {
+      transition: none !important;
+    }
+  }
+
+  .bigImgIcon {
+    img {
+      width: 4rem;
+      height: 4rem;
+      margin-right: 20px;
+      margin-bottom: 20px;
+    }
+  }
+  .face-box {
+    li {
+      width: 2rem;
+      height: 2rem;
+      line-height: 50px;
+      text-align: center;
+      // font-size: 24px;
+      cursor: pointer;
+      font-size: 84px;
+
+      .emojiToImg {
+        width: 48px;
+        height: 48px;
+      }
+    }
+  }
+
+  .popupMoney {
+    width: 20rem;
+    top: calc(27rem + 5%);
+    border-radius: 32px;
+    .repurchase-panel {
+      padding: 40px 80px;
+      .item {
+        display: flow-root;
+        border-bottom: 4px solid #e0e0e0;
+        margin: 20px 0;
+        padding: 20px 0;
+      }
+      .val {
+        width: calc(100% - 240px);
+        float: left;
+      }
+      .btn {
+        padding: 8px 32px;
+        border-radius: 16px;
+      }
+    }
+  }
+
+  .customer {
+    position: fixed;
+    top: 38% !important;
+    right: inherit !important;
+    margin-left: 27rem !important;
+    img {
+      width: 3.5rem !important;
+      height: 3.5rem !important;
+    }
+  }
+
+  .live {
+    position: fixed;
+    top: 45% !important;
+    right: inherit !important;
+    margin-left: 27rem !important;
+    img {
+      width: 3.5rem !important;
+      height: 3.5rem !important;
+    }
+  }
+  .hisLive {
+    position: fixed;
+    top: 51% !important;
+    right: inherit !important;
+    margin-left: 27rem !important;
+    img {
+      width: 3.5rem !important;
+      height: 3.5rem !important;
+    }
+  }
+  .upScores {
+    width: 22rem;
+    top: calc(27rem + 5%);
+    border-radius: 32px;
+    .scores-title {
+      border-bottom: 2px solid #e0e0e0;
+      padding: 40px;
+    }
+    .scores-panel {
+      padding: 20px 40px;
+      .input {
+        border-radius: 20px;
+        padding: 28px;
+        padding-left: 60px;
+      }
+      .btn {
+        width: calc(50% - 20px);
+        height: 180px;
+        border-radius: 16px;
+      }
+      .item {
+        text-align: center;
+        display: inline-block;
+        width: 25%; /* 每个项目占20%的宽度 */
+        box-sizing: border-box; /* 确保padding和border不会影响宽度计算 */
+        vertical-align: top; /* 可选，确保元素顶部对齐 */
+        padding: 20px;
+        .val {
+          width: 100%;
+          height: 140px;
+          line-height: 140px;
+          border-radius: 16px;
+          background-color: #d3d2d5;
+        }
+      }
+    }
+  }
 }
 
 .nicName {
-	.opr{
-		background-color: #e0e0e0;
-		border-radius: 20px;
-		display: inline-table;
-		width: 100%;
-		height: 300px;
-		padding:40px;
-		.input {
-		  width: 100%;
-		  border: none;
-		  border-radius: 10px;
-		  padding: 20px;
-		  padding-left: 30px;
-		  background: #fff;
-		  margin: 20px 0;
-		}
-		.btn{
-			width: 100%;
-			height: 80px;
-			color: #fff;
-			border-radius: 20px;
-			background-color: #e32e3d;
-		}
-	}
+  .opr {
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    display: inline-table;
+    width: 100%;
+    height: 300px;
+    padding: 40px;
+    .input {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 20px;
+      padding-left: 30px;
+      background: #fff;
+      margin: 20px 0;
+    }
+    .btn {
+      width: 100%;
+      height: 80px;
+      color: #fff;
+      border-radius: 20px;
+      background-color: #e32e3d;
+    }
+  }
 }
-.file-box{
+.file-box {
   position: fixed;
   top: 0;
   left: 0;
@@ -2431,48 +2561,48 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-	.bg {
-	  position: absolute;
-	  width: 100%;
-	  height: 100%;
-	  left: 0;
-	  top: 0;
-	  background: rgba(0, 0, 0, 0.8);
-	}  
-	.file-wrap {
-	  position: relative;
-	  border-radius: 30px 30px 30px 30px;
-	  background: #ffffff;
-	  width: 560px;
-	  height: 376px;
-	  .wrap-box {
-	    padding-top: 120px;
-	    .text {
-	      font-size: 32px;
-	      font-weight: 600;
-	      text-align: center;
-	      height: 100px;
-	  
-	      .num {
-	        color: #508EFF;
-	      }
-	    }
-	  
-	    .btn {
-	      border-top: 1px solid #e5e5e5;
-	      height: 98px;
-	      color: #508EFF;
-	      font-weight: 600;
-	      font-size: 32px;
-	    }
-	  
-	    .dex {
-	      color: #999999;
-	      font-size: 24px;
-	      margin-top: 10px;
-	    }
-	  }
-	}
+  .bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.8);
+  }
+  .file-wrap {
+    position: relative;
+    border-radius: 30px 30px 30px 30px;
+    background: #ffffff;
+    width: 560px;
+    height: 376px;
+    .wrap-box {
+      padding-top: 120px;
+      .text {
+        font-size: 32px;
+        font-weight: 600;
+        text-align: center;
+        height: 100px;
+
+        .num {
+          color: #508eff;
+        }
+      }
+
+      .btn {
+        border-top: 1px solid #e5e5e5;
+        height: 98px;
+        color: #508eff;
+        font-weight: 600;
+        font-size: 32px;
+      }
+
+      .dex {
+        color: #999999;
+        font-size: 24px;
+        margin-top: 10px;
+      }
+    }
+  }
 }
 .version-box {
   position: fixed;
@@ -2519,14 +2649,14 @@ export default {
         height: 100px;
 
         .num {
-          color: #508EFF;
+          color: #508eff;
         }
       }
 
       .btn {
         border-top: 1px solid #e5e5e5;
         height: 98px;
-        color: #508EFF;
+        color: #508eff;
         font-weight: 600;
         font-size: 32px;
       }
@@ -2539,7 +2669,6 @@ export default {
     }
   }
 }
-
 
 .pwd-box {
   position: fixed;
@@ -2560,106 +2689,105 @@ export default {
     top: 0;
     background: rgba(0, 0, 0, 0.8);
   }
- //  .pwd-status{
- //    position: relative;
- //    border-radius: 30px 30px 30px 30px;
- //    background: #ffffff;
- //    width: 90%;
- //    height: 536px;
-	// padding: 40px 60px;
-	// text-align: center;
-	// .img{
-	// 	width: 100%;
-	// 	margin-bottom: 40px;
-	// 	img{
-	// 		width: 50%;
-	// 	}
-	// }
-	// .title{
-	// 	text-align: center;
-	// 	font-weight: bold;
-	// 	margin-bottom: 20px;
-	// }
- //  }
-  .pwd-wrap{
+  //  .pwd-status{
+  //    position: relative;
+  //    border-radius: 30px 30px 30px 30px;
+  //    background: #ffffff;
+  //    width: 90%;
+  //    height: 536px;
+  // padding: 40px 60px;
+  // text-align: center;
+  // .img{
+  // 	width: 100%;
+  // 	margin-bottom: 40px;
+  // 	img{
+  // 		width: 50%;
+  // 	}
+  // }
+  // .title{
+  // 	text-align: center;
+  // 	font-weight: bold;
+  // 	margin-bottom: 20px;
+  // }
+  //  }
+  .pwd-wrap {
     position: relative;
     border-radius: 30px 30px 30px 30px;
     background: #ffffff;
     width: 70%;
     height: 626px;
-	padding: 40px 60px;
-	.title{
-		text-align: center;
-		font-weight: bold;
-		margin-bottom: 20px;
-	}
-	.name{
-		// font-weight: bold;
-		margin: 20px 0;
-	}
-	.input-box{
-		border: 2px solid #e0e0e0;
-	}
-	.pwdBtn{
-		margin-top: 20px;
-		width: 100%;
-		background: #145cff;
-		color: #fff;
-		border-radius: 20px;
-	}
-	.pwdBtn1{
-		margin-top: 20px;
-	}
-	.error{
-		margin-top: 20px;
-		// min-height: 36px;
-		color: #ff0000;
-	}
+    padding: 40px 60px;
+    .title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .name {
+      // font-weight: bold;
+      margin: 20px 0;
+    }
+    .input-box {
+      border: 2px solid #e0e0e0;
+    }
+    .pwdBtn {
+      margin-top: 20px;
+      width: 100%;
+      background: #145cff;
+      color: #fff;
+      border-radius: 20px;
+    }
+    .pwdBtn1 {
+      margin-top: 20px;
+    }
+    .error {
+      margin-top: 20px;
+      // min-height: 36px;
+      color: #ff0000;
+    }
   }
-  .pwd-wrap-login{
-	// height: 456px;  
-	height: initial;
+  .pwd-wrap-login {
+    // height: 456px;
+    height: initial;
   }
 }
 @media (min-width: 500px) {
-  .nicName{
-	.opr{
-		border-radius: 26px !important;
-		height: 600px !important;
-		padding:80px !important;
-		.input {
-		  border-radius: 20px !important;
-		  padding: 40px !important;
-		  padding-left: 60px !important;
-		  margin: 40px 0 !important;
-		}
-		.btn{
-			height: 240px !important;
-			border-radius: 40px !important;
-		}
-	}  
+  .nicName {
+    .opr {
+      border-radius: 26px !important;
+      height: 600px !important;
+      padding: 80px !important;
+      .input {
+        border-radius: 20px !important;
+        padding: 40px !important;
+        padding-left: 60px !important;
+        margin: 40px 0 !important;
+      }
+      .btn {
+        height: 240px !important;
+        border-radius: 40px !important;
+      }
+    }
   }
-  .file-box{
-	.file-wrap {
-	  position: relative;
-	  border-radius: 80px 80px 80px 80px;
-	  background: #ffffff;
-	  width: 22rem;
-	  height: 782px;
-	  .wrap-box {
-	    padding-top: 240px !important;
-	  }
-	}
+  .file-box {
+    .file-wrap {
+      position: relative;
+      border-radius: 80px 80px 80px 80px;
+      background: #ffffff;
+      width: 22rem;
+      height: 782px;
+      .wrap-box {
+        padding-top: 240px !important;
+      }
+    }
   }
   .version-box {
-  
     .version-wrap {
       position: relative;
       border-radius: 6px 6px 80px 80px;
       background: #ffffff;
       width: 22rem;
       height: 782px;
-  
+
       .top-icon {
         position: absolute;
         width: 100%;
@@ -2669,7 +2797,7 @@ export default {
         background: url("@/assets/img/Index/upload.png") no-repeat;
         background-size: 100% auto;
       }
-  
+
       .wrap-box {
         padding-top: 340px !important;
         .text {
@@ -2677,20 +2805,20 @@ export default {
           font-weight: bold;
           text-align: center;
           height: 200px;
-  
+
           .num {
-            color: #508EFF;
+            color: #508eff;
           }
         }
-  
+
         .btn {
           border-top: 2px solid #e5e5e5 !important;
           height: 226px !important;
-          color: #508EFF;
+          color: #508eff;
           font-weight: 600;
-		  width: inherit !important;
+          width: inherit !important;
         }
-  
+
         .dex {
           color: #999999;
           font-size: 24px;
@@ -2699,49 +2827,48 @@ export default {
       }
     }
   }
-  
-  
-.pwd-box {
-  .pwd-wrap{
-    position: relative;
-    border-radius: 60px;
-    background: #ffffff;
-	width: 20rem;
-	height: 1302px;
-	padding: 80px 120px;
-	.title{
-		text-align: center;
-		font-weight: bold;
-		margin-bottom: 20px;
-	}
-	.name{
-		// font-weight: bold;
-		margin: 30px 0px 40px 0px;
-	}
-	.input-box{
-		border: 2px solid #e0e0e0;
-	}
-	.pwdBtn{
-		margin-top: 20px !important;
-		width: -webkit-fill-available !important;
-		border-radius: 40px !important;
-	}
-	.pwdBtn1{
-		margin-top: 40px !important;
-	}
-	.error{
-		margin-top: 20px;
-		// min-height: 120px;
-		color: #ff0000;
-	}
-	::v-deep .van-icon{
-		font-size: 92px !important;
-	}
+
+  .pwd-box {
+    .pwd-wrap {
+      position: relative;
+      border-radius: 60px;
+      background: #ffffff;
+      width: 20rem;
+      height: 1302px;
+      padding: 80px 120px;
+      .title {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .name {
+        // font-weight: bold;
+        margin: 30px 0px 40px 0px;
+      }
+      .input-box {
+        border: 2px solid #e0e0e0;
+      }
+      .pwdBtn {
+        margin-top: 20px !important;
+        width: -webkit-fill-available !important;
+        border-radius: 40px !important;
+      }
+      .pwdBtn1 {
+        margin-top: 40px !important;
+      }
+      .error {
+        margin-top: 20px;
+        // min-height: 120px;
+        color: #ff0000;
+      }
+      ::v-deep .van-icon {
+        font-size: 92px !important;
+      }
+    }
+    .pwd-wrap-login {
+      // height: 1046px;
+      height: initial;
+    }
   }
-  .pwd-wrap-login{
-	// height: 1046px;  
-	height: initial;
-  }
-}
 }
 </style>

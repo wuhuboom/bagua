@@ -1,7 +1,6 @@
 <template>
   <div class="">
-	<video class="video" :src="`${$baseURL}/${data}`" controls>
-	</video>
+    <video class="video" :src="`${$baseURL}/${data}`" controls></video>
   </div>
 </template>
 
@@ -39,18 +38,18 @@ export default {
   border-top: 1px dashed #62b6f8;
 }
 
-.video{
-	width: 40%;
-		// float: right;
+.video {
+  width: 40%;
+  // float: right;
 }
 @media (min-width: 500px) {
-	.opens-list {
-	  width: inherit !important; 
-	}
-	
-	.video{
-		width: 36% !important;
-		// float: right;
-	}
+  .opens-list {
+    width: inherit !important;
+  }
+
+  .video {
+    width: 36% !important;
+    // float: right;
+  }
 }
 </style>

@@ -16,7 +16,11 @@
     >
       <div class="img-container">
         <img :src="httpSrc" class="popup-img" />
-        <img class="close-btn" src='@/assets/img/off.png' @click="show = false">
+        <img
+          class="close-btn"
+          src="@/assets/img/off.png"
+          @click="show = false"
+        />
         <!-- <div class="close-btn" @click="show = false"></div> -->
       </div>
     </van-popup>
@@ -30,8 +34,8 @@ export default {
   name: "imgMsg",
   data() {
     return {
-      show:false
-    }
+      show: false,
+    };
   },
   props: {
     doc: {
@@ -68,7 +72,7 @@ export default {
     preview() {
       console.log("preview", this.httpSrc);
       // ImagePreview([this.httpSrc]);
-      this.show =true
+      this.show = true;
     },
   },
 };
@@ -195,10 +199,9 @@ export default {
   }
 }
 
-
 .img-container {
   position: relative;
-  width:636px;
+  width: 636px;
 }
 
 .popup-img {
@@ -210,8 +213,8 @@ export default {
 
 .close-btn {
   display: block;
-  width:64px;
-  height:64px;
-  margin:42px auto 0;
+  width: 64px;
+  height: 64px;
+  margin: 42px auto 0;
 }
 </style>

@@ -188,49 +188,48 @@
       alt=""
       @click="$store.dispatch('getServeData', 1)"
     />
-	
-	<!-- 设置支付密码 -->
-	<van-dialog 
-		v-model="showPwdForm" 
-		:show-confirm-button='false'
-		title="请设置支付密码" 
-		:lazy-render="false">
-		<van-form @submit="confirm">
-	    <van-field 
-			v-model="pwdForm.payPwd" 
-			:label-width="70" 
-			type="password"
-			label="支付密码" 
-			placeholder="请输入六位数字"
-			:rules="[
-			  { required: true, message: $t('backapi.passwordIsEmpty') },
-			  {
-			    pattern: /^\d{6}$/,
-			    message: '支付密码必须是6位数字',
-			  },
-			]"
-		/>
-	    <van-field 
-			v-model="pwdForm.payPwdAgain" 
-			:label-width="70" 
-			label="确认密码"
-			type="password"
-			placeholder="请再次输入支付密码"
-			:rules="[
-			  { required: true, message: $t('backapi.passwordIsEmpty') },
-			  {
-			    validator: validateTwo,
-			    message: this.$t('ruls.passtwo.unequal'),
-			  },
-			]"
-		/>
-		
-		<van-button class="pwdBtn" native-type="submit"
-		  >确认</van-button
-		>
-		</van-form>
-	</van-dialog>
-	
+
+    <!-- 设置支付密码 -->
+    <van-dialog
+      v-model="showPwdForm"
+      :show-confirm-button="false"
+      title="请设置支付密码"
+      :lazy-render="false"
+    >
+      <van-form @submit="confirm">
+        <van-field
+          v-model="pwdForm.payPwd"
+          :label-width="70"
+          type="password"
+          label="支付密码"
+          placeholder="请输入六位数字"
+          :rules="[
+            { required: true, message: $t('backapi.passwordIsEmpty') },
+            {
+              pattern: /^\d{6}$/,
+              message: '支付密码必须是6位数字',
+            },
+          ]"
+        />
+        <van-field
+          v-model="pwdForm.payPwdAgain"
+          :label-width="70"
+          label="确认密码"
+          type="password"
+          placeholder="请再次输入支付密码"
+          :rules="[
+            { required: true, message: $t('backapi.passwordIsEmpty') },
+            {
+              validator: validateTwo,
+              message: this.$t('ruls.passtwo.unequal'),
+            },
+          ]"
+        />
+
+        <van-button class="pwdBtn" native-type="submit">确认</van-button>
+      </van-form>
+    </van-dialog>
+
     <AppBtmBar></AppBtmBar>
     <Notice></Notice>
   </div>
@@ -263,9 +262,9 @@ export default {
       noticeDoc: {
         content: "",
       },
-	  // 支付密码设置弹窗
-	  showPwdForm: false,
-	  pwdForm: {}
+      // 支付密码设置弹窗
+      showPwdForm: false,
+      pwdForm: {},
     };
   },
   components: {
@@ -360,30 +359,30 @@ export default {
           });
       });
     },
-	// 判断是否存在支付密码
-	existPwdPay(){
-		console.log(this.paySet)
-		if (this.paySet !== 1) {
-			this.showPwdForm = true
-		  // this.$toast.fail("请先设置支付密码");
-		}
-	},
-	validateTwo(value) {
-		return value === this.pwdForm.payPwd;
-	},
-	// 设置支付密码
-	async confirm(){
-		this.$toast.success("支付密码设置成功");
-		const [err, res] = await userApi.setPwdPay(this.pwdForm);
-		if (err) return;
-		await this.lazyGetUser();
-		this.showPwdForm = false
-		// setTimeout(done, 1000);
-	},
-	async lazyGetUser() {
-	  await this.$store.dispatch("getInfo");
-	  this.$toast.clear();
-	},
+    // 判断是否存在支付密码
+    existPwdPay() {
+      console.log(this.paySet);
+      if (this.paySet !== 1) {
+        this.showPwdForm = true;
+        // this.$toast.fail("请先设置支付密码");
+      }
+    },
+    validateTwo(value) {
+      return value === this.pwdForm.payPwd;
+    },
+    // 设置支付密码
+    async confirm() {
+      this.$toast.success("支付密码设置成功");
+      const [err, res] = await userApi.setPwdPay(this.pwdForm);
+      if (err) return;
+      await this.lazyGetUser();
+      this.showPwdForm = false;
+      // setTimeout(done, 1000);
+    },
+    async lazyGetUser() {
+      await this.$store.dispatch("getInfo");
+      this.$toast.clear();
+    },
     async withdraw() {
       if (!this.Cards.length) {
         const status = await this.comfire2(
@@ -444,7 +443,7 @@ export default {
       return typeof val === "number" && !isNaN(val);
     },
     async getVersion() {
-		console.log(9999)
+      console.log(9999);
       const [err] = await userApi.versionReq();
       if (!this.isNumber(+err)) {
         return;
@@ -498,7 +497,7 @@ export default {
       this.$store.dispatch("getBankCard"),
     ]);
     this.loaded = true;
-	this.existPwdPay();
+    this.existPwdPay();
   },
   beforeDestroy() {
     if (this.show) {
@@ -1009,16 +1008,16 @@ export default {
 .my-show {
   font-size: 40px;
 }
-::v-deep .van-dialog__header{
-	margin-bottom: 20px;
+::v-deep .van-dialog__header {
+  margin-bottom: 20px;
 }
-::v-deep .van-field__control{
-	border: 2px solid #e3e1e4;
-	border-radius: 12px;
-	padding: 4px 10px;
+::v-deep .van-field__control {
+  border: 2px solid #e3e1e4;
+  border-radius: 12px;
+  padding: 4px 10px;
 }
-.pwdBtn{
-	width: 100%;
-	color: #bf2935;
+.pwdBtn {
+  width: 100%;
+  color: #bf2935;
 }
 </style>

@@ -118,9 +118,8 @@ export default {
   min-width: 43px;
 }
 @media (min-width: 500px) {
-  .leftBox{
-	position: inherit;
+  .leftBox {
+    position: inherit;
   }
-	
 }
 </style>

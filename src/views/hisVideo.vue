@@ -31,11 +31,11 @@ export default {
     return {
       show: false,
       isRadio: true,
-	  text:'',
+      text: "",
       type: "login",
       form: initForm(),
       videoList: [],
-	  showBack: true
+      showBack: true,
     };
   },
   components: { Notice },
@@ -45,15 +45,15 @@ export default {
     },
   },
   methods: {
-	async getHisVideo(){
-		const [err, res] = await userApi.hisVideo();
-		if (err) return;
-		this.videoList = res.data
-		// window.location.replace(cusUrl);
-	},
-	open(url){
-		window.location.replace(url);
-	}
+    async getHisVideo() {
+      const [err, res] = await userApi.hisVideo();
+      if (err) return;
+      this.videoList = res.data;
+      // window.location.replace(cusUrl);
+    },
+    open(url) {
+      window.location.replace(url);
+    },
   },
   created() {
     this.getHisVideo();
@@ -62,50 +62,50 @@ export default {
 </script>
 <style scoped lang="less">
 @height: 104px;
-.chatHeight{
-	// height: calc(100vh - @height);
-	// height: 100vh;
+.chatHeight {
+  // height: calc(100vh - @height);
+  // height: 100vh;
 }
-.video{
-	display: flex;
-	overflow-x: hidden;
-	.list{
-		padding: 20px 20px;
-		margin-top: 90px;
-		.item{
-			width: 49%;
-			margin: 10px .5%;
-			float: left;
-			text-align: center;
-			img{
-				width: calc(100% - 4px);
-				height: 240px;
-				border: 2px solid #e0e0e0;
-				border-radius: 12px;
-			}
-		}
-	}
+.video {
+  display: flex;
+  overflow-x: hidden;
+  .list {
+    padding: 20px 20px;
+    margin-top: 90px;
+    .item {
+      width: 49%;
+      margin: 10px 0.5%;
+      float: left;
+      text-align: center;
+      img {
+        width: calc(100% - 4px);
+        height: 240px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+      }
+    }
+  }
 }
 @media (min-width: 500px) {
-  .video{
-	height: 60rem !important;
-  	.list{
-  		margin-top: 0px !important;
-		padding: 40px 40px !important;
-		overflow-y: auto;
-		height: calc(100% - 90px);
-  		.item{
-			// height: calc(60rem - );
-  			width: 49%;
-  			margin: 40px .5% !important;
-  			img{
-  				width: calc(100% - 8px) !important;
-  				height: 680px !important;
-  				border: 4px solid #e0e0e0;
-  				border-radius: 24px !important;
-  			}
-  		}
-  	}
+  .video {
+    height: 60rem !important;
+    .list {
+      margin-top: 0px !important;
+      padding: 40px 40px !important;
+      overflow-y: auto;
+      height: calc(100% - 90px);
+      .item {
+        // height: calc(60rem - );
+        width: 49%;
+        margin: 40px 0.5% !important;
+        img {
+          width: calc(100% - 8px) !important;
+          height: 680px !important;
+          border: 4px solid #e0e0e0;
+          border-radius: 24px !important;
+        }
+      }
+    }
   }
 }
 </style>

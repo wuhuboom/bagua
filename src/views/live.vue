@@ -21,7 +21,7 @@ export default {
     return {
       show: false,
       isRadio: true,
-	  text:'',
+      text: "",
       type: "login",
       form: initForm(),
       codeData: {},
@@ -34,71 +34,71 @@ export default {
     },
   },
   methods: {
-	async getCustomer(){
-		const [err, res] = await userApi.live();
-		if (err) return;
-		let cusUrl = res.data.url
-		window.location.replace(cusUrl);
-	},
+    async getCustomer() {
+      const [err, res] = await userApi.live();
+      if (err) return;
+      let cusUrl = res.data.url;
+      window.location.replace(cusUrl);
+    },
   },
   created() {
-	  this.getCustomer()
+    this.getCustomer();
   },
 };
 </script>
 <style scoped lang="less">
 @height: 104px;
-.chatHeight{
-	height: calc(100vh - @height);
+.chatHeight {
+  height: calc(100vh - @height);
 }
 .page {
-	height: 100vh;
-	img{
-		width: 100%;
-	}
-	.opr{
-		background-color: #e0e0e0;
-		border-radius: 20px;
-		display: inline-table;
-		width: 80%;
-		height: 300px;
-		padding:40px;
-		.input {
-		  width: 100%;
-		  border: none;
-		  border-radius: 10px;
-		  padding: 20px;
-		  padding-left: 30px;
-		  background: #fff;
-		  margin: 20px 0;
-		}
-		.btn{
-			width: 100%;
-			height: 80px;
-			color: #fff;
-			border-radius: 20px;
-			background-color: #e32e3d;
-		}
-	}
+  height: 100vh;
+  img {
+    width: 100%;
+  }
+  .opr {
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    display: inline-table;
+    width: 80%;
+    height: 300px;
+    padding: 40px;
+    .input {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 20px;
+      padding-left: 30px;
+      background: #fff;
+      margin: 20px 0;
+    }
+    .btn {
+      width: 100%;
+      height: 80px;
+      color: #fff;
+      border-radius: 20px;
+      background-color: #e32e3d;
+    }
+  }
 }
 @media (min-width: 500px) {
-  .chatHeight{
-	height: 90vh;
+  .chatHeight {
+    height: 90vh;
   }
-	.opr{
-		border-radius: 26px !important;
-		height: 600px !important;
-		padding:80px !important;
-		.input {
-		  border-radius: 20px !important;
-		  padding: 40px !important;
-		  padding-left: 60px !important;
-		  margin: 40px 0 !important;
-		}
-		.btn{
-			height: 240px !important;
-			border-radius: 40px !important;
-		}
-	}
+  .opr {
+    border-radius: 26px !important;
+    height: 600px !important;
+    padding: 80px !important;
+    .input {
+      border-radius: 20px !important;
+      padding: 40px !important;
+      padding-left: 60px !important;
+      margin: 40px 0 !important;
+    }
+    .btn {
+      height: 240px !important;
+      border-radius: 40px !important;
+    }
+  }
 }
 </style>

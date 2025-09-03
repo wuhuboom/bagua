@@ -51,7 +51,7 @@ const routes = [
       default: () => import("@/views/hisVideo.vue"),
     },
   },
-  
+
   {
     path: "/login/SignIn",
     name: "token",
@@ -70,21 +70,21 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   Nprogress.start();
 
-  let token = window.location.search.split('token=')[1]
-  if(token){ 
-  	store.commit("setToken", token); 
-  	auth.setToken(token, "token");
-  }else{
-  	  let str = auth.getToken("token")
-  	  if(str){
-  		let url = window.location.origin + "?token="+str;
-		store.commit("setToken", token); 
-  		window.location.replace(url);
-  	  }else{
-		store.commit("setToken", '');  
-  	  }
+  let token = window.location.search.split("token=")[1];
+  if (token) {
+    store.commit("setToken", token);
+    auth.setToken(token, "token");
+  } else {
+    let str = auth.getToken("token");
+    if (str) {
+      let url = window.location.origin + "?token=" + str;
+      store.commit("setToken", token);
+      window.location.replace(url);
+    } else {
+      store.commit("setToken", "");
+    }
   }
-  
+
   if (auth.getToken()) {
     const [error] = await store.dispatch("getInfo");
     if (error && auth.getToken("userInfo")) {
@@ -103,7 +103,7 @@ router.beforeEach(async (to, from, next) => {
   //   next();
   //   return;
   // }
-  
+
   if (auth.getToken()) {
     if (!store.getters.catList.length) {
       await store.dispatch("playerLotteryList");
@@ -121,8 +121,8 @@ router.beforeEach(async (to, from, next) => {
     //   Nprogress.done();
     //   next("/login/SignIn");
     // }
-	// next("/login/SignIn");
-	next();
+    // next("/login/SignIn");
+    next();
   }
   next();
 });

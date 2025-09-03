@@ -364,7 +364,7 @@ export default {
     const totalBets = shiWei.length * geWei.length;
     const lengths = [shiWei.length, geWei.length];
     const count6 = lengths.filter((len) => len === 6).length;
-  
+
     // 统一条件判断
     if (lengths.some((len) => len > 6)) {
       return {
@@ -372,7 +372,7 @@ export default {
         totalBets: totalBets,
       };
     }
-  
+
     return totalBets;
   },
 
@@ -491,12 +491,12 @@ export default {
     const totalBets = shiWei.length * geWei.length;
     const lengths = [shiWei.length, geWei.length];
     const count8 = lengths.filter((len) => len === 4).length;
-	// if ((shiWei.length + geWei.length) > 4) {
-	//   return {
-	//     err: "最多选择4个号码",
-	//     totalBets: totalBets,
-	//   };
-	// }
+    // if ((shiWei.length + geWei.length) > 4) {
+    //   return {
+    //     err: "最多选择4个号码",
+    //     totalBets: totalBets,
+    //   };
+    // }
     return totalBets;
   },
   //三星复式

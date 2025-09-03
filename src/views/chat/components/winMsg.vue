@@ -1,17 +1,15 @@
 <template>
   <div class="opens-list">
-	<div class="num">
-		<p class="tops font12 ">
-		  本期投注用户结算列表
-		</p>
-	</div>
-	<div class="content font9">
-		<div class="item" v-for="(item, index) in data">
-		  {{item.player}}:
-		  <span v-if="item.win>0">{{divide(item.win)}}</span>
-		  <span v-else>{{divide(item.win)}}</span>
-		</div>
-	</div>
+    <div class="num">
+      <p class="tops font12">本期投注用户结算列表</p>
+    </div>
+    <div class="content font9">
+      <div class="item" v-for="(item, index) in data">
+        {{ item.player }}:
+        <span v-if="item.win > 0">{{ divide(item.win) }}</span>
+        <span v-else>{{ divide(item.win) }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -30,7 +28,7 @@ export default {
   },
   computed: {
     data() {
-	  let str = this.doc.data
+      let str = this.doc.data;
       return this.doc.data;
     },
   },
@@ -45,25 +43,25 @@ export default {
   background-color: #fff;
   border-radius: 6px;
   width: 80vw;
-  .num{
-	padding: 10px 18px;
-	line-height: 50px;
-	font-weight: bold;
-	// background-color: #62b6f8;
-	border-bottom: 2px solid #e0e0e0;
-	border-top-left-radius: 6px;
-	border-top-right-radius: 6px;
+  .num {
+    padding: 10px 18px;
+    line-height: 50px;
+    font-weight: bold;
+    // background-color: #62b6f8;
+    border-bottom: 2px solid #e0e0e0;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
   }
-  .content{
-	  display: flex;
-	  padding: 20px;
-	  flex-wrap: wrap;
-	  .item{
-		  margin: 0 4px;
-		  width: calc(33.33% - 8px);
-		  // flex: 1 1 33.333%;
-		  // box-sizing: border-box;
-	  }
+  .content {
+    display: flex;
+    padding: 20px;
+    flex-wrap: wrap;
+    .item {
+      margin: 0 4px;
+      width: calc(33.33% - 8px);
+      // flex: 1 1 33.333%;
+      // box-sizing: border-box;
+    }
   }
 }
 
@@ -71,5 +69,4 @@ export default {
   //虚线
   border-top: 1px dashed #62b6f8;
 }
-
 </style>

@@ -14,9 +14,9 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const token = app.$store.state.token;
-    const pwd = auth.getToken('pwd');
+    const pwd = auth.getToken("pwd");
     if (token) config.headers.Token = token;
-    if (pwd) config.headers['X-account-pwd'] = pwd;
+    if (pwd) config.headers["X-account-pwd"] = pwd;
     if (config.data && typeof config.data === "object") {
       // 创建一个 FormData 实例
       const formData = new FormData();
@@ -74,9 +74,9 @@ instance.interceptors.response.use(
     if ([401, 402, 403].includes(code)) {
       const isLogin = res.config.url.includes("/auth/login");
       app.$toast.clear();
-	  let token = window.location.search.split('token=')[1]
-	  console.log(token)
-      if (!token || token=='undefined' ) {
+      let token = window.location.search.split("token=")[1];
+      console.log(token);
+      if (!token || token == "undefined") {
         // app.$store.commit("loginOut");
         app.$router.push({
           name: "token",
@@ -98,7 +98,7 @@ instance.interceptors.response.use(
       return result;
     }
 
-    if (code !== 200 ) {
+    if (code !== 200) {
       //&& msg
       if (!specialCode.includes(code)) {
         if (code === 188) {
@@ -117,7 +117,10 @@ instance.interceptors.response.use(
             //   data[0].msg || data[0].msgKey == "outWiTime"
             //     ? app.$t("backapi." + data[0].msgKey, { timeMsg: data[0].time })
             //     : app.$t("backapi." + data[0].msgKey);
-            if (data[0].msgKey == "outWiTime" || data[0].msgKey == "withdrawalLimit") {
+            if (
+              data[0].msgKey == "outWiTime" ||
+              data[0].msgKey == "withdrawalLimit"
+            ) {
               return result;
             } else {
               title = data[0].msg || app.$t("backapi." + data[0].msgKey);
@@ -133,7 +136,7 @@ instance.interceptors.response.use(
       }
       return Promise.reject(result);
     }
-	
+
     return result;
   },
   async (err) => {
@@ -153,7 +156,7 @@ export default ({
   headers,
   responseType,
   noAutoFormData = true,
-  onUploadProgress,            
+  onUploadProgress,
 }) => {
   const promise = instance({
     url,
@@ -163,7 +166,7 @@ export default ({
     responseType,
     headers,
     noAutoFormData,
-	onUploadProgress,       
+    onUploadProgress,
   });
   return to(promise);
 };

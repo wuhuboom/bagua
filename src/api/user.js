@@ -21,11 +21,28 @@ export default {
       url: "/home/upload_file",
       method: "post",
       data,
-	  onUploadProgress:function(progressEvent) {
-		const percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
-		// console.log(`Upload progress: ${percentCompleted}%`);
-		store.commit("setFileProgress", percentCompleted); 
-	  }
+      onUploadProgress: function (progressEvent) {
+        const percentCompleted = Math.floor(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        // console.log(`Upload progress: ${percentCompleted}%`);
+        store.commit("setFileProgress", percentCompleted);
+      },
+    });
+  },
+
+  uploadImgApi(data) {
+    return request({
+      url: "/home/upload_img",
+      method: "post",
+      data,
+      onUploadProgress: function (progressEvent) {
+        const percentCompleted = Math.floor(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        // console.log(`Upload progress: ${percentCompleted}%`);
+        store.commit("setFileProgress", percentCompleted);
+      },
     });
   },
   lotteryMyOrderAll(data) {
@@ -806,7 +823,7 @@ export default {
       data,
     });
   },
-  
+
   setPwd(data) {
     return request({
       url: "/setPwd",

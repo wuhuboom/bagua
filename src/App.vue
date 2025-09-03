@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       keepAliveRoutePath: ["/documentation", "/myBallRecord"],
-      keepAliveRouteName: ["AppDocumentation", "MyBallRecord","AppChat"],
+      keepAliveRouteName: ["AppDocumentation", "MyBallRecord", "AppChat"],
     };
   },
   watch: {
@@ -60,32 +60,31 @@ export default {
     },
   },
   methods: {
-	  detectApp(){
-	    const ua = navigator.userAgent.toLowerCase();
-	    return {
-	      isWeChat: ua.includes("micromessenger"),
-	      isQQ: ua.includes("qq/") || ua.includes("qqbrowser"),
-	      isTelegram: ua.includes("telegram"),
-	    };
-	  }
+    detectApp() {
+      const ua = navigator.userAgent.toLowerCase();
+      return {
+        isWeChat: ua.includes("micromessenger"),
+        isQQ: ua.includes("qq/") || ua.includes("qqbrowser"),
+        isTelegram: ua.includes("telegram"),
+      };
+    },
   },
   created() {
     window.$router = this.$router;
-	let result = this.detectApp();
-	if (result.isWeChat) {
-	  console.log("在微信中打开");
-	  this.$router.replace('/Jump');
-	} else if (result.isQQ) {
-	  console.log("在QQ中打开");
-	  this.$router.replace('/Jump');
-	} else if (result.isTelegram) {
-	  console.log("在Telegram中打开");
-	  this.$router.replace('/Jump');
-	} else {
-	  console.log("未知或普通浏览器");
-	}
-	
-	
+    let result = this.detectApp();
+    if (result.isWeChat) {
+      console.log("在微信中打开");
+      this.$router.replace("/Jump");
+    } else if (result.isQQ) {
+      console.log("在QQ中打开");
+      this.$router.replace("/Jump");
+    } else if (result.isTelegram) {
+      console.log("在Telegram中打开");
+      this.$router.replace("/Jump");
+    } else {
+      console.log("未知或普通浏览器");
+    }
+
     setInterval(() => {
       //获取环境变量
       if (process.env.NODE_ENV === "development") {
@@ -106,7 +105,7 @@ export default {
   font-size: 28px;
   min-width: 100%;
   min-height: 100%;
-	
+
   .appp-top-bar {
     position: fixed;
     height: 90px;
@@ -119,7 +118,6 @@ export default {
       height: 90px;
       width: 100%;
     }
-	
 
     .appp-top-bar-title {
       position: absolute;
@@ -145,27 +143,27 @@ export default {
       }
     }
   }
-  
+
   @media (min-width: 500px) {
     .appp-top-bar {
-        position: inherit;
-        width: 100%;
-		// width: 26rem !important;
-		max-width: inherit;
+      position: inherit;
+      width: 100%;
+      // width: 26rem !important;
+      max-width: inherit;
+      height: 2.8rem;
+      line-height: 2.8rem;
+
+      .appp-top-cont {
         height: 2.8rem;
-		line-height: 2.8rem;
-		
-		.appp-top-cont {
-			height: 2.8rem;
-			line-height: 2.8rem;
-		  width: 100%;
-		}
-		.appp-top-bar-title{
-			position: inherit;
-			height: 2.8rem;
-			line-height: 2.8rem;
-			font-size: 96px !important;
-		}
+        line-height: 2.8rem;
+        width: 100%;
+      }
+      .appp-top-bar-title {
+        position: inherit;
+        height: 2.8rem;
+        line-height: 2.8rem;
+        font-size: 96px !important;
+      }
     }
   }
 }

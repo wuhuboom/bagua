@@ -22,7 +22,7 @@ export default {
     return {
       show: false,
       isRadio: true,
-	  text:'',
+      text: "",
       type: "login",
       form: initForm(),
       codeData: {},
@@ -35,14 +35,14 @@ export default {
     },
   },
   methods: {
-	detectApp(){
-	    const ua = navigator.userAgent.toLowerCase();
-	    return {
-	      isWeChat: ua.includes("micromessenger"),
-	      isQQ: ua.includes("qq/") || ua.includes("qqbrowser"),
-	      isTelegram: ua.includes("telegram"),
-	    };
-	},
+    detectApp() {
+      const ua = navigator.userAgent.toLowerCase();
+      return {
+        isWeChat: ua.includes("micromessenger"),
+        isQQ: ua.includes("qq/") || ua.includes("qqbrowser"),
+        isTelegram: ua.includes("telegram"),
+      };
+    },
     async verifyCodeReq() {
       const [err, res] = await userApi.verifyCodeReq();
       if (err) {
@@ -52,89 +52,89 @@ export default {
       this.codeData = res.data;
     },
     login() {
-      if(this.text == '') {
+      if (this.text == "") {
         return;
       }
-	  
-	  auth.setToken(this.text, "token");
-	  let url = window.location.origin + "?token="+this.text;
-	  window.location.replace(url);
+
+      auth.setToken(this.text, "token");
+      let url = window.location.origin + "?token=" + this.text;
+      window.location.replace(url);
     },
   },
   created() {
     this.verifyCodeReq();
-	
-	let result = this.detectApp();
-	if (result.isWeChat) {
-	  console.log("在微信中打开");
-	} else if (result.isQQ) {
-	  console.log("在QQ中打开");
-	} else if (result.isTelegram) {
-	  console.log("在Telegram中打开");
-	} else {
-	  this.$router.replace('/');
-	}
-	
-	if(auth.getToken("token")){
-		this.text = auth.getToken("token");
-	}
+
+    let result = this.detectApp();
+    if (result.isWeChat) {
+      console.log("在微信中打开");
+    } else if (result.isQQ) {
+      console.log("在QQ中打开");
+    } else if (result.isTelegram) {
+      console.log("在Telegram中打开");
+    } else {
+      this.$router.replace("/");
+    }
+
+    if (auth.getToken("token")) {
+      this.text = auth.getToken("token");
+    }
   },
 };
 </script>
 <style scoped lang="less">
 @height: 104px;
-.chatHeight{
-	height: calc(100vh - @height);
+.chatHeight {
+  height: calc(100vh - @height);
 }
 .page {
-	height: 100vh;
-	background-color: #454545;
-	img{
-		width: 100%;
-	}
-	.opr{
-		background-color: #e0e0e0;
-		border-radius: 20px;
-		display: inline-table;
-		width: 80%;
-		height: 300px;
-		padding:40px;
-		.input {
-		  width: 100%;
-		  border: none;
-		  border-radius: 10px;
-		  padding: 20px;
-		  padding-left: 30px;
-		  background: #fff;
-		  margin: 20px 0;
-		}
-		.btn{
-			width: 100%;
-			height: 80px;
-			color: #fff;
-			border-radius: 20px;
-			background-color: #e32e3d;
-		}
-	}
+  height: 100vh;
+  background-color: #454545;
+  img {
+    width: 100%;
+  }
+  .opr {
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    display: inline-table;
+    width: 80%;
+    height: 300px;
+    padding: 40px;
+    .input {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 20px;
+      padding-left: 30px;
+      background: #fff;
+      margin: 20px 0;
+    }
+    .btn {
+      width: 100%;
+      height: 80px;
+      color: #fff;
+      border-radius: 20px;
+      background-color: #e32e3d;
+    }
+  }
 }
 @media (min-width: 500px) {
-  .chatHeight{
-	height: 90vh;
+  .chatHeight {
+    height: 90vh;
   }
-	.opr{
-		border-radius: 26px !important;
-		height: 600px !important;
-		padding:80px !important;
-		.input {
-		  border-radius: 20px !important;
-		  padding: 40px !important;
-		  padding-left: 60px !important;
-		  margin: 40px 0 !important;
-		}
-		.btn{
-			height: 240px !important;
-			border-radius: 40px !important;
-		}
-	}
+  .opr {
+    border-radius: 26px !important;
+    height: 600px !important;
+    padding: 80px !important;
+    .input {
+      border-radius: 20px !important;
+      padding: 40px !important;
+      padding-left: 60px !important;
+      margin: 40px 0 !important;
+    }
+    .btn {
+      height: 240px !important;
+      border-radius: 40px !important;
+    }
+  }
 }
 </style>

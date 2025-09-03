@@ -44,7 +44,13 @@
         <li class="d-meng d-flex m-b-8">
           {{ divide(myRedMoney.money) }}
         </li>
-        <div class="modal-footer" @click="goDetail" v-if="unAcceptList.length > 0">继续抢红包</div>
+        <div
+          class="modal-footer"
+          @click="goDetail"
+          v-if="unAcceptList.length > 0"
+        >
+          继续抢红包
+        </div>
         <div class="modal-footer" @click="goDetail" v-else>已全部领取</div>
       </ul>
     </van-popup>
@@ -91,7 +97,7 @@ export default {
     return {
       red1,
       red2,
-	  unAcceptList: [],
+      unAcceptList: [],
       userPic,
       showOpen: false,
       showFinish: false,
@@ -108,7 +114,14 @@ export default {
     };
   },
   computed: {
-    ...mapState("chat", ["messages", "playerId", "query", "ws", "wsStatus", "isGain"]),
+    ...mapState("chat", [
+      "messages",
+      "playerId",
+      "query",
+      "ws",
+      "wsStatus",
+      "isGain",
+    ]),
     isMe() {
       return this.packetItem.playerId === this.user.id;
     },
@@ -121,7 +134,7 @@ export default {
     pack() {
       return this.ajaxPack;
     },
-    packet() {;
+    packet() {
       return this.packetItem.packet || {};
     },
     //是否可抢
@@ -165,15 +178,13 @@ export default {
       "sendMessage",
       "fetchHistory",
     ]),
-	...mapMutations("chat", [
-	  "setGain"
-	]),
+    ...mapMutations("chat", ["setGain"]),
     // 领红包
     ledPacket() {
-	  // console.log( this.unAcceptList)
-	  this.packetItem = this.unAcceptList[0];
-	  this.showPacketOpen = true;
-	  this.packetItem.data = JSON.parse(this.unAcceptList[0].data);
+      // console.log( this.unAcceptList)
+      this.packetItem = this.unAcceptList[0];
+      this.showPacketOpen = true;
+      this.packetItem.data = JSON.parse(this.unAcceptList[0].data);
       // this.unAcceptList.forEach((item, index) => {
       //   this.packetItem = item;
       //   this.showPacketOpen = true;
@@ -271,8 +282,8 @@ export default {
         duration: 3000, // 设置 3 秒后关闭
       });
       await this.sleep(1000);
-	  // 标识为抢红包功能触发
-	  this.setGain(true);
+      // 标识为抢红包功能触发
+      this.setGain(true);
       this.sendMessage({
         type: 6,
         msgId: this.packetItem.id,
@@ -289,51 +300,51 @@ export default {
         // query: { doc: this.doc },
       });
     },
-	closeFinish(){
-	  this.setGain(false);
-		// console.log("close")
-	},
+    closeFinish() {
+      this.setGain(false);
+      // console.log("close")
+    },
     goDetail() {
       this.showFinish = false;
-	  if(this.unAcceptList.length > 0){
-		this.ledPacket();
-	  }
+      if (this.unAcceptList.length > 0) {
+        this.ledPacket();
+      }
     },
     async goRed() {
-   //    const [err, res] = await userApi.redGain();
-	  // if (err) {
-	  //   return;
-	  // }
-	  // this.unAcceptList = res.data
+      //    const [err, res] = await userApi.redGain();
+      // if (err) {
+      //   return;
+      // }
+      // this.unAcceptList = res.data
     },
   },
   created() {
     EventBus.$on("newRedPacketNotice", (data) => {
       console.log("收到一个新红包");
-	  let newRed = data
-	  newRed.data = JSON.stringify(newRed.data)
-	  this.unAcceptList.push(newRed)
-	  
-	  this.triggerEffect();
+      let newRed = data;
+      newRed.data = JSON.stringify(newRed.data);
+      this.unAcceptList.push(newRed);
+
+      this.triggerEffect();
     });
 
     EventBus.$on("redGetStatus", ({ msgId, data }) => {
-	  if(!this.isGain) return;
-	  if (+msgId === +this.packetItem.id) {
-	    this.redGetStatus();
-	    const { code } = data;
-	    this.$toast.clear();
-	    this.ajaxPack = data;
-		this.unAcceptList.shift();
-	    if (+code > 0) {
-	      //1.已被抢空 2.已抢过红包
-	      this.$toast.fail(+code === 1 ? "红包已被抢空" : "您已抢过该红包");
-	      return;
-	    }
-	    this.showFinish = true;
-	  }
+      if (!this.isGain) return;
+      if (+msgId === +this.packetItem.id) {
+        this.redGetStatus();
+        const { code } = data;
+        this.$toast.clear();
+        this.ajaxPack = data;
+        this.unAcceptList.shift();
+        if (+code > 0) {
+          //1.已被抢空 2.已抢过红包
+          this.$toast.fail(+code === 1 ? "红包已被抢空" : "您已抢过该红包");
+          return;
+        }
+        this.showFinish = true;
+      }
     });
-	this.goRed()
+    this.goRed();
   },
   beforeDestroy() {
     // 清理监听

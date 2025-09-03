@@ -12,7 +12,7 @@
         class="top-bets-cont colorfff flex-column justify-around font13"
       >
         <ul class="justify-between p-l-8 p-r-8">
-          <li class="d-flex ">
+          <li class="d-flex">
             <div class="d-flex align-center">
               <img
                 @click="(showother = false), (showmenu = !showmenu)"
@@ -31,19 +31,19 @@
             </div>
           </li>
           <li class="cycleNumBox">
-              <div class="center-center">
-                <p
-                  v-for="(v, i) in prize.openArr"
-                  class="openbets center-center"
-                  :class="[
-                    'openbets' + i,
-                    { 'm-r-4': i != prize.openArr.length - 1 },
-                  ]"
-                  :key="i"
-                >
-                  <span class="ball-inner">{{ v }}</span>
-                </p>
-              </div>
+            <div class="center-center">
+              <p
+                v-for="(v, i) in prize.openArr"
+                class="openbets center-center"
+                :class="[
+                  'openbets' + i,
+                  { 'm-r-4': i != prize.openArr.length - 1 },
+                ]"
+                :key="i"
+              >
+                <span class="ball-inner">{{ v }}</span>
+              </p>
+            </div>
           </li>
           <li class="align-center">
             <div class="flex-column align-center">
@@ -274,7 +274,7 @@ $tabwidth: 686px;
 
 .top-bets-cont {
   // background: linear-gradient(180deg, #6795f7 0%, #2d62f6 100%);
-  background: #3E4F9D;
+  background: #3e4f9d;
   border-radius: 0px 0px 0px 0px;
   border: 1px solid #707070;
   padding: 8px 0;

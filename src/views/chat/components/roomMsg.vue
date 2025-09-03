@@ -2,7 +2,7 @@
   <div>
     <div v-if="doc.status == 1">
       <p class="center-center m-t-12 m-b-12 font14 color999">
-       {{ isMe ? "你撤回了一条消息" : `${doc.user}撤回了一条消息` }}
+        {{ isMe ? "你撤回了一条消息" : `${doc.user}撤回了一条消息` }}
       </p>
     </div>
     <div
@@ -22,7 +22,9 @@
               ? doc.img.includes('http')
                 ? doc.img
                 : `${$baseURL}/${doc.img}`
-              : (doc.user=='系统'?sysPic:userPic)
+              : doc.user == '系统'
+              ? sysPic
+              : userPic
           "
         />
 
@@ -44,7 +46,7 @@
             <component
               v-if="[2, 4, 8, 13, 14, 6, 3, 9, 16, 17, 10].includes(+doc.type)"
               :is="currentComponent(+doc.type)"
-              :userPic="doc.user=='系统'?sysPic:userPic"
+              :userPic="doc.user == '系统' ? sysPic : userPic"
               :doc="doc"
               @openBetPop="openBetPop"
               ref="$component"
@@ -78,7 +80,7 @@
 
         <ul
           class="flex-column"
-          v-if="![2, 4, 8, 13, 14,6, 3, 9, 16, 17, 10].includes(+doc.type)"
+          v-if="![2, 4, 8, 13, 14, 6, 3, 9, 16, 17, 10].includes(+doc.type)"
           :class="{ txtPad: isMe, mainIsNotMeContent: !isMe }"
         >
           <li class="name align-center nameAndTime" v-if="!isMe">
@@ -139,33 +141,42 @@
 
             <div
               class="msg-txt p-x-16 align-center msgBoxTxt"
-			  :class="{'msg-txt-blue': doc.user=='系统', 'msg-txt-isme': isMe, 'colorRed': doc.adminId == 1}"
-			  style="white-space: pre-wrap"
+              :class="{
+                'msg-txt-blue': doc.user == '系统',
+                'msg-txt-isme': isMe,
+                colorRed: doc.adminId == 1,
+              }"
+              style="white-space: pre-wrap"
               data-tip="txt"
               v-else-if="
                 +doc.type == 0 && doc?.data.toString().indexOf('[') === -1
               "
             >
-			  <!-- 系统或管理员 -->
-             <span
-				v-if="doc.adminId==1"
+              <!-- 系统或管理员 -->
+              <span
+                v-if="doc.adminId == 1"
                 class="contentTxt"
-                :class="{ padText: !isMe, 'contentTxt-me': isMe, 'colorWhite': isMe}"
-				v-html="formattedText(doc.data)"
+                :class="{
+                  padText: !isMe,
+                  'contentTxt-me': isMe,
+                  colorWhite: isMe,
+                }"
+                v-html="formattedText(doc.data)"
               ></span>
-			  
-			<!--  <span
+
+              <!--  <span
 			  	v-if="doc.adminId==1"
 			    class="contentTxt"
 			    :class="{ padText: !isMe, 'contentTxt-me': isMe }"
 			  >{{doc.data}}</span> -->
-			  <!-- 普通用户 -->
-             <span
-				v-else
+              <!-- 普通用户 -->
+              <span
+                v-else
                 class="contentTxt"
                 :class="{ padText: !isMe, 'contentTxt-me': isMe }"
-              >{{doc.data}}</span>
-			  
+                >{{ doc.data }}</span
+              >
+
               <div class="center-center time-box" v-if="isMe">
                 <p class="time" v-if="!isMe">
                   {{ $dayjsSingleTime(doc.time) }}
@@ -216,7 +227,7 @@ export default {
   data() {
     return {
       userPic,
-	  sysPic,
+      sysPic,
       actions: [
         { text: "撤回", value: 1, disabled: false },
         { text: "回复", value: 2, disabled: false },
@@ -227,15 +238,15 @@ export default {
   components: {
     bindBuy,
     redImg,
-	bets,
+    bets,
     imgMsg,
     repalyMsg,
     opensMsg,
-	fileMsg,
-	balanceMsg,
-	winMsg,
-	callMsg,
-	statistics
+    fileMsg,
+    balanceMsg,
+    winMsg,
+    callMsg,
+    statistics,
   },
   computed: {
     popoverDisabled() {
@@ -256,10 +267,10 @@ export default {
     doc() {
       let data;
       try {
-		data = JSON.parse(this.item.data);
-		if(!isNaN(data) && !isNaN(parseFloat(data))){
-			data = this.item.data;
-		}
+        data = JSON.parse(this.item.data);
+        if (!isNaN(data) && !isNaN(parseFloat(data))) {
+          data = this.item.data;
+        }
       } catch (error) {
         data = this.item.data;
       }
@@ -371,10 +382,10 @@ export default {
       }
     },
     currentComponent(type) {
-		// console.log(type)
+      // console.log(type)
       switch (type) {
         case 2:
-		  //订单列表
+          //订单列表
           return "bindBuy";
         case 3:
           //开奖数据
@@ -407,23 +418,23 @@ export default {
           return "redImg";
       }
     },
-	
-	formattedText(data) {
-	  // 正则表达式匹配URL
-	  var str = data.toString()
-	  const urlPattern = /https?:\/\/[^\s$.?#].[^\s]*/g;
-	  return str.replace(urlPattern, (url) => {
-	    // 将匹配的URL替换为<a>标签
-	    return `<a href="${url}" target="_blank">${url}</a>`;
-	  });    
-	}
+
+    formattedText(data) {
+      // 正则表达式匹配URL
+      var str = data.toString();
+      const urlPattern = /https?:\/\/[^\s$.?#].[^\s]*/g;
+      return str.replace(urlPattern, (url) => {
+        // 将匹配的URL替换为<a>标签
+        return `<a href="${url}" target="_blank">${url}</a>`;
+      });
+    },
   },
 };
 </script>
 <style lang="scss">
 .my-msg {
-  .video{
-	  float: right;
+  .video {
+    float: right;
   }
   justify-content: flex-end;
   //翻转
@@ -478,7 +489,6 @@ export default {
       white-space: normal;
       /* 让文本自动换行 */
       margin-right: 40px;
-      
     }
 
     .contentTxt-me {
@@ -487,9 +497,9 @@ export default {
     }
   }
   @media (min-width: 500px) {
-  	.contentTxt{
-  		font-size: 76px !important;
-  	}
+    .contentTxt {
+      font-size: 76px !important;
+    }
   }
 }
 
@@ -528,22 +538,22 @@ export default {
     border-radius: 0px 16px 16px 16px;
     display: inline-flex;
   }
-  
+
   @media (min-width: 500px) {
     .user-pic {
-  		width: 180px;
-  		height: 180px;
-  		margin-left: 24px !important;
-  		margin-right: 24px !important;
+      width: 180px;
+      height: 180px;
+      margin-left: 24px !important;
+      margin-right: 24px !important;
     }
-	.name{
-		font-size: 76px;
-	}
-	.msg-txt{
-		font-size: 76px;
-	}
+    .name {
+      font-size: 76px;
+    }
+    .msg-txt {
+      font-size: 76px;
+    }
   }
-  .msg-txt-blue{
+  .msg-txt-blue {
     color: #1989fa;
   }
   .msg-txt-isme {
@@ -564,11 +574,11 @@ export default {
     font-style: normal;
     text-transform: none;
   }
-  
+
   @media (min-width: 500px) {
-  	.time{
-  		font-size: 64px;
-  	}
+    .time {
+      font-size: 64px;
+    }
   }
 }
 
@@ -656,7 +666,7 @@ export default {
 
 @media (min-width: 500px) {
   .mainIsNotMeContent {
-	padding: 24px 0 30px 0;
+    padding: 24px 0 30px 0;
   }
 }
 .mainIsTrueMeContent {
@@ -686,10 +696,10 @@ export default {
 .jusCenter {
   justify-content: center;
 }
-.colorRed{
-	color: #bf2834 !important;
+.colorRed {
+  color: #bf2834 !important;
 }
-.colorWhite{
-	color: #fff !important;
+.colorWhite {
+  color: #fff !important;
 }
 </style>

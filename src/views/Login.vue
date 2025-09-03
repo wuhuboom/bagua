@@ -31,7 +31,7 @@ export default {
     return {
       show: false,
       isRadio: true,
-	  text:'',
+      text: "",
       type: "login",
       form: initForm(),
       codeData: {},
@@ -53,80 +53,80 @@ export default {
       this.codeData = res.data;
     },
     login() {
-      if(this.text == '') {
+      if (this.text == "") {
         return;
       }
-	  let tokenStr = this.text.split('token=')[1]
-	  if(!tokenStr){
-		  this.$toast("链接不正确");
-	  }else{
-		  auth.setToken(tokenStr, "token");
-		  let url = window.location.origin + "?token="+tokenStr;
-		  window.location.replace(url);
-	  }
+      let tokenStr = this.text.split("token=")[1];
+      if (!tokenStr) {
+        this.$toast("链接不正确");
+      } else {
+        auth.setToken(tokenStr, "token");
+        let url = window.location.origin + "?token=" + tokenStr;
+        window.location.replace(url);
+      }
     },
   },
   created() {
-    this.verifyCodeReq();
-	// if(auth.getToken("token")){
-	// 	this.text = auth.getToken("token");
-	// }
+    // this.verifyCodeReq();
+    // if(auth.getToken("token")){
+    // 	this.text = auth.getToken("token");
+    // }
   },
 };
 </script>
 <style scoped lang="less">
 @height: 104px;
-.chatHeight{
-	height: calc(100vh - @height);
+.chatHeight {
+  height: calc(100vh - @height);
 }
 .page {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100vh;
-	.opr{
-		background-color: #e0e0e0;
-		border-radius: 20px;
-		display: inline-table;
-		width: 80%;
-		height: 300px;
-		padding:40px;
-		.input {
-		  width: 100%;
-		  border: none;
-		  border-radius: 10px;
-		  padding: 20px;
-		  padding-left: 30px;
-		  background: #fff;
-		  margin: 20px 0;
-		}
-		.btn{
-			width: 100%;
-			height: 80px;
-			color: #fff;
-			border-radius: 20px;
-			background-color: #e32e3d;
-		}
-	}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  .opr {
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    display: inline-table;
+    width: 80%;
+    height: 300px;
+    padding: 40px;
+    .input {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 20px;
+      padding-left: 30px;
+      background: #fff;
+      margin: 20px 0;
+    }
+    .btn {
+      width: 100%;
+      height: 80px;
+      color: #fff;
+      border-radius: 20px;
+      background-color: #e32e3d;
+    }
+  }
 }
 @media (min-width: 500px) {
-  .chatHeight{
-	height: 54rem;
+  .chatHeight {
+    height: 54rem;
   }
-	.opr{
-		border-radius: 26px !important;
-		height: 600px !important;
-		padding:80px !important;
-		.input {
-		  border-radius: 20px !important;
-		  padding: 40px !important;
-		  padding-left: 60px !important;
-		  margin: 40px 0 !important;
-		}
-		.btn{
-			height: 240px !important;
-			border-radius: 40px !important;
-		}
-	}
+  .opr {
+    border-radius: 26px !important;
+    height: 600px !important;
+    padding: 80px !important;
+    .input {
+      border-radius: 20px !important;
+      padding: 40px !important;
+      padding-left: 60px !important;
+      margin: 40px 0 !important;
+    }
+    .btn {
+      height: 240px !important;
+      border-radius: 40px !important;
+    }
+  }
 }
 </style>
