@@ -1,0 +1,113 @@
+/* 公共样式 */
+@font-face {
+  font-family: 'PoppinsRegular';
+  src: url('Poppins-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'PingFangJianChangGuiTi2';
+  src: url('./PingFang-Jian-ChangGuiTi-2.ttf') format('truetype');
+}
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  box-sizing: border-box;
+}
+i {
+  font-style: normal;
+}
+@media (min-width: 500px) {
+  html {
+    font-size: 12Px !important;
+	width: 32rem !important;
+	min-width: 32rem  !important;
+	max-width: 32rem  !important;
+	margin-top: 5% !important;
+	height: 900px !important;
+	min-height: inherit !important;
+	margin: auto auto;
+	background: #e8e8e8;
+  }
+  
+  .van-toast{
+  	font-size: 1.1rem !important;
+	padding: .6rem .6rem;
+	top: calc(27rem + 5%);
+  }
+  .van-popover{
+	width: 32rem !important;
+	left: inherit !important;
+  }
+  .van-tab__text{
+	  font-size: 76px !important;
+	  line-height: 76px !important;
+  }
+  .van-tabs__wrap{
+	  height: 2rem !important;
+  }
+}
+
+html {
+  min-width: 100%;
+  min-height: 100%;
+  max-width: 750px;
+}
+body {
+  max-width: 750px;
+  margin: 0 auto;
+  background-color:#fff;
+  font-size: 28px;
+  font-family: "PingFangJianChangGuiTi2,PoppinsRegular, PingFang SC-Medium, PingFang SC, sans-serif";
+  min-width: 100%;
+  min-height: 100%;
+  color: #2C2C2C;
+	.van-dialog {
+	  font-size: 76Px !important;
+	}
+}
+
+@media (min-width: 500px) {
+  body {
+  	.van-dialog {
+	  top: calc(30rem + 5%);
+	  left: 50%;
+	  width:1200px;
+  	  font-size: 76px !important;
+  	}
+	.van-dialog__message{
+		padding: 60px 30px;
+		height: 300px;
+		box-sizing: content-box;
+		line-height: 300px;
+  	  font-size: 76px !important;
+	}
+	.van-button{
+		box-sizing: content-box;
+  	  font-size: 76px !important;
+		padding: 60px 30px;
+	}
+  }
+  
+}
+
+
+
+.text-left{
+  text-align: left;
+}
+.d-block{
+  display: block;
+}
+// 进度条
+#nprogress{
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 9999;
+  .bar {
+    height: 3px;
+    background-color: var(--main);
+  }
+  
+}
