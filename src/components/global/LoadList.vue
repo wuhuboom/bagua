@@ -1,5 +1,5 @@
 <template>
-  <van-list v-model="loading" :finished="finished" @load="loadData">
+  <van-list v-model="loading" :finished="finished" @load="loadData" :immediate-check="immediateCheck">
     <slot></slot>
   </van-list>
 </template>
@@ -16,6 +16,7 @@ export default {
       type: Boolean,
       required: true,
     },
+    immediateCheck: { type: Boolean, default: true }
   },
   data() {
     return {

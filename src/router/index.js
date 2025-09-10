@@ -59,6 +59,15 @@ const routes = [
       default: () => import("@/views/Login.vue"),
     },
   },
+  {
+    path: "/teamList",
+    name: "teamListName",
+    components: {
+      default: () => import("@/views/teamList.vue"),
+    },
+  },
+
+
 ];
 
 const router = new VueRouter({

@@ -59,6 +59,18 @@ Vue.prototype.$baseURL =
 Vue.prototype.sleep = (time) => {
   return new Promise((resolve) => setTimeout(resolve, time));
 };
+Vue.prototype.$ToSeconds = (timestamp) => {
+  // 将时间戳转换为数字
+  const ts = Number(timestamp);
+  // 判断时间戳是否为毫秒级（13位且在合理范围内）或秒级（10位且在合理范围内）
+  if (ts > 1e12) {
+    return timestamp / 1000;
+  } else if (ts > 1e9 && ts < 1e12) {
+    return timestamp; // 秒级时间戳
+  }
+
+  return timestamp;
+};
 Vue.directive("long-press", {
   bind(el, binding) {
     let timer = null;

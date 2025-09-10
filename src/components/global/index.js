@@ -4,6 +4,7 @@ import AppTopBar from "@/components/global/AppTopBar";
 import BtmActionSheet from "@/components/global/BtmActionSheet";
 import SelectActionSheet from "@/components/global/SelectActionSheet";
 import tipsDialog from "@/components/tipsDialog";
+import LoadList from "@/components/global/LoadList.vue";
 import Countdown from "@choujiaojiao/vue2-countdown";
 import {
   ActionSheet,
@@ -49,6 +50,7 @@ export default {
     Vue.component(tipsDialog.name, tipsDialog);
     Vue.component(BtmActionSheet.name, BtmActionSheet);
     Vue.component(SelectActionSheet.name, SelectActionSheet);
+    Vue.component(LoadList.name, LoadList);
     Vue.use(popover);
     Vue.use(tabs);
     Vue.use(tab);

@@ -223,6 +223,11 @@
     <div class="customer" @click="openCustomer" v-if="customerShow == '1'">
       <img src="@/assets/img/customer1.png" />
     </div>
+
+    <!-- 团队数据 -->
+    <div class="dataMainImg" @click="openDataList" >
+      <img src="@/assets/img/datalist.png" />
+    </div>
     <!-- 直播 -->
     <div class="live" @click="openLive" v-if="liveShow == '1'">
       <img src="@/assets/img/live.png" />
@@ -715,6 +720,13 @@ export default {
     },
   },
   methods: {
+    recomputeChatHeight(){
+      const isMobile = window.matchMedia('(max-width: 500px)').matches;
+      // 移动端用真实视口高度；桌面端走你原来的 rem 方案
+      this.chatHeight = isMobile
+          ? `${window.innerHeight - 95}px`
+          : '53.2rem';
+    },
     clickIcon1() {
       this.passwordShow1 = !this.passwordShow1;
     },
@@ -789,6 +801,9 @@ export default {
       if (this.cusUrl) {
         this.$router.push("/customer");
       }
+    },
+    openDataList(){
+      this.$router.push("/teamList");
     },
     openHisVideo() {
       if (this.cusUrl) {
@@ -1506,10 +1521,15 @@ export default {
         this.nicNameShow = true;
       }
     }
-    let isMobile = this.isMobileDevice();
-    if (!isMobile) {
-      this.chatHeight = "53.2rem";
-    }
+    // let isMobile = this.isMobileDevice();
+    // if (!isMobile) {
+    //   this.chatHeight = "53.2rem";
+    // }
+
+
+    this.recomputeChatHeight();
+    window.addEventListener('resize', this.recomputeChatHeight, { passive:true });
+    window.addEventListener('orientationchange', this.recomputeChatHeight, { passive:true });
     // if (this.wsStatus === true) {
     //   this.srcollBtm();
     //   return;
@@ -1540,6 +1560,9 @@ export default {
   },
   beforeDestroy() {
     this.clearAllTimers();
+
+    window.removeEventListener('resize', this.recomputeChatHeight);
+    window.removeEventListener('orientationchange', this.recomputeChatHeight);
   },
 };
 </script>
@@ -1554,6 +1577,8 @@ export default {
   overflow-y: auto;
   margin-top: 140px;
   margin-bottom: 20px;
+
+
 
   .time-box {
     margin-top: 40px;
@@ -2239,6 +2264,18 @@ export default {
     height: 110px;
   }
 }
+
+.dataMainImg{
+  position: fixed;
+  right: 10px;
+  bottom: 43vh;
+  // text-align: center;
+  img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
 .live {
   position: fixed;
   right: 10px;
@@ -2465,6 +2502,18 @@ export default {
       height: 3.5rem !important;
     }
   }
+
+  .dataMainImg {
+    position: fixed;
+    top: 43% !important;
+    right: inherit !important;
+    margin-left: 28rem !important;
+    img {
+      width: 2.5rem !important;
+      height: 2.5rem !important;
+    }
+  }
+
 
   .live {
     position: fixed;

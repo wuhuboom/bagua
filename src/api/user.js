@@ -1317,4 +1317,11 @@ export default {
       url: "/home/videos",
     });
   },
+  groupsData(data) {
+    return request({
+      url: "/groups",
+      method: "post",
+      data,
+    });
+  },
 };
