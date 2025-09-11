@@ -225,7 +225,7 @@
     </div>
 
     <!-- 团队数据 -->
-    <div class="dataMainImg" @click="openDataList" >
+    <div class="dataMainImg" @click="openDataList">
       <img src="@/assets/img/datalist.png" />
     </div>
     <!-- 直播 -->
@@ -720,12 +720,10 @@ export default {
     },
   },
   methods: {
-    recomputeChatHeight(){
-      const isMobile = window.matchMedia('(max-width: 500px)').matches;
+    recomputeChatHeight() {
+      const isMobile = window.matchMedia("(max-width: 500px)").matches;
       // 移动端用真实视口高度；桌面端走你原来的 rem 方案
-      this.chatHeight = isMobile
-          ? `${window.innerHeight - 95}px`
-          : '53.2rem';
+      this.chatHeight = isMobile ? `${window.innerHeight - 95}px` : "53.2rem";
     },
     clickIcon1() {
       this.passwordShow1 = !this.passwordShow1;
@@ -802,7 +800,7 @@ export default {
         this.$router.push("/customer");
       }
     },
-    openDataList(){
+    openDataList() {
       this.$router.push("/teamList");
     },
     openHisVideo() {
@@ -1526,10 +1524,13 @@ export default {
     //   this.chatHeight = "53.2rem";
     // }
 
-
     this.recomputeChatHeight();
-    window.addEventListener('resize', this.recomputeChatHeight, { passive:true });
-    window.addEventListener('orientationchange', this.recomputeChatHeight, { passive:true });
+    window.addEventListener("resize", this.recomputeChatHeight, {
+      passive: true,
+    });
+    window.addEventListener("orientationchange", this.recomputeChatHeight, {
+      passive: true,
+    });
     // if (this.wsStatus === true) {
     //   this.srcollBtm();
     //   return;
@@ -1561,8 +1562,8 @@ export default {
   beforeDestroy() {
     this.clearAllTimers();
 
-    window.removeEventListener('resize', this.recomputeChatHeight);
-    window.removeEventListener('orientationchange', this.recomputeChatHeight);
+    window.removeEventListener("resize", this.recomputeChatHeight);
+    window.removeEventListener("orientationchange", this.recomputeChatHeight);
   },
 };
 </script>
@@ -1577,8 +1578,6 @@ export default {
   overflow-y: auto;
   margin-top: 140px;
   margin-bottom: 20px;
-
-
 
   .time-box {
     margin-top: 40px;
@@ -2265,7 +2264,7 @@ export default {
   }
 }
 
-.dataMainImg{
+.dataMainImg {
   position: fixed;
   right: 10px;
   bottom: 43vh;
@@ -2513,7 +2512,6 @@ export default {
       height: 2.5rem !important;
     }
   }
-
 
   .live {
     position: fixed;

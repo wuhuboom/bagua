@@ -8,19 +8,14 @@
       <span class="c5">最后活跃</span>
     </div>
     <LoadList
-        :key="`lvl-${currentLevel}-${loadKey}`"
+      :key="`lvl-${currentLevel}-${loadKey}`"
       ref="loader"
       :onload="informationGroup"
       :finished="finished"
       :immediate-check="false"
     >
-
       <div class="list-wrap">
-        <div
-            class="row-card"
-            v-for="(u, i) in list"
-            :key="i"
-        >
+        <div class="row-card" v-for="(u, i) in list" :key="i">
           <div class="c1 user">
             <div class="name">{{ u.qq }}</div>
           </div>
@@ -28,14 +23,17 @@
           <div class="c2 num blue">{{ divide(u.currUp) }}</div>
           <div class="c3 num blue">{{ divide(u.currDown) }}</div>
 
-          <div class="c4 num" :class="( u.cumulativeWinning-u.accumulativeBet ) < 0 ? 'red' : ( u.cumulativeWinning-u.accumulativeBet ) > 0 ?'blue':''">
-            {{ (u.cumulativeWinning - u.accumulativeBet) }}
+          <div
+            class="c4 num"
+            :class="u.winLoss < 0 ? 'red' : u.winLoss > 0 ? 'blue' : ''"
+          >
+            {{ divide(u.winLoss) }}
           </div>
 
           <div class="c5 time">{{ u.dateforms }}</div>
         </div>
 
-<!--        <van-empty v-if="!list.length" description="暂无数据" />-->
+        <!--        <van-empty v-if="!list.length" description="暂无数据" />-->
       </div>
 
       <NoData class="m-t-40" v-if="query.pageNo > 1 && !list.length" />
@@ -63,9 +61,7 @@ export default {
       autoFilledOnce: false,
       video: [],
       status: 0,
-      list: [
-
-      ],
+      list: [],
       navs: [
         {
           name: i18n.t("About.to.start"),
@@ -80,11 +76,10 @@ export default {
           key: 2,
         },
       ],
-      query: { pageNo: 1, pageSize:20, level: 1 },
+      query: { pageNo: 1, pageSize: 20, level: 1 },
     };
   },
   watch: {
-
     currentLevel: {
       immediate: true,
       handler() {
@@ -131,14 +126,13 @@ export default {
       const nextPageNo = obj.pageNo != null ? obj.pageNo : this.query.pageNo;
       const isFirstPage = Number(nextPageNo) === 1;
 
-
       if (this.loading && !isFirstPage) return;
 
       this.loading = true;
       try {
         Object.assign(this.query, {
           level: Number(this.currentLevel) || 1,
-          ...obj
+          ...obj,
         });
 
         const [err, res] = await userApi.groupsData(this.query);
@@ -149,20 +143,21 @@ export default {
 
         this.finished = rows.length < this.query.pageSize;
 
-        const normalized = rows.map(r => {
-
+        const normalized = rows.map((r) => {
           const betRaw = r.accumulativeBet ?? r.accumulativeBet ?? r.bet ?? 0;
           return {
             ...r,
             currUp: this.toNum(r.currUp),
             currDown: this.toNum(r.currDown),
+            winLoss: this.toNum(r.currUp) - this.toNum(r.currDown),
             accumulativeBet: this.toNum(betRaw),
             cumulativeWinning: this.toNum(r.cumulativeWinning),
-            dateforms: r.lastBet ? this.date(r.lastBet) : '',
+            dateforms: r.lastBet ? this.date(r.lastBet) : "-",
           };
         });
 
-        this.list = this.query.pageNo === 1 ? normalized : this.list.concat(normalized);
+        this.list =
+          this.query.pageNo === 1 ? normalized : this.list.concat(normalized);
         this.query.pageNo++;
 
         this.$nextTick(() => {
@@ -176,9 +171,7 @@ export default {
       } finally {
         if (myKey === this.loadKey) this.loading = false;
       }
-    }
-
-
+    },
   },
 };
 </script>
@@ -245,8 +238,6 @@ export default {
   position: relative;
 }
 
-
-
 .table-head {
   position: sticky;
   top: 92px;
@@ -263,8 +254,11 @@ export default {
   border-bottom: 2px solid #eef0f3;
   text-align: center;
 
-
-  .c1,.c2,.c3,.c4,.c5{
+  .c1,
+  .c2,
+  .c3,
+  .c4,
+  .c5 {
     font-size: 28px;
   }
 }
@@ -274,7 +268,7 @@ export default {
 
   background: #fff;
   .row-card:nth-child(even) {
-    background: #FAFAFA;
+    background: #fafafa;
   }
 }
 .row-card {
@@ -301,8 +295,12 @@ export default {
   //font-weight: 600;
   text-align: center;
 }
-.blue { color: #3b7cff; }
-.red  { color: #e14c4c; }
+.blue {
+  color: #3b7cff;
+}
+.red {
+  color: #e14c4c;
+}
 
 .time {
   font-size: 28px;
@@ -312,23 +310,22 @@ export default {
 
 @media (min-width: 500px) {
   .team-page {
-    height:60rem !important;
-
+    height: 60rem !important;
   }
-  .topBack{
+  .topBack {
     height: 200px !important;
-    background: #6093F6;
+    background: #6093f6;
     border-radius: 0px 0px 0px 0px;
 
-    .bacLi{
+    .bacLi {
     }
 
-    .centerT{
+    .centerT {
       width: calc(100% - 60px);
       font-family: PingFangSC-Regular, PingFangSC-Regular;
       font-weight: normal;
-      font-size:64px!important;
-      color: #FFFFFF;
+      font-size: 64px !important;
+      color: #ffffff;
       line-height: 44px;
       text-align: center;
       font-style: normal;
@@ -336,14 +333,13 @@ export default {
     }
   }
 
-
   .team-tabs {
     background: #fff;
     ::v-deep .van-tabs__wrap {
       box-shadow: inset 0 -1px 0 #eef0f3;
     }
     ::v-deep .van-tab {
-      font-size: 60px!important;
+      font-size: 60px !important;
       color: #7a7a7a;
     }
     ::v-deep .van-tab--active {
@@ -352,18 +348,14 @@ export default {
     ::v-deep .van-tabs__line {
       height: 4px;
       border-radius: 4px;
-      background: #6093F6;
+      background: #6093f6;
       width: 112px;
     }
 
-
-    ::v-deep .van-tab__text{
-      font-size: 80px!important;
+    ::v-deep .van-tab__text {
+      font-size: 80px !important;
     }
   }
-
-
-
 
   .table-head {
     position: sticky;
@@ -377,22 +369,25 @@ export default {
     padding: 0 14px;
     background: #f7f8fa;
     color: #8a8f98;
-    font-size: 76px!important;
+    font-size: 76px !important;
     border-bottom: 2px solid #eef0f3;
     text-align: center;
 
-    .c1,.c2,.c3,.c4,.c5{
-      font-size: 56px!important;
+    .c1,
+    .c2,
+    .c3,
+    .c4,
+    .c5 {
+      font-size: 56px !important;
     }
   }
-
 
   .list-wrap {
     padding: 16px 24px 32px;
 
     background: #fff;
     .row-card:nth-child(even) {
-      background: #FAFAFA;
+      background: #fafafa;
     }
   }
   .row-card {
@@ -405,27 +400,30 @@ export default {
     background: #fff;
     border-radius: 12px;
     text-align: center;
-
   }
 
   /* 各列样式 */
   .c1.user .name {
-    font-size: 56px!important;
-    line-height: 18px!important;;
-    color: #666666!important;;
-    word-break: break-all!important;;
+    font-size: 56px !important;
+    line-height: 18px !important;
+    color: #666666 !important;
+    word-break: break-all !important;
   }
 
   .num {
-    font-size: 56px!important;;
-    font-weight: 600!important;;
-    text-align: center!important;;
+    font-size: 56px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
   }
-  .blue { color: #3b7cff; }
-  .red  { color: #e14c4c; }
+  .blue {
+    color: #3b7cff;
+  }
+  .red {
+    color: #e14c4c;
+  }
 
   .time {
-    font-size: 56px!important;;
+    font-size: 56px !important;
     color: #9aa1ac;
     text-align: right;
   }

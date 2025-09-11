@@ -66,8 +66,6 @@ const routes = [
       default: () => import("@/views/teamList.vue"),
     },
   },
-
-
 ];
 
 const router = new VueRouter({

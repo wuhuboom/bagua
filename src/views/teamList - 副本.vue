@@ -1,7 +1,9 @@
 <template>
   <div class="item-shop-page font12">
-    <ul class="d-flex align-center p-x-16 topBack" >
-      <li class="bacLi"><van-icon name="arrow-left" color="#fff" size="20px"/></li>
+    <ul class="d-flex align-center p-x-16 topBack">
+      <li class="bacLi">
+        <van-icon name="arrow-left" color="#fff" size="20px" />
+      </li>
       <li class="centerT center-center">团队数据</li>
     </ul>
     <ul
@@ -18,8 +20,8 @@
       </li>
     </ul>
     <itemTeam v-if="current == 0" />
-<!--    <live :showTab="false" v-if="current == 1" />-->
-<!--    <itemTrade v-if="current == 2" />-->
+    <!--    <live :showTab="false" v-if="current == 1" />-->
+    <!--    <itemTrade v-if="current == 2" />-->
   </div>
 </template>
 
@@ -38,15 +40,15 @@ export default {
       current: +this.$route.query.tab || 0,
       navs: [
         {
-          name:'1级',
+          name: "1级",
           key: 0,
         },
         {
-          name: '2级',
+          name: "2级",
           key: 1,
         },
         {
-          name: '3级',
+          name: "3级",
           key: 2,
         },
       ],
@@ -103,28 +105,27 @@ export default {
     height: 168px;
   }
 
-  .topBack{
+  .topBack {
     height: 128px;
-    background: #6093F6;
+    background: #6093f6;
     border-radius: 0px 0px 0px 0px;
 
-    .bacLi{
+    .bacLi {
       //width: 60px;
     }
 
-    .centerT{
+    .centerT {
       width: calc(100% - 60px);
       font-family: PingFangSC-Regular, PingFangSC-Regular;
       font-weight: normal;
-      font-size:34px;
-      color: #FFFFFF;
+      font-size: 34px;
+      color: #ffffff;
       line-height: 44px;
       text-align: center;
       font-style: normal;
       text-transform: none;
     }
   }
-
 
   .navs {
     //border-bottom: 1px solid var(--main);
