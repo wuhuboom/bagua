@@ -2256,7 +2256,8 @@ export default {
 .customer {
   position: fixed;
   right: 10px;
-  top: 40vh;
+  //top: 40vh;
+  bottom: 43vh;
   // text-align: center;
   img {
     width: 110px;
@@ -2267,7 +2268,7 @@ export default {
 .dataMainImg {
   position: fixed;
   right: 10px;
-  bottom: 43vh;
+  bottom: 52vh;
   // text-align: center;
   img {
     width: 80px;
