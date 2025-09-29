@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import { ImagePreview, Toast } from "vant";
+// import { ImagePreview, Toast } from "vant";
 import userPic from "@/assets/img/user-room.png";
 import sysPic from "@/assets/img/systemUser.png";
 import bindBuy from "@/views/chat/components/bindBuy.vue";

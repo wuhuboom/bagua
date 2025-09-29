@@ -18,7 +18,7 @@
 <script>
 import userApi from "@/api/user";
 import RepairDilog from "@/components/RepairDilog";
-import i18n from "@/locale";
+// import i18n from "@/locale";
 import auth from "@/plugins/auth";
 export default {
   name: "App",

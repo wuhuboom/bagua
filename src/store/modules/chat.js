@@ -3,6 +3,19 @@ import auth from "@/plugins/auth";
 import { EventBus } from "@/plugins/bus";
 // eslint-disable-next-line no-unused-vars
 let trimrWs = null;
+let reconnectTimer = null;
+const MAX_BACKOFF = 30000;
+const BASE_BACKOFF = 1000;
+// 调试总开关
+const WS_DEBUG = true;
+// 连接序号
+let connectSeq = 0;
+function calcBackoff(attempt) {
+  const expo = Math.min(MAX_BACKOFF, BASE_BACKOFF * Math.pow(2, attempt));
+  const jitter = Math.floor(Math.random() * 500);
+  return expo + jitter;
+}
+
 export default {
   namespaced: true,
   state: {
@@ -58,6 +71,10 @@ export default {
         pathName: "PurchasePreDetails",
       },
     ],
+
+    // 自动重连状态
+    reconnectAttempts: 0,
+    isReconnecting: false,
   },
   getters: {
     news: (state) => {
@@ -149,6 +166,18 @@ export default {
       state.ws = ws;
       state.wsStatus = ws ? true : false;
     },
+
+    // 自动重连相关
+    SET_RECONNECTING(state, v) {
+      state.isReconnecting = v;
+    },
+    INCR_RECONNECT_ATTEMPTS(state) {
+      state.reconnectAttempts += 1;
+    },
+    RESET_RECONNECT(state) {
+      state.reconnectAttempts = 0;
+      state.isReconnecting = false;
+    },
     ADD_MESSAGE(state, message) {
       if (message.message) {
         state.messages.push({
@@ -173,60 +202,237 @@ export default {
     },
   },
   actions: {
-    // 初始化 WebSocket
-    initWebSocket({ commit, dispatch }) {
+    // 心跳管理
+    startHeartbeat({ state }) {
+      // if (trimrWs) clearInterval(trimrWs);
+      // if (!state.ws) return;
+      // trimrWs = setInterval(() => {
+      //   try { state.ws?.send(1); } catch (e) { /* ignore */ }
+      // }, 20 * 1000);
+
+      if (trimrWs) clearInterval(trimrWs);
+      if (!state.ws) return;
+
+      const seq = state.ws?._seq ?? "?";
+      if (WS_DEBUG) console.debug(`[WS#${seq}] startHeartbeat`);
+
+      trimrWs = setInterval(() => {
+        if (state.ws && state.ws.readyState === WebSocket.OPEN) {
+          if (WS_DEBUG) console.debug(`[WS#${seq}] ping`);
+          try {
+            state.ws.send(1);
+          } catch (e) {
+            if (WS_DEBUG) console.warn(`[WS#${seq}] ping send error`, e);
+          }
+        } else {
+          if (WS_DEBUG)
+            console.debug(
+              `[WS#${seq}] skip ping (state=${state.ws?.readyState})`
+            );
+        }
+      }, 20 * 1000);
+    },
+    stopHeartbeat() {
+      // NEW
+      if (trimrWs) {
+        clearInterval(trimrWs);
+        trimrWs = null;
+      }
+    },
+    // 安排重连
+    scheduleReconnect({ state, commit, dispatch }) {
+      if (reconnectTimer) return; // 已经在重连倒计时
+      commit("SET_RECONNECTING", true);
+      const delay = calcBackoff(state.reconnectAttempts);
+      reconnectTimer = setTimeout(() => {
+        reconnectTimer = null;
+        commit("INCR_RECONNECT_ATTEMPTS");
+        dispatch("initWebSocket"); // 重新连
+      }, delay);
+    },
+
+    //
+    ensureConnected({ state, dispatch }) {
+      if (!state.ws || state.ws.readyState > 1) {
+        dispatch("initWebSocket");
+      }
+    },
+    // 初始化连接
+    initWebSocket({ state, commit, dispatch }) {
       const pwd = auth.getToken("pwd");
-      //wss://api.orz-orz.cc
       const site =
         process.env.NODE_ENV === "production"
           ? window.WSPATH
           : process.env.VUE_APP_WS;
       const url = `${site}/player/ws/${auth.getToken()}/${pwd}`;
-      // console.log(url)
-      const playerId = app.$store.state.user.id;
+      if (WS_DEBUG)
+        console.trace("[WS] initWebSocket called", {
+          hasWs: !!state.ws,
+          readyState: state.ws?.readyState,
+          url,
+        });
+      if (state.reconnectAttempts > 0 && !state.isReconnecting) {
+        commit("SET_RECONNECTING", true); // 进入“正在重连”状态
+      }
+      // 防止重复连接：如果已 OPEN(1) 或 CONNECTING(0) 就不再新建
+      if (
+        state.ws &&
+        (state.ws.readyState === WebSocket.OPEN ||
+          state.ws.readyState === WebSocket.CONNECTING)
+      ) {
+        if (WS_DEBUG)
+          console.info(
+            `[WS] skip connect: existing socket state=${state.ws.readyState}`
+          );
+        return;
+      }
 
+      // 清心跳，清旧 socket
+      dispatch("stopHeartbeat");
+      // try { state.ws?.close?.(); } catch(e) {}
+      try {
+        if (state.ws) {
+          if (WS_DEBUG)
+            console.info("[WS] closing previous socket before new connect");
+          state.ws.close();
+        }
+      } catch (e) {}
+
+      const seq = ++connectSeq;
+      if (WS_DEBUG) console.info(`[WS#${seq}] connecting`, url);
       const ws = new WebSocket(url);
+      ws._seq = seq; // 方便心跳/其它地方打出同一序号
 
       ws.onopen = () => {
-        console.log("WebSocket 已连接");
-        commit("SET_PLAYER_ID", playerId); // 存储当前用户 ID
+        if (WS_DEBUG) console.info(`[WS#${seq}] open`);
+        commit("SET_PLAYER_ID", app.$store.state.user.id);
+        commit("SET_WS", ws);
+        commit("RESET_RECONNECT"); // 重置重连状态
+        dispatch("startHeartbeat"); // 开启心跳
       };
 
       ws.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-        dispatch("handleMessage", message); // 处理接收到的消息
-      };
+        // const message = JSON.parse(event.data);
+        // app.$store.dispatch('chat/handleMessage', message);
 
-      ws.onerror = (error) => {
-        console.error("WebSocket 错误:", error);
-      };
-
-      ws.onclose = () => {
-        console.log("WebSocket 已关闭");
-        commit("SET_WS", null);
-      };
-      window.ws = ws;
-      trimrWs && clearInterval(trimrWs);
-      trimrWs = setInterval(() => {
-        try {
-          ws.send(1);
-        } catch (e) {
-          console.log("ping error", e);
+        if (WS_DEBUG) {
+          let preview = event?.data;
+          if (typeof preview === "string") preview = preview.slice(0, 120);
+          console.debug(`[WS#${seq}] message`, preview);
         }
-      }, 20 * 1000);
+
+        try {
+          const message = JSON.parse(event.data);
+          app.$store.dispatch("chat/handleMessage", message);
+        } catch (e) {
+          if (WS_DEBUG) console.warn(`[WS#${seq}] non-JSON frame`, event?.data);
+        }
+      };
+
+      ws.onerror = (err) => {
+        if (WS_DEBUG) console.error(`[WS#${seq}] error`, err);
+      };
+
+      // ws.onclose = () => {
+      //   if (WS_DEBUG) console.warn(`[WS#${seq}] close`, {
+      //     code: e?.code, reason: e?.reason, wasClean: e?.wasClean
+      //   });
+      //   commit('SET_WS', null);
+      //   dispatch('stopHeartbeat');
+      //   // 触发自动重连
+      //   dispatch('scheduleReconnect');
+      // };
+
+      ws.onclose = (event) => {
+        const { code, reason, wasClean } = event || {};
+        if (WS_DEBUG)
+          console.warn(`[WS#${seq}] close`, {
+            code,
+            reason,
+            wasClean,
+            readyState: ws.readyState,
+          });
+        commit("SET_WS", null);
+        dispatch("stopHeartbeat");
+        dispatch("scheduleReconnect");
+      };
+      // 记录到 state 里（wsStatus = true 表示“有实例”，真正 open 后会再次覆盖）
       commit("SET_WS", ws);
     },
 
-    // 关闭 WebSocket 连接
-    closeWebSocket({ state, commit }) {
-      if (state.ws) {
-        state.ws.close();
-        commit("SET_WS", null);
+    // 关闭停心跳、清重连
+    closeWebSocket({ state, commit, dispatch }) {
+      if (reconnectTimer) {
+        clearTimeout(reconnectTimer);
+        reconnectTimer = null;
       }
+      dispatch("stopHeartbeat");
+      try {
+        state.ws?.close?.();
+      } catch (e) {}
+      commit("SET_WS", null);
+      commit("RESET_RECONNECT");
     },
+
+    // // 初始化 WebSocket
+    // initWebSocket({ commit, dispatch }) {
+    //   const pwd = auth.getToken("pwd");
+    //   //wss://api.orz-orz.cc
+    //   const site =
+    //     process.env.NODE_ENV === "production"
+    //       ? window.WSPATH
+    //       : process.env.VUE_APP_WS;
+    //   const url = `${site}/player/ws/${auth.getToken()}/${pwd}`;
+    //   // console.log(url)
+    //   const playerId = app.$store.state.user.id;
+    //
+    //   const ws = new WebSocket(url);
+    //
+    //   ws.onopen = () => {
+    //     console.log("WebSocket 已连接");
+    //     commit("SET_PLAYER_ID", playerId); // 存储当前用户 ID
+    //   };
+    //
+    //   ws.onmessage = (event) => {
+    //     const message = JSON.parse(event.data);
+    //     dispatch("handleMessage", message); // 处理接收到的消息
+    //   };
+    //
+    //   ws.onerror = (error) => {
+    //     console.error("WebSocket 错误:", error);
+    //   };
+    //
+    //   ws.onclose = () => {
+    //     console.log("WebSocket 已关闭");
+    //     commit("SET_WS", null);
+    //   };
+    //   window.ws = ws;
+    //   trimrWs && clearInterval(trimrWs);
+    //   trimrWs = setInterval(() => {
+    //     try {
+    //       ws.send(1);
+    //     } catch (e) {
+    //       console.log("ping error", e);
+    //     }
+    //   }, 20 * 1000);
+    //   commit("SET_WS", ws);
+    // },
+    //
+    // // 关闭 WebSocket 连接
+    // closeWebSocket({ state, commit }) {
+    //   if (state.ws) {
+    //     state.ws.close();
+    //     commit("SET_WS", null);
+    //   }
+    // },
 
     // 发送消息
     sendMessage({ state }, { type = 0, data, msgId }) {
+      if (!state.ws || state.ws.readyState !== WebSocket.OPEN) {
+        console.warn("WebSocket 未连接或已关闭, state=", state.ws?.readyState);
+        return;
+      }
+
       if (state.ws && state.ws.readyState === WebSocket.OPEN) {
         const query = { type, data };
         if (msgId) {

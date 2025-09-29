@@ -46,6 +46,7 @@
         <div class="txt font13">回到底部</div>
       </div>
     </div>
+
     <van-action-sheet
       :overlay="false"
       :transition="null"
@@ -220,20 +221,36 @@
       </div>
     </div>
     <!-- 客服 -->
-    <div class="customer" @click="openCustomer" v-if="customerShow == '1'">
+    <div class="customer" @click.stop="openCustomer" v-if="customerShow == '1'">
       <img src="@/assets/img/customer1.png" />
     </div>
-
+    <!-- 重连  v-if="isReconnecting || showReconnectTick"-->
+    <transition name="fab-pop">
+      <div class="reconnect-fab">
+        <div
+          class="fab-circle"
+          :class="{ success: showReconnectTick && !isReconnecting }"
+        >
+          <van-loading
+            v-if="isReconnecting"
+            type="spinner"
+            size="20px"
+            color="#1989fa"
+          />
+          <van-icon v-else name="success" size="25px" color="#07c160" />
+        </div>
+      </div>
+    </transition>
     <!-- 团队数据 -->
-    <div class="dataMainImg" @click="openDataList">
+    <div class="dataMainImg" @click.stop="openDataList">
       <img src="@/assets/img/datalist.png" />
     </div>
     <!-- 直播 -->
-    <div class="live" @click="openLive" v-if="liveShow == '1'">
+    <div class="live" @click.stop="openLive" v-if="liveShow == '1'">
       <img src="@/assets/img/live.png" />
     </div>
     <!-- 历史 -->
-    <div class="hisLive" @click="openHisVideo" v-if="liveHisShow == '1'">
+    <div class="hisLive" @click.stop="openHisVideo" v-if="liveHisShow == '1'">
       <img src="@/assets/img/hisVideo.png" />
     </div>
     <!-- 设置昵称 -->
@@ -613,6 +630,9 @@ export default {
       customerShow: false,
       liveHisShow: false,
       liveShow: false,
+
+      showReconnectTick: false,
+      reconnectTickTimer: null,
     };
   },
   directives: {
@@ -663,13 +683,18 @@ export default {
     //   return bigListArr.bigListArr
     // },
     placeholder() {
-      if (!this.unChat) {
-        return "您已被系统禁言！";
-      } else if (!this.ableChat) {
-        return "全体禁言";
-      } else {
-        return "请输入内容";
-      }
+      if (this.isReconnecting) return "正在重连…";
+      if (!this.unChat) return "您已被系统禁言！";
+      if (!this.ableChat) return "全体禁言";
+      return "请输入内容";
+
+      // if (!this.unChat) {
+      //   return "您已被系统禁言！";
+      // } else if (!this.ableChat) {
+      //   return "全体禁言";
+      // } else {
+      //   return "请输入内容";
+      // }
       // return !this.ableChat
       //   ? "您已被系统禁言！"
       //   : "请输入内容";
@@ -679,6 +704,8 @@ export default {
       return (
         +this.shareData.chatStatusSys === 0 || this.shareData.chatAble === 0
       );
+
+      // return this.isReconnecting || (+this.shareData.chatStatusSys === 0 || this.shareData.chatAble === 0);
     },
     serveData() {
       return this.$store.state.serveData?.serviceAddr;
@@ -697,6 +724,8 @@ export default {
       "wsStatus",
       "onlineUser",
       "ableChat",
+      "isReconnecting",
+      "reconnectAttempts",
       // "contentData"
     ]), // 绑定聊天消息记录
     ...mapGetters("chat", ["news", "aites"]),
@@ -718,11 +747,19 @@ export default {
         });
       }
     },
+    isReconnecting(newVal, oldVal) {
+      if (oldVal === true && newVal === false) {
+        this.showReconnectTick = true;
+        clearTimeout(this.reconnectTickTimer);
+        this.reconnectTickTimer = setTimeout(() => {
+          this.showReconnectTick = false;
+        }, 2500);
+      }
+    },
   },
   methods: {
     recomputeChatHeight() {
       const isMobile = window.matchMedia("(max-width: 500px)").matches;
-      // 移动端用真实视口高度；桌面端走你原来的 rem 方案
       this.chatHeight = isMobile ? `${window.innerHeight - 95}px` : "53.2rem";
     },
     clickIcon1() {
@@ -1246,16 +1283,16 @@ export default {
       location.href = this.serveData;
     },
     alertReload() {
-      if (this.wsStatus === false) {
-        this.$dialog
-          .alert({
-            message: "已经离线，是否重连？",
-            confirmButtonColor: "#3291FF",
-          })
-          .then(() => {
-            location.reload();
-          });
-      }
+      // if (this.wsStatus === false) {
+      //   this.$dialog
+      //     .alert({
+      //       message: "已经离线，是否重连？",
+      //       confirmButtonColor: "#3291FF",
+      //     })
+      //     .then(() => {
+      //       location.reload();
+      //     });
+      // }
     },
     visibilityChanged(v, i) {
       return (isVisible) => {
@@ -1401,6 +1438,14 @@ export default {
     },
     async infiniteHandler($state) {
       // $state.loaded(); $state.complete();
+      const ws = this.$store.state.chat.ws;
+      if (!ws || ws.readyState !== WebSocket.OPEN) {
+        // 等下次滚动再触发，避免刷 error
+        setTimeout(() => {
+          $state.reset();
+        }, 300);
+        return;
+      }
       const pageNo = this.query.pageNo + 1;
       if (this.query.totalPage !== null && pageNo > this.query.totalPage) {
         $state.complete();
@@ -1540,17 +1585,28 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       if (from.name != "FinancialDetails" && from.name != "CollectionDetails") {
-        if (vm.wsStatus === true) {
-          vm.srcollBtm();
-          return;
-        }
-        vm.initWebSocket();
+        vm.$store.dispatch("chat/ensureConnected"); // 用确保连接（内部会判断状态）
       } else {
         vm.srcollNow();
       }
       vm.startAllTimers();
     });
   },
+
+  // beforeRouteEnter(to, from, next) {
+  //   next((vm) => {
+  //     if (from.name != "FinancialDetails" && from.name != "CollectionDetails") {
+  //       if (vm.wsStatus === true) {
+  //         vm.srcollBtm();
+  //         return;
+  //       }
+  //       vm.initWebSocket();
+  //     } else {
+  //       vm.srcollNow();
+  //     }
+  //     vm.startAllTimers();
+  //   });
+  // },
   beforeRouteLeave(to, from, next) {
     this.clearAllTimers();
     const scrollContainer = this.$refs.chatBox;
@@ -1564,6 +1620,8 @@ export default {
 
     window.removeEventListener("resize", this.recomputeChatHeight);
     window.removeEventListener("orientationchange", this.recomputeChatHeight);
+
+    clearTimeout(this.reconnectTickTimer);
   },
 };
 </script>
@@ -1573,11 +1631,24 @@ export default {
   // background-image: url("../../assets/img/chatBg.png");
   // background-size: 100% 100%;
   background: #f3f3f6;
+
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 或继续用你现有的 chatHeight */
+  min-height: 0; /* 允许子项变成可滚动 */
 }
 .chat-box {
   overflow-y: auto;
   margin-top: 140px;
   margin-bottom: 20px;
+
+  flex: 1 1 auto;
+  min-height: 0; /* 关键！ */
+  overflow-y: auto;
+  margin: 0; /* 不要用 margin 挤位置 */
+  padding-top: 140px;
+  padding-bottom: 90px; /* 预留底部输入框高度(@height=190px) */
+  box-sizing: border-box;
 
   .time-box {
     margin-top: 40px;
@@ -2027,6 +2098,39 @@ export default {
   color: #666;
 }
 
+.reconnect-fab {
+  position: fixed;
+  left: 12px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 210px);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.fab-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fab-circle.success .van-icon {
+  color: #07c160;
+}
+
+.fab-pop-enter-active,
+.fab-pop-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.fab-pop-enter,
+.fab-pop-leave-to {
+  opacity: 0;
+  transform: translateY(6px) scale(0.96);
+}
+
 /* 让 @ 符号稍微变小 */
 .at-symbol {
   // font-size: 28px;
@@ -2380,12 +2484,15 @@ export default {
 @media (min-width: 500px) {
   .chat-con {
     height: 60rem !important;
+    position: relative;
   }
   .unread-mention {
     align-items: end !important;
     position: fixed;
     // top: 55% !important;
-    top: calc(5% + 40.2rem);
+    //top: calc(5% + 40.2rem);
+    //bottom: 51rem;
+    bottom: calc(6% + 45rem);
     right: inherit !important;
     margin-left: 25.5rem !important;
     justify-content: inherit !important;
@@ -2414,6 +2521,24 @@ export default {
       }
     }
   }
+
+  .reconnect-fab {
+    position: absolute;
+    left: 44px !important;
+    bottom: 9rem;
+  }
+
+  .fab-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .aite-box-sheet {
     padding-bottom: 0;
     transition: none !important;
@@ -2494,7 +2619,8 @@ export default {
 
   .customer {
     position: fixed;
-    top: 38% !important;
+    //top: 38% !important;
+    bottom: 60vh !important;
     right: inherit !important;
     margin-left: 27rem !important;
     img {
