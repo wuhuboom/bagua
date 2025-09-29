@@ -9,7 +9,7 @@
     />
     <!-- 弹出大图 -->
     <van-popup
-      v-model:show="show"
+      v-model="show"
       position="center"
       :style="{ background: 'rgba(0, 0, 0, 0)' }"
       :close-on-click-overlay="true"
@@ -29,7 +29,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import { ImagePreview } from "vant";
+// import { ImagePreview } from "vant";
 export default {
   name: "imgMsg",
   data() {
@@ -60,6 +60,8 @@ export default {
           ? this.doc.data
           : `${this.$baseURL}/${this.doc.data}`;
       }
+
+      return "";
     },
   },
   methods: {

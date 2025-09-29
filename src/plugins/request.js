@@ -72,7 +72,7 @@ instance.interceptors.response.use(
     }
     //401-无权访问 402-未登录或者登录失效 403-账号已被禁用
     if ([401, 402, 403].includes(code)) {
-      const isLogin = res.config.url.includes("/auth/login");
+      // const isLogin = res.config.url.includes("/auth/login");
       app.$toast.clear();
       let token = window.location.search.split("token=")[1];
       console.log(token);

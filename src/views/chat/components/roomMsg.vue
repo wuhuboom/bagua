@@ -206,18 +206,20 @@ import redImg from "@/views/chat/components/redImg.vue";
 import bets from "@/views/chat/components/bets.vue";
 
 import repalyMsg from "@/views/chat/components/repalyMsg.vue";
-import { wxEmojis } from "@/utils/wxEmojis";
+// import { wxEmojis } from "@/utils/wxEmojis";
 import { mapActions } from "vuex";
 import bigListArr from "@/plugins/bigList.js";
 export default {
   filters: {
-    showIcon: function (str) {},
+    showIcon: function (str) {
+      console.log(str);
+    },
     chatImg: (itemName) => {
       const item = bigListArr.bigListArr.find(
         (item) => `[${item.name}]` === itemName
       );
       if (item) {
-        let urlStr = "../" + item.url;
+        // let urlStr = "../" + item.url;
         return require(`@/assets/img/${item.urlStr}`);
       }
 
@@ -327,20 +329,20 @@ export default {
       console.log("pressAite", this.isMe);
       this.$emit("pressAite", v);
     },
-    wxEmojisHand(html) {
-      // console.log("message12323", html, typeof html);
-      // let wxEmojis_message = wxEmojis(html);
-      // console.log("wxEmojis_message", wxEmojis_message);
-      // return wxEmojis_message
-      // console.log("html", html);
-      // if (['['].includes(html)) {
-      //   return wxEmojis(html);
-      // } else {
-      //   return html;
-      // }
-      // console.log("1112323", html);
-      // return wxEmojis(html);
-    },
+    // wxEmojisHand(html) {
+    //   // console.log("message12323", html, typeof html);
+    //   // let wxEmojis_message = wxEmojis(html);
+    //   // console.log("wxEmojis_message", wxEmojis_message);
+    //   // return wxEmojis_message
+    //   // console.log("html", html);
+    //   // if (['['].includes(html)) {
+    //   //   return wxEmojis(html);
+    //   // } else {
+    //   //   return html;
+    //   // }
+    //   // console.log("1112323", html);
+    //   // return wxEmojis(html);
+    // },
 
     highlightedText(v) {
       return v.replace(

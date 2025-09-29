@@ -502,11 +502,11 @@ import RedPacketTips from "@/views/chat/components/RedPacketTips.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import { ObserveVisibility } from "vue-observe-visibility";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
-import wxEmojisDialog from "./components/wxEmojisDialog";
+// import wxEmojisDialog from "./components/wxEmojisDialog";
 import { wxEmojis } from "@/utils/wxEmojis";
 import sendChatMsg from "@/utils/sendChatMsg";
 import bigListArr from "@/plugins/bigList.js";
-import { quillEditor } from "vue-quill-editor";
+// import { quillEditor } from "vue-quill-editor";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
@@ -668,8 +668,8 @@ export default {
     topBets,
     RedPacketTips,
     bindBetPop,
-    wxEmojisDialog,
-    quillEditor,
+    // wxEmojisDialog,
+    // quillEditor,
   },
   computed: {
     contentData() {
@@ -825,7 +825,7 @@ export default {
       this.cusUrl = res.data.serviceAddr;
     },
     async setNickname() {
-      const [err, res] = await userApi.editNickname({
+      const [err] = await userApi.editNickname({
         nickname: this.nickname,
       });
       if (err) return;
@@ -1058,7 +1058,7 @@ export default {
       //   forbidClick: true,
       // });
       // const [err, res] = await userApi.uploadImg({ file });
-      const [err, res] = await userApi.uploadFile({ file });
+      const [err] = await userApi.uploadFile({ file });
       if (err) return;
       // this.$toast.clear();
       this.fileModal = false;
@@ -1083,7 +1083,7 @@ export default {
       //   forbidClick: true,
       // });
       // const [err, res] = await userApi.uploadImg({ file });
-      const [err, res] = await userApi.uploadImgApi({ file });
+      const [err] = await userApi.uploadImgApi({ file });
       console.log("errerrerrerrerr", err);
       // if (err) return;
       if (err) {

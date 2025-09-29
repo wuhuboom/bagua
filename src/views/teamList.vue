@@ -53,7 +53,7 @@ export default {
     onTabChange(name) {
       // this.$router.replace({ query: { tab: name } });
       // this.$refs.team && this.$refs.team.resetAndLoad();
-      console.log("cu", this.current);
+      console.log("cu", this.current, name);
     },
     fmt(n) {
       // 千分位，负数带红色样式由 class 控制

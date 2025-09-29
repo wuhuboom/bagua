@@ -61,7 +61,7 @@
           <li class="d-flex">
             <div class="align-center">
               <div class="sendBox">
-                <p class="center-center colorfff font13 moneyLeft" @click="">
+                <p class="center-center colorfff font13 moneyLeft">
                   余额
                   <!-- <img
                     class="d-img"
@@ -173,7 +173,8 @@
 
 <script>
 import userApi from "@/api/user";
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+// import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   data() {
     return {

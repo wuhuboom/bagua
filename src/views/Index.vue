@@ -373,7 +373,7 @@ export default {
     // 设置支付密码
     async confirm() {
       this.$toast.success("支付密码设置成功");
-      const [err, res] = await userApi.setPwdPay(this.pwdForm);
+      const [err] = await userApi.setPwdPay(this.pwdForm);
       if (err) return;
       await this.lazyGetUser();
       this.showPwdForm = false;

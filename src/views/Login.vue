@@ -16,7 +16,7 @@
 
 <script>
 import userApi from "@/api/user";
-import Notice from "@/components/Notice";
+// import Notice from "@/components/Notice";
 import auth from "@/plugins/auth";
 const initForm = () => ({
   username: "",
@@ -37,7 +37,7 @@ export default {
       codeData: {},
     };
   },
-  components: { Notice },
+  // components: { Notice },
   computed: {
     production() {
       return process.env.NODE_ENV === "production";

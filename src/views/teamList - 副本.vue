@@ -28,7 +28,7 @@
 <script>
 // import auth from "@/plugins/auth";
 import itemTeam from "@/views/itemTeam";
-import i18n from "@/locale";
+// import i18n from "@/locale";
 import userApi from "@/api/user";
 export default {
   name: "teamList",

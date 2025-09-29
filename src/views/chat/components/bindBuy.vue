@@ -7,7 +7,12 @@
       <p class="tops font13">本期玩家竞猜账单</p>
     </div>
     <div class="content font13">
-      <div class="item" v-for="(item, index) in data" @click="open(item)">
+      <div
+        class="item"
+        v-for="(item, index) in data"
+        @click="open(item)"
+        :key="index"
+      >
         <div class="betName">
           <span>{{ item.name }}</span>
         </div>

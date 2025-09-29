@@ -1,7 +1,7 @@
 <template>
   <div class="opens-list">
     <div class="content font9">
-      <div class="item font9" v-for="(item, index) in data">
+      <div class="item font9" v-for="(item, index) in data" :key="index">
         <div class="nav nav1 font9">{{ item.qq }}</div>
         <div class="nav font9">上</div>
         <div class="nav nav2 font9">{{ item.currUp }}</div>
@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     data() {
-      let str = this.doc.data;
+      // let str = this.doc.data;
       return this.doc.data;
     },
   },

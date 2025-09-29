@@ -4,7 +4,7 @@
       <p class="tops font12">本期投注用户账户余额</p>
     </div>
     <div class="content font9">
-      <div class="item" v-for="(item, index) in data">
+      <div class="item" v-for="(item, index) in data" :key="index">
         {{ item.name }}:{{ divide(item.balance) }}
       </div>
     </div>
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     data() {
-      let str = this.doc.data;
+      // let str = this.doc.data;
       return this.doc.data;
     },
   },

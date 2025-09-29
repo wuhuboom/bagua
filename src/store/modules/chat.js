@@ -128,7 +128,7 @@ export default {
     },
     setContentData(state, query) {
       let postRes = { ...query };
-      state.showBigoArr.forEach((item, index) => {
+      state.showBigoArr.forEach((item) => {
         if (item.val == query.type) {
           postRes.textTip = item.name;
           postRes.path = item.path;
@@ -296,7 +296,9 @@ export default {
             console.info("[WS] closing previous socket before new connect");
           state.ws.close();
         }
-      } catch (e) {}
+      } catch (e) {
+        if (WS_DEBUG) console.warn("[WS] close previous socket failed", e);
+      }
 
       const seq = ++connectSeq;
       if (WS_DEBUG) console.info(`[WS#${seq}] connecting`, url);
@@ -369,7 +371,9 @@ export default {
       dispatch("stopHeartbeat");
       try {
         state.ws?.close?.();
-      } catch (e) {}
+      } catch (e) {
+        if (WS_DEBUG) console.warn("[WS] closeWebSocket failed", e);
+      }
       commit("SET_WS", null);
       commit("RESET_RECONNECT");
     },
@@ -523,7 +527,7 @@ export default {
           commit("setUnAllowChat", true);
         }
       } else if ([4].includes(+message.type)) {
-        let data = JSON.parse(message.data);
+        // let data = JSON.parse(message.data);
         app.$toast("消息发送频繁");
       } else if ([5].includes(+message.type)) {
         console.log(message);

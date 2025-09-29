@@ -4,7 +4,7 @@
       <p class="tops font12">近期开奖记录</p>
     </div>
     <div class="content font9">
-      <div class="item" v-for="(item, index) in data.opens">
+      <div class="item" v-for="(item, index) in data.opens" :key="index">
         <div class="betName">
           <span>{{ item.cycleNum }}</span>
         </div>
