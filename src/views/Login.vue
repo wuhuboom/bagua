@@ -53,17 +53,41 @@ export default {
       this.codeData = res.data;
     },
     login() {
-      if (this.text == "") {
-        return;
-      }
-      let tokenStr = this.text.split("token=")[1];
+      // if (this.text == "") {
+      //   return;
+      // }
+      // let tokenStr = this.text.split("token=")[1];
+      // if (!tokenStr) {
+      //   this.$toast("链接不正确");
+      // } else {
+      //   auth.setToken(tokenStr, "token");
+      //   let url = window.location.origin + "?token=" + tokenStr;
+      //   window.location.replace(url);
+      // }
+
+      if (!this.text) return;
+      // 更健壮的获取 token
+      const u = this.text.trim();
+      const asUrl = (() => {
+        try {
+          return new URL(u);
+        } catch {
+          return null;
+        }
+      })();
+      const tokenStr = asUrl
+        ? asUrl.searchParams.get("token")
+        : (u.split("token=")[1] || "").split("&")[0];
+
       if (!tokenStr) {
         this.$toast("链接不正确");
-      } else {
-        auth.setToken(tokenStr, "token");
-        let url = window.location.origin + "?token=" + tokenStr;
-        window.location.replace(url);
+        return;
       }
+
+      auth.setToken(tokenStr, "token");
+
+      // hash 模式下，这里会生成 http://localhost:8081/#/?token=xxx
+      this.$router.replace({ path: "/", query: { token: tokenStr } });
     },
   },
   created() {

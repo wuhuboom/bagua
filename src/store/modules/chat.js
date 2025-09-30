@@ -7,7 +7,9 @@ let reconnectTimer = null;
 const MAX_BACKOFF = 30000;
 const BASE_BACKOFF = 1000;
 // 调试总开关
-const WS_DEBUG = true;
+const WS_DEBUG =
+  process.env.NODE_ENV !== "production" &&
+  !/Mobile|Android|iP(hone|ad|od)/i.test(navigator.userAgent);
 // 连接序号
 let connectSeq = 0;
 function calcBackoff(attempt) {
@@ -311,17 +313,18 @@ export default {
         commit("SET_WS", ws);
         commit("RESET_RECONNECT"); // 重置重连状态
         dispatch("startHeartbeat"); // 开启心跳
+        EventBus.$emit("ws:open");
       };
 
       ws.onmessage = (event) => {
         // const message = JSON.parse(event.data);
         // app.$store.dispatch('chat/handleMessage', message);
-
-        if (WS_DEBUG) {
-          let preview = event?.data;
-          if (typeof preview === "string") preview = preview.slice(0, 120);
-          console.debug(`[WS#${seq}] message`, preview);
-        }
+        //
+        // if (WS_DEBUG) {
+        //   let preview = event?.data;
+        //   if (typeof preview === "string") preview = preview.slice(0, 120);
+        //   console.debug(`[WS#${seq}] message`, preview);
+        // }
 
         try {
           const message = JSON.parse(event.data);

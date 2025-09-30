@@ -11,6 +11,7 @@
       @scroll="handleScroll"
     >
       <infinite-loading
+        ref="infinite"
         direction="top"
         @infinite="infiniteHandler"
       ></infinite-loading>
@@ -231,12 +232,7 @@
           class="fab-circle"
           :class="{ success: showReconnectTick && !isReconnecting }"
         >
-          <van-loading
-            v-if="isReconnecting"
-            type="spinner"
-            size="20px"
-            color="#1989fa"
-          />
+          <van-loading v-if="isReconnecting" size="20px" color="#1989fa" />
           <van-icon v-else name="success" size="25px" color="#07c160" />
         </div>
       </div>
@@ -506,6 +502,8 @@ import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import { wxEmojis } from "@/utils/wxEmojis";
 import sendChatMsg from "@/utils/sendChatMsg";
 import bigListArr from "@/plugins/bigList.js";
+import { EventBus } from "@/plugins/bus";
+
 // import { quillEditor } from "vue-quill-editor";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
@@ -633,6 +631,9 @@ export default {
 
       showReconnectTick: false,
       reconnectTickTimer: null,
+
+      scrollRAFS: null,
+      needLoadMoreOnReconnect: false,
     };
   },
   directives: {
@@ -758,6 +759,14 @@ export default {
     },
   },
   methods: {
+    onWsOpen() {
+      if (this.needLoadMoreOnReconnect) {
+        this.needLoadMoreOnReconnect = false;
+        this.$nextTick(() => {
+          this.$refs.infinite && this.$refs.infinite.$emit("reset");
+        });
+      }
+    },
     recomputeChatHeight() {
       const isMobile = window.matchMedia("(max-width: 500px)").matches;
       this.chatHeight = isMobile ? `${window.innerHeight - 95}px` : "53.2rem";
@@ -880,12 +889,21 @@ export default {
       this.$refs.$bindBetPop.open(v);
     },
     handleScroll() {
-      const scrollContainer = this.$refs.chatBox;
-      if (!scrollContainer) return;
-      console.log("scrollContainer", scrollHeight);
-      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-      // 正确计算：用户滚动到接近底部（50px 以内）隐藏按钮
-      this.showButton = scrollTop + clientHeight < scrollHeight - 50;
+      // const scrollContainer = this.$refs.chatBox;
+      // if (!scrollContainer) return;
+      // console.log("scrollContainer", scrollHeight);
+      // const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+      // // 正确计算：用户滚动到接近底部（50px 以内）隐藏按钮
+      // this.showButton = scrollTop + clientHeight < scrollHeight - 50;
+
+      if (this.scrollRAFS) return;
+      this.scrollRAFS = requestAnimationFrame(() => {
+        this.scrollRAFS = null;
+        const el = this.$refs.chatBox;
+        if (!el) return;
+        const { scrollTop, scrollHeight, clientHeight } = el;
+        this.showButton = scrollTop + clientHeight < scrollHeight - 50;
+      });
     },
     scrollToBottom() {
       const scrollContainer = this.$refs.chatBox;
@@ -1440,10 +1458,13 @@ export default {
       // $state.loaded(); $state.complete();
       const ws = this.$store.state.chat.ws;
       if (!ws || ws.readyState !== WebSocket.OPEN) {
-        // 等下次滚动再触发，避免刷 error
-        setTimeout(() => {
-          $state.reset();
-        }, 300);
+        this.needLoadMoreOnReconnect = true;
+        $state.complete();
+
+        // // 等下次滚动再触发，避免刷 error
+        // setTimeout(() => {
+        //   $state.reset();
+        // }, 300);
         return;
       }
       const pageNo = this.query.pageNo + 1;
@@ -1541,6 +1562,8 @@ export default {
 
     this.getVersion();
     this.getChatMember();
+
+    EventBus.$on("ws:open", this.onWsOpen);
   },
   mounted() {
     this.customerShow =
@@ -1622,6 +1645,10 @@ export default {
     window.removeEventListener("orientationchange", this.recomputeChatHeight);
 
     clearTimeout(this.reconnectTickTimer);
+
+    if (this.scrollRAFS) cancelAnimationFrame(this.scrollRAFS);
+
+    EventBus.$off("ws:open", this.onWsOpen);
   },
 };
 </script>
