@@ -1,5 +1,47 @@
 <template>
   <div class="item-contest-page">
+    <!-- 时间筛选条 -->
+    <div class="filter-bar">
+      <div class="filter-item" @click="showStartPicker = true">
+        <span class="label">开始时间</span>
+        <span class="value">
+          {{ startDateText || "不限" }}
+        </span>
+      </div>
+      <div class="filter-item" @click="showEndPicker = true">
+        <span class="label">结束时间</span>
+        <span class="value">
+          {{ endDateText || "不限" }}
+        </span>
+      </div>
+    </div>
+
+    <!-- 开始时间选择 -->
+    <van-popup v-model="showStartPicker" position="bottom">
+      <van-datetime-picker
+        v-model="startPickerValue"
+        type="date"
+        title="选择开始日期"
+        :min-date="minDate"
+        :max-date="maxDate"
+        @confirm="onConfirmStart"
+        @cancel="showStartPicker = false"
+      />
+    </van-popup>
+
+    <!-- 结束时间选择 -->
+    <van-popup v-model="showEndPicker" position="bottom">
+      <van-datetime-picker
+        v-model="endPickerValue"
+        type="date"
+        title="选择结束日期"
+        :min-date="minDate"
+        :max-date="maxDate"
+        @confirm="onConfirmEnd"
+        @cancel="showEndPicker = false"
+      />
+    </van-popup>
+
     <div class="table-head">
       <span class="c1">用户名</span>
       <span class="c2">总上分</span>
@@ -17,7 +59,8 @@
       <div class="list-wrap">
         <div class="row-card" v-for="(u, i) in list" :key="i">
           <div class="c1 user">
-            <div class="name">{{ u.qq }}</div>
+            <!-- <div class="name">{{ u.qq }}</div> -->
+            <div class="name">{{ u.playerName }}</div>
           </div>
 
           <div class="c2 num blue">{{ divide(u.currUp) }}</div>
@@ -33,10 +76,10 @@
           <div class="c5 time">{{ u.dateforms }}</div>
         </div>
 
-        <!--        <van-empty v-if="!list.length" description="暂无数据" />-->
+        <van-empty v-if="!list.length" description="暂无数据" />
       </div>
 
-      <NoData class="m-t-40" v-if="query.pageNo > 1 && !list.length" />
+      <!-- <NoData class="m-t-40" v-if="query.pageNo > 1 && !list.length" /> -->
     </LoadList>
   </div>
 </template>
@@ -45,8 +88,10 @@
 import userApi from "@/api/user";
 import i18n from "@/locale";
 import dayjs from "dayjs";
+// import NoData from "@/components/global/NoData.vue";
 export default {
   name: "itemContest",
+  // components: { NoData },
   props: {
     currentLevel: {
       type: [Number, String],
@@ -54,6 +99,7 @@ export default {
     },
   },
   data() {
+    const today = new Date();
     return {
       finished: false,
       loading: false,
@@ -76,7 +122,17 @@ export default {
           key: 2,
         },
       ],
-      query: { pageNo: 1, pageSize: 20, level: 1 },
+      query: { pageNo: 1, pageSize: 20, level: 1, begin: null, end: null },
+
+      // 时间筛选相关
+      showStartPicker: false,
+      showEndPicker: false,
+      startPickerValue: today,
+      endPickerValue: today,
+      startDateText: "",
+      endDateText: "",
+      minDate: new Date(2024, 0, 1),
+      maxDate: new Date(2030, 11, 31),
     };
   },
   watch: {
@@ -88,13 +144,45 @@ export default {
     },
   },
   methods: {
+    // 选择开始时间
+    onConfirmStart(date) {
+      this.showStartPicker = false;
+      this.startPickerValue = date;
+      // this.startDateText = dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+      // this.query.begin = Math.floor(date.getTime() / 1000);
+
+      const formatted = dayjs(date).format("YYYY-MM-DD");
+      this.startDateText = formatted;
+      this.query.begin = formatted;
+
+      this.resetAndLoad();
+    },
+
+    // 选择结束时间
+    onConfirmEnd(date) {
+      this.showEndPicker = false;
+      this.endPickerValue = date;
+
+      // this.endDateText = dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+      // this.query.end = Math.floor(date.getTime() / 1000);
+
+      const formatted = dayjs(date).format("YYYY-MM-DD");
+      this.endDateText = formatted;
+      this.query.end = formatted;
+
+      this.resetAndLoad();
+    },
     resetOnly() {
+      const { begin, end } = this.query; // 保留当前选的时间
+
       this.finished = false;
       this.list = [];
       this.query = {
         pageNo: 1,
         pageSize: 20,
         level: Number(this.currentLevel) || 1,
+        begin,
+        end,
       };
       this.loadKey++;
       this.loading = false;
@@ -135,7 +223,14 @@ export default {
           ...obj,
         });
 
-        const [err, res] = await userApi.groupsData(this.query);
+        const cleanQuery = { ...this.query };
+        Object.keys(cleanQuery).forEach((k) => {
+          if (cleanQuery[k] === null || cleanQuery[k] === undefined) {
+            delete cleanQuery[k];
+          }
+        });
+
+        const [err, res] = await userApi.groupsDateData(cleanQuery);
         if (myKey !== this.loadKey) return;
         if (err) return;
 
@@ -147,12 +242,13 @@ export default {
           const betRaw = r.accumulativeBet ?? r.accumulativeBet ?? r.bet ?? 0;
           return {
             ...r,
-            currUp: this.toNum(r.currUp),
-            currDown: this.toNum(r.currDown),
-            winLoss: this.toNum(r.currUp) - this.toNum(r.currDown),
+            currUp: this.toNum(r.recharge),
+            currDown: this.toNum(r.withdrawal),
+            // winLoss: this.toNum(r.currUp) - this.toNum(r.currDown),
+            winLoss: r.win,
             accumulativeBet: this.toNum(betRaw),
             cumulativeWinning: this.toNum(r.cumulativeWinning),
-            dateforms: r.lastBet ? this.date(r.lastBet) : "-",
+            dateforms: r.ymd ? this.date(r.ymd) : "-",
           };
         });
 
@@ -308,6 +404,38 @@ export default {
   text-align: right;
 }
 
+.filter-bar {
+  display: flex;
+  padding: 8px 12px;
+  background: #fff;
+  /* border-bottom: 2px solid #eef0f3; */
+
+  .filter-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 6px 8px;
+    border-radius: 8px;
+    background: #f7f8fa;
+    margin-right: 8px;
+  }
+
+  .filter-item:last-child {
+    margin-right: 0;
+  }
+
+  .label {
+    font-size: 22px;
+    color: #999;
+    margin-bottom: 4px;
+  }
+
+  .value {
+    font-size: 26px;
+    color: #333;
+  }
+}
+
 @media (min-width: 500px) {
   .team-page {
     height: 60rem !important;
@@ -426,6 +554,38 @@ export default {
     font-size: 56px !important;
     color: #9aa1ac;
     text-align: right;
+  }
+
+  .filter-bar {
+    display: flex;
+    padding: 8px 12px;
+    background: #fff;
+    /* border-bottom: 2px solid #eef0f3; */
+
+    .filter-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 6px 8px;
+      border-radius: 8px;
+      background: #f7f8fa;
+      margin-right: 8px;
+    }
+
+    .filter-item:last-child {
+      margin-right: 0;
+    }
+
+    .label {
+      font-size: 60px;
+      color: #999;
+      margin-bottom: 4px;
+    }
+
+    .value {
+      font-size: 68px;
+      color: #333;
+    }
   }
 }
 </style>

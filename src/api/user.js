@@ -1324,4 +1324,12 @@ export default {
       data,
     });
   },
+  // 查询下级数据-按日期
+  groupsDateData(data) {
+    return request({
+      url: "/groups2",
+      method: "post",
+      data,
+    });
+  },
 };

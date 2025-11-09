@@ -1,7 +1,7 @@
 <template>
   <div class="no-data center-center flex-column" :class="className">
-    <img class="d-img" src="@/assets/img/ntf/nodata.webp" alt="" />
-    <div class="center-center font14 m-t-4">No Data</div>
+    <img class="d-img" src="@/assets/img/Gone.png" alt="" />
+    <div class="center-center font14 m-t-4">没有数据</div>
   </div>
 </template>
 

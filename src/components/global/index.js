@@ -41,6 +41,8 @@ import {
   tab,
   tabs,
   uploader,
+  Empty,
+  DatetimePicker,
 } from "vant";
 export default {
   install(Vue) {
@@ -85,5 +87,7 @@ export default {
     Vue.use(countDown);
     Vue.use(Stepper);
     Vue.use(circle);
+    Vue.use(Empty);
+    Vue.use(DatetimePicker);
   },
 };
